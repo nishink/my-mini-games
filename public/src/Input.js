@@ -1,5 +1,7 @@
+// 入力の正規化：キーボード入力をハンドル
 export const Input = {
-  onMove: null,
+  onMove: null, // ハンドラ(dx,dy)
+  // キーボードイベントをバインド（矢印キー/WASD対応）
   bindKeyboard(){
     window.addEventListener('keydown', (e)=>{
       let dx=0, dy=0;

@@ -1,29 +1,31 @@
-// Simple TurnManager class for managing turn phases.
-// Methods are synchronous and intended to be integrated with the main loop.
+// ターン管理クラス：エンティティのキューを速度でソートし、順番に行動を実行
+// メソッドは同期的で、メインループに統合される想定
 export class TurnManager {
   constructor() {
-    this.queue = []; // array of entities
-    this.phase = 'idle';
-    this.onTurnStart = null; // callbacks
-    this.onTurnEnd = null;
-    this.onRoundEnd = null;
+    this.queue = []; // エンティティの配列
+    this.phase = 'idle'; // 'idle' または 'processing'
+    this.onTurnStart = null; // ターン開始コールバック
+    this.onTurnEnd = null; // ターン終了コールバック
+    this.onRoundEnd = null; // ラウンド終了コールバック
   }
 
+  // エンティティをキューに追加（重複防止）
   enqueue(entity) {
     if (!this.queue.includes(entity)) this.queue.push(entity);
   }
 
+  // キューをクリア
   clear() {
     this.queue = [];
   }
 
-  // Sort by speed descending (higher speed acts first)
+  // エンティティをソート（速度が高いほど先に行動）
   buildQueue(entities) {
     this.queue = [...entities].sort((a,b) => (b.speed||0) - (a.speed||0));
   }
 
-  // Process one full round: call act(context) on each entity in queue
-  // Accepts an optional context object (player, map, helpers)
+  // 1ラウンド実行：キュー内の各エンティティが順番に act(context) を呼ぶ
+  // context（プレイヤー、マップ、ユーティリティ関数）を敵のAIに渡す
   processRound(context){
     this.phase = 'processing';
     for (const ent of this.queue) {
