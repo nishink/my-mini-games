@@ -23,6 +23,7 @@ let turnCount = 0;
 let currentFloor = 1;
 let score = 0; // ゲームスコア（敵撃破時に加算）
 let floorClearedMessageShown = false; // 敵全滅メッセージが表示済みかフラグ
+let isPlayerTurn = true; // プレイヤーのターンかどうかを管理するロック
 
 const tm = new TurnManager();
 
@@ -144,7 +145,12 @@ function attack(attacker, defender) {
 
 // プレイヤーを指定座標に移動（敵との戦闘、階段判定を含む）
 function playerMoveTo(x, y) {
-    if (!isWalkable(x, y)) return;
+    isPlayerTurn = false; // プレイヤーの行動が開始されたので、入力をロック
+    if (!isWalkable(x, y)) {
+        isPlayerTurn = true; // 壁なので即座にロック解除
+        return;
+    }
+
     const enemy = enemies.find(e => e.x === x && e.y === y);
     if (enemy) {
         attack(player, enemy);
@@ -191,17 +197,30 @@ function playerMoveTo(x, y) {
 
     // ターン経過後、敵がターンマネージャーで行動
     setTimeout(() => {
+        // 敵の行動を実行
         tm.buildQueue(enemies);
         tm.processRound({ player, map, isWalkable, occupied });
+
+        // 敵の行動後にプレイヤーが死亡したかチェック
+        if (!player.isAlive()) {
+            updateHUD(); // 最後のHP表示を更新
+            render();
+            gameOver(); // ゲームオーバー処理
+            return; // ロックは解除しない
+        }
+
+        // プレイヤーが生きていれば、次のターンへ
         turnCount++;
         updateHUD();
         render();
         checkFloorClear();
+        isPlayerTurn = true; // 敵のターンが完了したので、プレイヤーの入力を許可
     }, 120);
 }
 
 // グリッドセルクリック時の処理：隣接マスのみ移動可能
 function onCellClick(x, y) {
+    if (!isPlayerTurn) return; // プレイヤーのターンでなければ何もしない
     const dist = Math.abs(player.x - x) + Math.abs(player.y - y); if (dist === 1) playerMoveTo(x, y);
 }
 
@@ -215,33 +234,63 @@ function checkFloorClear() {
 
 // 次のフロアへ移動、または最後のフロアならゲームクリア
 function nextFloor() {
+    // 最終フロア到達時のゲームクリア処理
     if (currentFloor >= MAX_FLOOR) {
-        addLog('ダンジョンを制覇しました！ スコア表示（ターン:' + turnCount + ' スコア: ' + score + '）');
+        isPlayerTurn = false; // 入力ロック
+        addLog('ダンジョンを制覇しました！');
+
+        const finalStatsEl = document.getElementById('clearStats');
+        finalStatsEl.innerHTML = `
+            <div>最終スコア: ${score}</div>
+            <div>ターン: ${turnCount}</div>
+        `;
+        document.getElementById('gameClearScreen').style.display = 'flex';
         nextFloorBtn.style.display = 'none';
-        alert('クリア！\nスコア: ' + score + '\nターン数: ' + turnCount);
-        location.reload();
         return;
     }
-    spawnFloor(currentFloor + 1); nextFloorBtn.style.display = 'none';
+
+    // 次のフロアを生成
+    spawnFloor(currentFloor + 1);
+    // 階段ボタンを隠す
+    nextFloorBtn.style.display = 'none';
 }
 
 // ゲームオーバー処理（プレイヤー死亡時）
 function gameOver() {
+    isPlayerTurn = false; // 入力ロック
     addLog('あなたは倒れた。ゲームオーバー。');
-    alert('ゲームオーバー。スコア: フロア ' + currentFloor + ' / ターン ' + turnCount);
-    location.reload();
+    const finalStatsEl = document.getElementById('finalStats');
+    finalStatsEl.innerHTML = `
+        <div>最終スコア: ${score}</div>
+        <div>ターン: ${turnCount}</div>
+    `;
+    document.getElementById('gameOverScreen').style.display = 'flex';
 }
 
-// input
+// Retry ボタン
+document.getElementById('retryBtn').addEventListener('click', () => {
+    location.reload();
+});
+
+// New Game ボタン
+document.getElementById('newGameBtn').addEventListener('click', () => {
+    location.reload();
+});
+
+// 入力ハンドラの設定
 Input.onMove = (dx, dy) => { if (player) playerMoveTo(player.x + dx, player.y + dy); };
+// キーボード入力をバインド
 Input.bindKeyboard();
 
+// タッチ操作ボタンのクリックハンドラ
 document.getElementById('touchControls').addEventListener('click', (ev) => {
     const dir = ev.target.dataset.dir;
     if (!dir) return;
     const [dx, dy] = dir.split(',').map(Number);
     if (player) playerMoveTo(player.x + dx, player.y + dy);
 });
+// 階段ボタンのクリックハンドラ
 nextFloorBtn.addEventListener('click', nextFloor);
 
+// ゲーム開始
 spawnFloor(1);

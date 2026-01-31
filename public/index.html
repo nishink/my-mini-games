@@ -36,6 +36,22 @@
     </div>
 
     <script type="module" src="./main.js"></script>
+
+    <div id="gameOverScreen" class="overlay" style="display: none;">
+        <div class="overlay-content">
+            <h2>ゲームオーバー</h2>
+            <div id="finalStats"></div>
+            <button id="retryBtn">もう一度挑戦する</button>
+        </div>
+    </div>
+
+    <div id="gameClearScreen" class="overlay" style="display: none;">
+        <div class="overlay-content">
+            <h2>ダンジョン制覇！</h2>
+            <div id="clearStats"></div>
+            <button id="newGameBtn">もう一度挑戦する</button>
+        </div>
+    </div>
 </body>
 
 </html>

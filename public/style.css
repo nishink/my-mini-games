@@ -110,3 +110,50 @@ main {
         display: none
     }
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 36, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.overlay-content {
+    background: #1e293b;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+}
+
+.overlay-content h2 {
+    margin-top: 0;
+    color: #f8fafc;
+}
+
+#finalStats {
+    margin: 1.5rem 0;
+    line-height: 1.6;
+}
+
+#retryBtn, #newGameBtn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#retryBtn:hover, #gameClearBtn:hover {
+    background: #2563eb;
+}
