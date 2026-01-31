@@ -22,6 +22,7 @@ let items = []; // アイテム（ドロップ）を管理
 let turnCount = 0;
 let currentFloor = 1;
 let score = 0; // ゲームスコア（敵撃破時に加算）
+let floorClearedMessageShown = false; // 敵全滅メッセージが表示済みかフラグ
 
 const tm = new TurnManager();
 
@@ -55,6 +56,7 @@ function spawnFloor(floor) {
     map = generateMap(COLS, ROWS);
     enemies = [];
     items = []; // 各フロアの最初にアイテムをクリア
+    floorClearedMessageShown = false; // 敵全滅メッセージフラグをリセット
     if (!player) placeEntityRandom('player');
     const enemyCount = Math.min(7, 2 + Math.floor(floor * 0.8)); // 敵数を最大7に調整
     for (let i = 0; i < enemyCount; i++) placeEntityRandom('enemy');
@@ -105,7 +107,16 @@ function playerMoveTo(x, y) {
             items = items.filter(it => it !== item);
         }
         
-        player.moveTo(x, y); if (map[y][x].type === 'stairs') { nextFloorBtn.style.display = 'block'; addLog('階段を発見した！ 次のフロアへ進みますか？'); } } turnCount++; updateHUD(); render(); // ターン経過後、敵がターンマネージャーで行動
+        player.moveTo(x, y); 
+        // 階段判定：乗ったらボタン表示
+        if (map[y][x].type === 'stairs') { 
+            nextFloorBtn.style.display = 'block'; 
+            addLog('階段を発見した！ 次のフロアへ進みますか？'); 
+        } else {
+            // 階段から離れたらボタンを隠す
+            nextFloorBtn.style.display = 'none';
+        }
+    } turnCount++; updateHUD(); render(); // ターン経過後、敵がターンマネージャーで行動
     setTimeout(() => {
         tm.buildQueue(enemies);
         tm.processRound({ player, map, isWalkable, occupied });
@@ -116,8 +127,13 @@ function playerMoveTo(x, y) {
 // グリッドセルクリック時の処理：隣接マスのみ移動可能
 function onCellClick(x, y) { const dist = Math.abs(player.x - x) + Math.abs(player.y - y); if (dist === 1) playerMoveTo(x, y); }
 
-// 敵がすべて倒されたかチェック（敵殲滅時のログのみ）
-function checkFloorClear() { if (enemies.length === 0) { addLog('敵を全て倒した！'); } }
+// 敵がすべて倒されたかチェック（敵殲滅時のログを1回だけ表示）
+function checkFloorClear() { 
+    if (enemies.length === 0 && !floorClearedMessageShown) { 
+        addLog('敵を全て倒した！'); 
+        floorClearedMessageShown = true;
+    } 
+}
 
 // 次のフロアへ移動、または最後のフロアならゲームクリア
 function nextFloor() { if (currentFloor >= MAX_FLOOR) { addLog('ダンジョンを制覇しました！ スコア表示（ターン:' + turnCount + ' スコア: ' + score + '）'); nextFloorBtn.style.display = 'none'; alert('クリア！\nスコア: ' + score + '\nターン数: ' + turnCount); location.reload(); return; } spawnFloor(currentFloor + 1); nextFloorBtn.style.display = 'none'; }
