@@ -23,68 +23,70 @@ let currentFloor = 1;
 
 const tm = new TurnManager();
 
-function rnd(n){ return Math.floor(Math.random()*n); }
-function addLog(s){ const p=document.createElement('div'); p.textContent=s; logEl.prepend(p); }
+function rnd(n) { return Math.floor(Math.random() * n); }
+function addLog(s) { const p = document.createElement('div'); p.textContent = s; logEl.prepend(p); }
 
-function isWalkable(x,y){
-  if(x<0||x>=COLS||y<0||y>=ROWS) return false;
-  return map[y][x].type !== 'wall';
+function isWalkable(x, y) {
+    if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return false;
+    return map[y][x].type !== 'wall';
 }
-function occupied(x,y){
-  if(player && player.x===x && player.y===y) return true;
-  return enemies.some(en=>en.x===x&&en.y===y);
-}
-
-function placeEntityRandom(type){
-  let x,y; do{ x=rnd(COLS); y=rnd(ROWS); } while(map[y][x].type!=='floor' || (player && x===player.x && y===player.y) || enemies.some(e=>e.x===x&&e.y===y));
-  if(type==='player') player = new Player(x,y);
-  else enemies.push(new Enemy(x,y));
+function occupied(x, y) {
+    if (player && player.x === x && player.y === y) return true;
+    return enemies.some(en => en.x === x && en.y === y);
 }
 
-function spawnFloor(floor){
-  map = generateMap(COLS, ROWS);
-  enemies = [];
-  if(!player) placeEntityRandom('player');
-  const enemyCount = Math.min(8, 2 + Math.floor(floor*1.2));
-  for(let i=0;i<enemyCount;i++) placeEntityRandom('enemy');
-  let sx,sy; do{ sx=rnd(COLS); sy=rnd(ROWS); } while(map[sy][sx].type!=='floor' || (player&&player.x===sx&&player.y===sy));
-  map[sy][sx].type='stairs';
-  currentFloor = floor; turnCount = 0; updateHUD(); render(); addLog(`フロア ${floor} に突入。敵 ${enemies.length} 匹出現`);
+function placeEntityRandom(type) {
+    let x, y; do { x = rnd(COLS); y = rnd(ROWS); } while (map[y][x].type !== 'floor' || (player && x === player.x && y === player.y) || enemies.some(e => e.x === x && e.y === y));
+    if (type === 'player') player = new Player(x, y);
+    else enemies.push(new Enemy(x, y));
 }
 
-function updateHUD(){ if(player) hpVal.textContent = `${player.hp}/${player.maxHp}`; floorVal.textContent = `${currentFloor}`; turnVal.textContent = `${turnCount}`; }
-
-function render(){ Renderer.renderGrid(gridEl, map, player, enemies);
-  // attach click handlers
-  gridEl.querySelectorAll('.cell').forEach(cell=>{
-    const x = Number(cell.dataset.x), y = Number(cell.dataset.y);
-    cell.onclick = ()=> onCellClick(x,y);
-  });
+function spawnFloor(floor) {
+    map = generateMap(COLS, ROWS);
+    enemies = [];
+    if (!player) placeEntityRandom('player');
+    const enemyCount = Math.min(8, 2 + Math.floor(floor * 1.2));
+    for (let i = 0; i < enemyCount; i++) placeEntityRandom('enemy');
+    let sx, sy; do { sx = rnd(COLS); sy = rnd(ROWS); } while (map[sy][sx].type !== 'floor' || (player && player.x === sx && player.y === sy));
+    map[sy][sx].type = 'stairs';
+    currentFloor = floor; turnCount = 0; updateHUD(); render(); addLog(`フロア ${floor} に突入。敵 ${enemies.length} 匹出現`);
 }
 
-function attack(attacker, defender){ const dmg = Math.max(1, attacker.atk - (defender.def||0)); defender.takeDamage(dmg); addLog(`${attacker===player ? 'あなた' : '敵'} の攻撃: ${dmg} ダメージ`); }
+function updateHUD() { if (player) hpVal.textContent = `${player.hp}/${player.maxHp}`; floorVal.textContent = `${currentFloor}`; turnVal.textContent = `${turnCount}`; }
 
-function playerMoveTo(x,y){ if(!isWalkable(x,y)) return; const enemy = enemies.find(e=>e.x===x&&e.y===y); if(enemy){ attack(player, enemy); if(!enemy.isAlive()){ addLog('敵を倒した！'); enemies = enemies.filter(en=>en!==enemy); checkFloorClear(); } else { attack(enemy, player); if(!player.isAlive()){ gameOver(); return; } } } else { player.moveTo(x,y); if(map[y][x].type === 'stairs' && enemies.length===0){ nextFloorBtn.style.display='block'; } } turnCount++; updateHUD(); render(); // enemies act via TurnManager
-  setTimeout(()=>{
-    tm.buildQueue(enemies);
-    tm.processRound({player, map, isWalkable, occupied});
-    turnCount++; updateHUD(); render(); checkFloorClear();
-  }, 120);
+function render() {
+    Renderer.renderGrid(gridEl, map, player, enemies);
+    // attach click handlers
+    gridEl.querySelectorAll('.cell').forEach(cell => {
+        const x = Number(cell.dataset.x), y = Number(cell.dataset.y);
+        cell.onclick = () => onCellClick(x, y);
+    });
 }
 
-function onCellClick(x,y){ const dist = Math.abs(player.x-x)+Math.abs(player.y-y); if(dist===1) playerMoveTo(x,y); }
+function attack(attacker, defender) { const dmg = Math.max(1, attacker.atk - (defender.def || 0)); defender.takeDamage(dmg); addLog(`${attacker === player ? 'あなた' : '敵'} の攻撃: ${dmg} ダメージ`); }
 
-function checkFloorClear(){ if(enemies.length===0){ addLog('この階の敵を全て倒した！ 階段が現れました。'); nextFloorBtn.style.display='block'; } }
+function playerMoveTo(x, y) {
+    if (!isWalkable(x, y)) return; const enemy = enemies.find(e => e.x === x && e.y === y); if (enemy) { attack(player, enemy); if (!enemy.isAlive()) { addLog('敵を倒した！'); enemies = enemies.filter(en => en !== enemy); } else { attack(enemy, player); if (!player.isAlive()) { gameOver(); return; } } } else { player.moveTo(x, y); if (map[y][x].type === 'stairs') { nextFloorBtn.style.display = 'block'; addLog('階段を発見した！ 次のフロアへ進みますか？'); } } turnCount++; updateHUD(); render(); // enemies act via TurnManager
+    setTimeout(() => {
+        tm.buildQueue(enemies);
+        tm.processRound({ player, map, isWalkable, occupied });
+        turnCount++; updateHUD(); render(); checkFloorClear();
+    }, 120);
+}
 
-function nextFloor(){ if(currentFloor>=MAX_FLOOR){ addLog('ダンジョンを制覇しました！ スコア表示（ターン:' + turnCount + '）'); nextFloorBtn.style.display='none'; alert('クリア！ スコア: ターン ' + turnCount); location.reload(); return; } spawnFloor(currentFloor+1); nextFloorBtn.style.display='none'; }
+function onCellClick(x, y) { const dist = Math.abs(player.x - x) + Math.abs(player.y - y); if (dist === 1) playerMoveTo(x, y); }
 
-function gameOver(){ addLog('あなたは倒れた。ゲームオーバー。'); alert('ゲームオーバー。スコア: フロア ' + currentFloor + ' / ターン ' + turnCount); location.reload(); }
+function checkFloorClear() { if (enemies.length === 0) { addLog('敵を全て倒した！'); } }
+
+function nextFloor() { if (currentFloor >= MAX_FLOOR) { addLog('ダンジョンを制覇しました！ スコア表示（ターン:' + turnCount + '）'); nextFloorBtn.style.display = 'none'; alert('クリア！ スコア: ターン ' + turnCount); location.reload(); return; } spawnFloor(currentFloor + 1); nextFloorBtn.style.display = 'none'; }
+
+function gameOver() { addLog('あなたは倒れた。ゲームオーバー。'); alert('ゲームオーバー。スコア: フロア ' + currentFloor + ' / ターン ' + turnCount); location.reload(); }
 
 // input
-Input.onMove = (dx,dy)=>{ if(player) playerMoveTo(player.x+dx, player.y+dy); };
+Input.onMove = (dx, dy) => { if (player) playerMoveTo(player.x + dx, player.y + dy); };
 Input.bindKeyboard();
 
-document.getElementById('touchControls').addEventListener('click', (ev)=>{ const dir = ev.target.dataset.dir; if(!dir) return; const [dx,dy] = dir.split(',').map(Number); if(player) playerMoveTo(player.x+dx, player.y+dy); });
+document.getElementById('touchControls').addEventListener('click', (ev) => { const dir = ev.target.dataset.dir; if (!dir) return; const [dx, dy] = dir.split(',').map(Number); if (player) playerMoveTo(player.x + dx, player.y + dy); });
 nextFloorBtn.addEventListener('click', nextFloor);
 
 spawnFloor(1);
