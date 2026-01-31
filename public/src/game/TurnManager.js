@@ -1,6 +1,6 @@
 // ターン管理クラス：エンティティのキューを速度でソートし、順番に行動を実行
 export class TurnManager {
-  constructor(){
+  constructor() {
     this.queue = []; // エンティティの配列
     this.phase = 'idle'; // 'idle' または 'processing'
     this.onTurnStart = null; // ターン開始コールバック
@@ -9,24 +9,24 @@ export class TurnManager {
   }
 
   // エンティティをキューに追加（重複防止）
-  enqueue(entity){ if(!this.queue.includes(entity)) this.queue.push(entity); }
+  enqueue(entity) { if (!this.queue.includes(entity)) this.queue.push(entity); }
 
   // キューをクリア
-  clear(){ this.queue = []; }
+  clear() { this.queue = []; }
 
   // エンティティをソート（速度が高いほど先に行動）
-  buildQueue(entities){ this.queue = [...entities].sort((a,b) => (b.speed||0) - (a.speed||0)); }
+  buildQueue(entities) { this.queue = [...entities].sort((a, b) => (b.speed || 0) - (a.speed || 0)); }
 
   // 1ラウンド実行：キュー内の各エンティティが順番に act(context) を呼ぶ
   // context（プレイヤー、マップ、ユーティリティ関数）を敵のAIに渡す
-  processRound(context){
+  processRound(context) {
     this.phase = 'processing';
-    for(const ent of this.queue){
-      if(this.onTurnStart) this.onTurnStart(ent);
-      if(typeof ent.act === 'function') ent.act(context);
-      if(this.onTurnEnd) this.onTurnEnd(ent);
+    for (const ent of this.queue) {
+      if (this.onTurnStart) this.onTurnStart(ent);
+      if (typeof ent.act === 'function') ent.act(context);
+      if (this.onTurnEnd) this.onTurnEnd(ent);
     }
     this.phase = 'idle';
-    if(this.onRoundEnd) this.onRoundEnd();
+    if (this.onRoundEnd) this.onRoundEnd();
   }
 }

@@ -1,21 +1,112 @@
-:root{--cell-size:20px;--cols:40;--rows:25}
-*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
-body{margin:0;background:#0f1724;color:#e6eef8;display:flex;flex-direction:column;min-height:100vh}
-header#hud{display:flex;gap:1rem;padding:.5rem 1rem;background:#111827}
-main{display:flex;gap:8px;padding:8px;flex:1}
-#gameArea{flex:1;display:flex;justify-content:center;align-items:flex-start}
-#grid{display:grid;grid-template-columns:repeat(var(--cols),var(--cell-size));grid-auto-rows:var(--cell-size);gap:1px;
-  background:#0b1220;padding:6px;border-radius:6px}
-.cell{width:var(--cell-size);height:var(--cell-size);display:flex;align-items:center;justify-content:center;
-  font-size:14px;background:#0b1220;color:#fff;user-select:none}
-.cell.wall{background:#1f2937}
-.cell.stairs{background:#083f3f}
-#rightPanel{width:220px}
-#log{height:60vh;overflow:auto;background:#071020;padding:8px;border-radius:6px}
-#touchControls{position:fixed;left:12px;bottom:12px;display:none;gap:6px}
-#touchControls button{width:46px;height:46px;border-radius:6px;font-size:18px}
-@media (max-width:800px){
-  :root{--cell-size:18px}
-  #touchControls{display:flex;flex-direction:column}
-  #rightPanel{display:none}
+:root {
+    --cell-size: 20px;
+    --cols: 40;
+    --rows: 25
+}
+
+* {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto
+}
+
+body {
+    margin: 0;
+    background: #0f1724;
+    color: #e6eef8;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh
+}
+
+header#hud {
+    display: flex;
+    gap: 1rem;
+    padding: .5rem 1rem;
+    background: #111827
+}
+
+main {
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    flex: 1
+}
+
+#gameArea {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), var(--cell-size));
+    grid-auto-rows: var(--cell-size);
+    gap: 1px;
+    background: #0b1220;
+    padding: 6px;
+    border-radius: 6px
+}
+
+.cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background: #0b1220;
+    color: #fff;
+    user-select: none
+}
+
+.cell.wall {
+    background: #1f2937
+}
+
+.cell.stairs {
+    background: #083f3f
+}
+
+#rightPanel {
+    width: 220px
+}
+
+#log {
+    height: 60vh;
+    overflow: auto;
+    background: #071020;
+    padding: 8px;
+    border-radius: 6px
+}
+
+#touchControls {
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    display: none;
+    gap: 6px
+}
+
+#touchControls button {
+    width: 46px;
+    height: 46px;
+    border-radius: 6px;
+    font-size: 18px
+}
+
+@media (max-width:800px) {
+    :root {
+        --cell-size: 18px
+    }
+
+    #touchControls {
+        display: flex;
+        flex-direction: column
+    }
+
+    #rightPanel {
+        display: none
+    }
 }
