@@ -22,12 +22,13 @@ export class TurnManager {
     this.queue = [...entities].sort((a,b) => (b.speed||0) - (a.speed||0));
   }
 
-  // Process one full round: call act() on each entity in queue
-  processRound() {
+  // Process one full round: call act(context) on each entity in queue
+  // Accepts an optional context object (player, map, helpers)
+  processRound(context){
     this.phase = 'processing';
     for (const ent of this.queue) {
       if (this.onTurnStart) this.onTurnStart(ent);
-      if (typeof ent.act === 'function') ent.act();
+      if (typeof ent.act === 'function') ent.act(context);
       if (this.onTurnEnd) this.onTurnEnd(ent);
     }
     this.phase = 'idle';
