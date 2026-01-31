@@ -57,11 +57,27 @@ function spawnFloor(floor) {
     enemies = [];
     items = []; // 各フロアの最初にアイテムをクリア
     floorClearedMessageShown = false; // 敵全滅メッセージフラグをリセット
-    if (!player) placeEntityRandom('player');
-    const enemyCount = Math.min(7, 2 + Math.floor(floor * 0.8)); // 敵数を最大7に調整
+    
+    // プレイヤーの初期配置
+    if (!player) {
+        // 中央エリアに優先的に配置
+        const cx = Math.floor(COLS/2), cy = Math.floor(ROWS/2);
+        let x, y;
+        do {
+            x = cx + Math.floor((Math.random() - 0.5) * 6);
+            y = cy + Math.floor((Math.random() - 0.5) * 6);
+        } while (!isWalkable(x, y) || (x >= COLS - 1 || x <= 0 || y >= ROWS - 1 || y <= 0));
+        player = new Player(x, y);
+    }
+    
+    // 敵を配置
+    const enemyCount = Math.min(7, 2 + Math.floor(floor * 0.8));
     for (let i = 0; i < enemyCount; i++) placeEntityRandom('enemy');
+    
+    // 階段を配置
     let sx, sy; do { sx = rnd(COLS); sy = rnd(ROWS); } while (map[sy][sx].type !== 'floor' || (player && player.x === sx && player.y === sy));
     map[sy][sx].type = 'stairs';
+    
     currentFloor = floor; turnCount = 0; updateHUD(); render(); addLog(`フロア ${floor} に突入。敵 ${enemies.length} 匹出現`);
 }
 
@@ -70,12 +86,27 @@ function updateHUD() { if (player) hpVal.textContent = `${player.hp}/${player.ma
 
 // マップとエンティティをレンダリング、クリックハンドラを再アタッチ
 function render() {
-    Renderer.renderGrid(gridEl, map, player, enemies);
-    // アイテムを描画
+    // マップだけ先に描画
+    Renderer.renderGrid(gridEl, map, null, null);
+    
+    // アイテムを描画（背景のように）
     items.forEach(item => {
         const cell = document.querySelector(`[data-x="${item.x}"][data-y="${item.y}"]`);
         if (cell) cell.textContent = item.char;
     });
+    
+    // 敵を描画
+    enemies.forEach(e => {
+        const cell = document.querySelector(`[data-x="${e.x}"][data-y="${e.y}"]`);
+        if (cell) cell.textContent = e.char;
+    });
+    
+    // プレイヤーを描画（最後なので最優先で表示される）
+    if (player) {
+        const cell = document.querySelector(`[data-x="${player.x}"][data-y="${player.y}"]`);
+        if (cell) cell.textContent = player.char;
+    }
+    
     // グリッドセルにクリックイベントハンドラを再度アタッチ
     gridEl.querySelectorAll('.cell').forEach(cell => {
         const x = Number(cell.dataset.x), y = Number(cell.dataset.y);

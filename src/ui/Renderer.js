@@ -30,6 +30,7 @@ Renderer.renderGrid = function(container, map, player, enemies){
       if(t==='wall') cell.classList.add('wall');
       if(t==='stairs') cell.classList.add('stairs');
       cell.dataset.x = x; cell.dataset.y = y;
+      // エンティティの描画優先度：プレイヤー > 敵 > 階段
       const e = (enemies||[]).find(en=>en.x===x&&en.y===y);
       if(player && player.x===x && player.y===y){
         cell.textContent = player.char;
