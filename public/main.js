@@ -6,7 +6,7 @@ import { Input } from './src/Input.js';
 import { Renderer } from './src/Renderer.js';
 
 const COLS = 40, ROWS = 25;
-const MAX_FLOOR = 10;
+const MAX_FLOOR = 7; // フロア数を7に調整
 
 const gridEl = document.getElementById('grid');
 const hpVal = document.getElementById('hpVal');
@@ -18,8 +18,10 @@ const nextFloorBtn = document.getElementById('nextFloorBtn');
 let map = [];
 let player = null;
 let enemies = [];
+let items = []; // アイテム（ドロップ）を管理
 let turnCount = 0;
 let currentFloor = 1;
+let score = 0; // ゲームスコア（敵撃破時に加算）
 
 const tm = new TurnManager();
 
@@ -52,8 +54,9 @@ function placeEntityRandom(type) {
 function spawnFloor(floor) {
     map = generateMap(COLS, ROWS);
     enemies = [];
+    items = []; // 各フロアの最初にアイテムをクリア
     if (!player) placeEntityRandom('player');
-    const enemyCount = Math.min(8, 2 + Math.floor(floor * 1.2));
+    const enemyCount = Math.min(7, 2 + Math.floor(floor * 0.8)); // 敵数を最大7に調整
     for (let i = 0; i < enemyCount; i++) placeEntityRandom('enemy');
     let sx, sy; do { sx = rnd(COLS); sy = rnd(ROWS); } while (map[sy][sx].type !== 'floor' || (player && player.x === sx && player.y === sy));
     map[sy][sx].type = 'stairs';
@@ -66,6 +69,11 @@ function updateHUD() { if (player) hpVal.textContent = `${player.hp}/${player.ma
 // マップとエンティティをレンダリング、クリックハンドラを再アタッチ
 function render() {
     Renderer.renderGrid(gridEl, map, player, enemies);
+    // アイテムを描画
+    items.forEach(item => {
+        const cell = document.querySelector(`[data-x="${item.x}"][data-y="${item.y}"]`);
+        if (cell) cell.textContent = item.char;
+    });
     // グリッドセルにクリックイベントハンドラを再度アタッチ
     gridEl.querySelectorAll('.cell').forEach(cell => {
         const x = Number(cell.dataset.x), y = Number(cell.dataset.y);
@@ -78,7 +86,26 @@ function attack(attacker, defender) { const dmg = Math.max(1, attacker.atk - (de
 
 // プレイヤーを指定座標に移動（敵との戦闘、階段判定を含む）
 function playerMoveTo(x, y) {
-    if (!isWalkable(x, y)) return; const enemy = enemies.find(e => e.x === x && e.y === y); if (enemy) { attack(player, enemy); if (!enemy.isAlive()) { addLog('敵を倒した！'); enemies = enemies.filter(en => en !== enemy); } else { attack(enemy, player); if (!player.isAlive()) { gameOver(); return; } } } else { player.moveTo(x, y); if (map[y][x].type === 'stairs') { nextFloorBtn.style.display = 'block'; addLog('階段を発見した！ 次のフロアへ進みますか？'); } } turnCount++; updateHUD(); render(); // ターン経過後、敵がターンマネージャーで行動
+    if (!isWalkable(x, y)) return; const enemy = enemies.find(e => e.x === x && e.y === y); if (enemy) { attack(player, enemy); if (!enemy.isAlive()) { addLog('敵を倒した！'); 
+        // スコアを加算（敵1体あたり10ポイント）
+        score += 10;
+        addLog(`スコア +10 (合計: ${score})`);
+        // 敵撃破時に確実にポーションをドロップ
+        items.push({ x: x, y: y, char: '🧪', type: 'potion', hp: 8 });
+        addLog('ポーション をドロップした！');
+        
+        enemies = enemies.filter(en => en !== enemy); 
+    } else { attack(enemy, player); if (!player.isAlive()) { gameOver(); return; } } } else { 
+        // アイテムに乗っていないかチェック
+        const item = items.find(it => it.x === x && it.y === y);
+        if (item) {
+            const oldHp = player.hp;
+            player.hp = Math.min(player.maxHp, player.hp + item.hp);
+            addLog(`ポーションを使った！ HP: ${oldHp} → ${player.hp}`);
+            items = items.filter(it => it !== item);
+        }
+        
+        player.moveTo(x, y); if (map[y][x].type === 'stairs') { nextFloorBtn.style.display = 'block'; addLog('階段を発見した！ 次のフロアへ進みますか？'); } } turnCount++; updateHUD(); render(); // ターン経過後、敵がターンマネージャーで行動
     setTimeout(() => {
         tm.buildQueue(enemies);
         tm.processRound({ player, map, isWalkable, occupied });
@@ -93,7 +120,7 @@ function onCellClick(x, y) { const dist = Math.abs(player.x - x) + Math.abs(play
 function checkFloorClear() { if (enemies.length === 0) { addLog('敵を全て倒した！'); } }
 
 // 次のフロアへ移動、または最後のフロアならゲームクリア
-function nextFloor() { if (currentFloor >= MAX_FLOOR) { addLog('ダンジョンを制覇しました！ スコア表示（ターン:' + turnCount + '）'); nextFloorBtn.style.display = 'none'; alert('クリア！ スコア: ターン ' + turnCount); location.reload(); return; } spawnFloor(currentFloor + 1); nextFloorBtn.style.display = 'none'; }
+function nextFloor() { if (currentFloor >= MAX_FLOOR) { addLog('ダンジョンを制覇しました！ スコア表示（ターン:' + turnCount + ' スコア: ' + score + '）'); nextFloorBtn.style.display = 'none'; alert('クリア！\nスコア: ' + score + '\nターン数: ' + turnCount); location.reload(); return; } spawnFloor(currentFloor + 1); nextFloorBtn.style.display = 'none'; }
 
 // ゲームオーバー処理（プレイヤー死亡時）
 function gameOver() { addLog('あなたは倒れた。ゲームオーバー。'); alert('ゲームオーバー。スコア: フロア ' + currentFloor + ' / ターン ' + turnCount); location.reload(); }

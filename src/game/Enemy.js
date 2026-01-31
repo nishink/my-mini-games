@@ -1,9 +1,9 @@
 import { Entity } from './Entity.js';
 
-// 敵クラス（HP 6、攻撃力 2、基本的なAIロジック搭載、デフォルト絵文字：👾）
+// 敵クラス（HP 5、攻撃力 2、基本的なAIロジック搭載、デフォルト絵文字：👾）
 export class Enemy extends Entity{
   constructor(x,y,opts={}){
-    super(x,y, Object.assign({char:'👾',hp:6,atk:2,def:0,speed:5}, opts));
+    super(x,y, Object.assign({char:'👾',hp:5,atk:2,def:0,speed:5}, opts));
     this.ai = opts.ai || 'basic';
   }
 
