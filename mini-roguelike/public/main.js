@@ -221,7 +221,8 @@ function playerMoveTo(x, y) {
 // グリッドセルクリック時の処理：隣接マスのみ移動可能
 function onCellClick(x, y) {
     if (!isPlayerTurn) return; // プレイヤーのターンでなければ何もしない
-    const dist = Math.abs(player.x - x) + Math.abs(player.y - y); if (dist === 1) playerMoveTo(x, y);
+    const dist = Math.abs(player.x - x) + Math.abs(player.y - y); 
+    if (dist === 1) playerMoveTo(x, y);
 }
 
 // 敵がすべて倒されたかチェック（敵殲滅時のログを1回だけ表示）
@@ -267,12 +268,12 @@ function gameOver() {
     document.getElementById('gameOverScreen').style.display = 'flex';
 }
 
-// Retry ボタン
+// Retry ボタン：ゲームオーバー時に表示する
 document.getElementById('retryBtn').addEventListener('click', () => {
     location.reload();
 });
 
-// New Game ボタン
+// New Game ボタン： ゲームクリア時に表示する
 document.getElementById('newGameBtn').addEventListener('click', () => {
     location.reload();
 });

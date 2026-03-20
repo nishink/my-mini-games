@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ミニアクションゲーム (Prototype)</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <header id="hud">
+        <div id="score">Score: <span id="scoreVal">0</span></div>
+        <div id="lives">Lives: <span id="livesVal">3</span></div>
+        <div id="level">Level: <span id="levelVal">1</span></div>
+        <button id="resetBtn">リセット</button>
+    </header>
+
+    <main>
+        <div id="gameArea">
+            <canvas id="gameCanvas" width="640" height="480"></canvas>
+            <div id="message" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 10px; font-size: 24px;"></div>
+        </div>
+    </main>
+
+    <!-- Mobile controls (optional) -->
+    <div id="touchControls" aria-hidden="true">
+        <button data-action="left">←</button>
+        <button data-action="jump">↑</button>
+        <button data-action="right">→</button>
+        <button data-action="shoot">●</button>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>

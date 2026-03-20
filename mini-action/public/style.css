@@ -1,0 +1,6 @@
+body { margin: 0; font-family: sans-serif; }
+#hud { position: fixed; top: 0; left: 0; padding: 8px; background: rgba(0,0,0,0.5); color: #fff; }
+#gameArea { position: relative; width: 640px; height: 480px; margin: 50px auto; background: #000; }
+#gameCanvas { display: block; }
+#touchControls { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); }
+#touchControls button { width: 40px; height: 40px; margin: 2px; }
