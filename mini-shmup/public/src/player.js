@@ -21,10 +21,22 @@ export class Player {
     }
 
     update(deltaTime, input) {
+        // キーボード移動
         if (input.keys.ArrowLeft || input.keys.a) this.x -= this.speed * deltaTime;
         if (input.keys.ArrowRight || input.keys.d) this.x += this.speed * deltaTime;
         if (input.keys.ArrowUp || input.keys.w) this.y -= this.speed * deltaTime;
         if (input.keys.ArrowDown || input.keys.s) this.y += this.speed * deltaTime;
+
+        // タッチ移動 (タッチ地点に自機を移動)
+        if (input.isTouching) {
+            // 自機の中心がタッチ位置に来るように計算
+            const targetX = input.touchX - this.width / 2;
+            const targetY = input.touchY - this.height / 2;
+            
+            // 少し遊び（バッファ）を持たせて、急激な動きを抑制しつつ滑らかに追従
+            this.x += (targetX - this.x) * 0.2;
+            this.y += (targetY - this.y) * 0.2;
+        }
 
         // 画面外に出ないように制限
         this.x = Math.max(0, Math.min(this.gameWidth - this.width, this.x));
