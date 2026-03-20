@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mini DEFENSE - タワーディフェンス</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-app">
+        <header id="stats-bar">
+            <div class="stat">GOLD: <span id="gold-val">100</span></div>
+            <div class="stat">HP: <span id="hp-val">20</span></div>
+            <div class="stat">WAVE: <span id="wave-val">1</span></div>
+        </header>
+
+        <main id="game-body">
+            <div id="canvas-container">
+                <canvas id="game-canvas"></canvas>
+            </div>
+            
+            <aside id="shop-panel">
+                <h3>Buy Towers</h3>
+                <div id="tower-buttons">
+                    <button class="tower-btn" data-type="basic" title="Cost: 50">
+                        <div class="tower-icon basic"></div>
+                        <span>Basic (50)</span>
+                    </button>
+                    <button class="tower-btn" data-type="fast" title="Cost: 80">
+                        <div class="tower-icon fast"></div>
+                        <span>Fast (80)</span>
+                    </button>
+                    <button class="tower-btn" data-type="sniper" title="Cost: 150">
+                        <div class="tower-icon sniper"></div>
+                        <span>Sniper (150)</span>
+                    </button>
+                </div>
+                <div id="controls">
+                    <button id="next-wave-btn">START WAVE</button>
+                    <button id="reset-btn">RESET</button>
+                </div>
+                <div id="status-message">Click a tower to buy, then click on the map to place it.</div>
+            </aside>
+        </main>
+
+        <div id="game-over" class="hidden overlay">
+            <h1>GAME OVER</h1>
+            <p>Final Wave: <span id="final-wave">0</span></p>
+            <button class="restart-btn">TRY AGAIN</button>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

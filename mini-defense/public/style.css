@@ -1,0 +1,164 @@
+:root {
+    --bg-color: #1a1a1a;
+    --panel-bg: #2a2a2a;
+    --text-color: #eee;
+    --accent-color: #ffd700;
+    --shop-item-bg: #333;
+    --primary-btn: #4CAF50;
+    --secondary-btn: #2196F3;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header Stats */
+#stats-bar {
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    gap: 30px;
+    font-weight: bold;
+    border-bottom: 2px solid #444;
+}
+
+.stat span {
+    color: var(--accent-color);
+}
+
+/* Main Body */
+#game-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+#canvas-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    padding: 10px;
+    overflow: auto;
+}
+
+canvas {
+    background-color: #111;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    cursor: crosshair;
+}
+
+/* Shop Panel */
+#shop-panel {
+    width: 250px;
+    background-color: var(--panel-bg);
+    padding: 20px;
+    border-left: 2px solid #444;
+    display: flex;
+    flex-direction: column;
+}
+
+#tower-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tower-btn {
+    background-color: var(--shop-item-bg);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.tower-btn:hover {
+    background-color: #444;
+}
+
+.tower-btn.selected {
+    border-color: var(--accent-color);
+    background-color: #555;
+}
+
+.tower-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+.tower-icon.basic { background-color: #4CAF50; }
+.tower-icon.fast { background-color: #2196F3; }
+.tower-icon.sniper { background-color: #F44336; }
+
+#controls {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#next-wave-btn {
+    background-color: var(--primary-btn);
+    color: white;
+}
+
+#reset-btn {
+    background-color: #555;
+    color: white;
+}
+
+#status-message {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    line-height: 1.4;
+}
+
+/* Overlays */
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.hidden { display: none !important; }
+
+.restart-btn {
+    margin-top: 20px;
+    background-color: var(--primary-btn);
+    color: white;
+}
