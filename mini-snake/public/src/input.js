@@ -4,6 +4,9 @@ export class Input {
         this.nextDirection = { x: 1, y: 0 };
         
         window.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'w', 's', 'a', 'd'].includes(e.key)) {
+                e.preventDefault();
+            }
             switch (e.key) {
                 case 'ArrowUp':
                 case 'w':

@@ -5,11 +5,11 @@ export class Snake {
     }
 
     reset() {
-        // Initial snake: 3 segments long in the middle
+        // Initial snake: 3 segments long on the left side, facing right
         this.body = [
-            { x: 10, y: 10 },
-            { x: 9, y: 10 },
-            { x: 8, y: 10 }
+            { x: 5, y: 10 },
+            { x: 4, y: 10 },
+            { x: 3, y: 10 }
         ];
         this.growPending = false;
     }
