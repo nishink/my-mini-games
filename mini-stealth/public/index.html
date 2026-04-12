@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-stealth</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-ui">
+        <div id="alert-container">
+            <span class="label">DETECTION</span>
+            <div class="progress-container">
+                <div id="alert-bar" class="progress-bar"></div>
+            </div>
+        </div>
+        <div id="info-text">ESCAPE THE FACILITY</div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <div id="game-message" class="overlay hidden">
+        <h1 id="message-title">DETECTED!</h1>
+        <button id="restart-btn">RETRY</button>
+    </div>
+
+    <div id="game-clear" class="overlay hidden">
+        <h1 class="clear-text">MISSION COMPLETE</h1>
+        <button id="next-btn">CONTINUE</button>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

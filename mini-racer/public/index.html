@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-racer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-ui">
+        <div id="speedometer" class="info-box">
+            <span id="speed">0</span> KM/H
+        </div>
+        <div id="score-container" class="info-box">
+            DIST: <span id="score">0</span> M
+        </div>
+        <div id="high-score-container" class="info-box">
+            BEST: <span id="high-score">0</span> M
+        </div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <div id="game-over" class="overlay hidden">
+        <h1>CRASHED!</h1>
+        <p>Distance: <span id="final-score">0</span> m</p>
+        <button id="restart-btn">RETRY</button>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

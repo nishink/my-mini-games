@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-typer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="side-panel" class="side-panel">
+            <div class="info-box">
+                <div class="label">SCORE</div>
+                <div id="score">0</div>
+            </div>
+            <div class="info-box">
+                <div class="label">BEST</div>
+                <div id="best">0</div>
+            </div>
+            <div id="controls-hint">
+                <p>> TYPE A-Z</p>
+                <p>> CLEAR WORDS</p>
+                <p>> DON'T LET</p>
+                <p>  THEM FALL</p>
+            </div>
+        </div>
+
+        <canvas id="game-canvas"></canvas>
+    </div>
+
+    <div id="game-over" class="overlay hidden">
+        <h1>FAILED TO TYPE...</h1>
+        <p>Score: <span id="final-score">0</span></p>
+        <button id="restart-btn">RETRY</button>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

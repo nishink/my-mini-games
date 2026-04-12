@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-wordle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>WORDLE</h1>
+        </header>
+
+        <div id="board-container">
+            <div id="board">
+                <!-- 6x5のタイルがJSで生成される -->
+            </div>
+        </div>
+
+        <div id="keyboard">
+            <!-- バーチャルキーボードがJSで生成される -->
+        </div>
+    </div>
+
+    <div id="message-container"></div>
+
+    <div id="overlay" class="overlay hidden">
+        <div class="modal">
+            <h2 id="result-title">SUCCESS!</h2>
+            <p>The word was: <span id="answer-word">WORDY</span></p>
+            <button id="restart-btn">PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

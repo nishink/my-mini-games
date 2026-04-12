@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-golf</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-ui">
+        <div class="info-box">
+            STAGE: <span id="current-stage">1</span>
+        </div>
+        <div class="info-box">
+            STROKES: <span id="stroke-count">0</span>
+        </div>
+        <div id="total-strokes-container" class="info-box">
+            TOTAL: <span id="total-strokes">0</span>
+        </div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <div id="game-clear" class="overlay hidden">
+        <h1>HOLE IN ONE!</h1>
+        <p>Strokes: <span id="final-strokes">0</span></p>
+        <button id="next-btn">NEXT STAGE</button>
+    </div>
+
+    <div id="all-clear" class="overlay hidden">
+        <h1>CONGRATULATIONS!</h1>
+        <p>You finished all holes.</p>
+        <p>Total Strokes: <span id="all-final-strokes">0</span></p>
+        <button id="restart-btn">PLAY AGAIN</button>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

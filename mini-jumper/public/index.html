@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-jumper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-ui">
+        <div id="score-container">
+            <span id="score">0</span>
+        </div>
+        <div id="high-score-container">
+            BEST: <span id="high-score">0</span>
+        </div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <div id="game-over" class="overlay hidden">
+        <h1>FALLEN...</h1>
+        <p>Score: <span id="final-score">0</span></p>
+        <button id="restart-btn">RETRY</button>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

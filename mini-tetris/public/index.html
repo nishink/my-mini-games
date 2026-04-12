@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-tetris</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="side-panel-left" class="side-panel">
+            <div class="info-box">
+                <h2>SCORE</h2>
+                <div id="score">0</div>
+            </div>
+            <div class="info-box">
+                <h2>LINES</h2>
+                <div id="lines">0</div>
+            </div>
+            <div class="info-box">
+                <h2>LEVEL</h2>
+                <div id="level">1</div>
+            </div>
+        </div>
+        
+        <canvas id="game-canvas"></canvas>
+
+        <div id="side-panel-right" class="side-panel">
+            <div class="info-box">
+                <h2>NEXT</h2>
+                <canvas id="next-canvas"></canvas>
+            </div>
+            <div id="controls-hint">
+                <p>← → : MOVE</p>
+                <p>↓ : SOFT DROP</p>
+                <p>↑ / X : ROTATE R</p>
+                <p>Z : ROTATE L</p>
+                <p>SPACE : HARD DROP</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over" class="overlay hidden">
+        <h1>GAME OVER</h1>
+        <p>Score: <span id="final-score">0</span></p>
+        <button id="restart-btn">RETRY</button>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
