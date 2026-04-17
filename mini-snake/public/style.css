@@ -30,11 +30,14 @@ body {
     margin-top: 20px;
     border: 4px solid #34495e;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    max-width: 95vw;
 }
 
 #gameCanvas {
     display: block;
     background-color: #000;
+    max-width: 100%;
+    height: auto;
 }
 
 #message {
@@ -48,6 +51,7 @@ body {
     text-align: center;
     font-size: 24px;
     pointer-events: none;
+    width: 80%;
 }
 
 #touchControls {
@@ -55,6 +59,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    user-select: none;
+    touch-action: manipulation;
 }
 
 #touchControls .row {
@@ -62,15 +68,19 @@ body {
 }
 
 #touchControls button {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     margin: 5px;
-    font-size: 24px;
+    font-size: 28px;
     background: #34495e;
     color: #ecf0f1;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #touchControls button:active {

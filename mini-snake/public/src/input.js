@@ -33,7 +33,8 @@ export class Input {
 
         // Touch controls
         document.querySelectorAll('#touchControls button').forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
                 const action = button.dataset.action;
                 switch (action) {
                     case 'up':
