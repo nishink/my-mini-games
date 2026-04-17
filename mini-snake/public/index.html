@@ -2,32 +2,34 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Mini Snake Game</title>
     <link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body touch-action="none">
     <header id="hud">
         <div id="score">Score: <span id="scoreVal">0</span></div>
         <div id="highscore">High: <span id="highscoreVal">0</span></div>
         <button id="resetBtn">Reset</button>
     </header>
 
-    <main>
+    <main id="gameContainer">
         <div id="gameArea">
             <canvas id="gameCanvas" width="400" height="400"></canvas>
             <div id="message" style="display: none;"></div>
         </div>
     </main>
 
-    <div id="touchControls">
-        <div class="row"><button data-action="up">↑</button></div>
-        <div class="row">
-            <button data-action="left">←</button>
-            <button data-action="down">↓</button>
-            <button data-action="right">→</button>
+    <footer id="controlsFooter">
+        <div id="touchControls">
+            <div class="row"><button data-action="up" aria-label="Up">↑</button></div>
+            <div class="row">
+                <button data-action="left" aria-label="Left">←</button>
+                <button data-action="down" aria-label="Down">↓</button>
+                <button data-action="right" aria-label="Right">→</button>
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script type="module" src="./main.js"></script>
 </body>
