@@ -1,13 +1,34 @@
 export class Renderer {
-    constructor(canvas, nextCanvas, cellSize) {
+    constructor(canvas, nextCanvas, initialCellSize) {
+        this.canvas = canvas;
+        this.nextCanvas = nextCanvas;
         this.ctx = canvas.getContext('2d');
         this.nextCtx = nextCanvas.getContext('2d');
-        this.cellSize = cellSize;
+        this.baseCellSize = initialCellSize;
         
-        canvas.width = 10 * cellSize;
-        canvas.height = 20 * cellSize;
-        nextCanvas.width = 4 * cellSize;
-        nextCanvas.height = 4 * cellSize;
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        // Compute cell size based on screen height (leaving room for HUD and controls)
+        const vh = window.innerHeight;
+        const availableHeight = vh * 0.65; // Use 65% of screen height for game board
+        this.cellSize = Math.floor(availableHeight / 20);
+        
+        // Ensure minimum cell size for playability
+        this.cellSize = Math.max(this.cellSize, 15);
+        
+        // If it's still too wide for the screen, scale down
+        const availableWidth = window.innerWidth * 0.9;
+        if (this.cellSize * 10 > availableWidth) {
+            this.cellSize = Math.floor(availableWidth / 10);
+        }
+
+        this.canvas.width = 10 * this.cellSize;
+        this.canvas.height = 20 * this.cellSize;
+        this.nextCanvas.width = 4 * this.cellSize;
+        this.nextCanvas.height = 4 * this.cellSize;
     }
 
     draw(board, currentPiece, ghostY) {
