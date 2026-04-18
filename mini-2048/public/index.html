@@ -2,39 +2,43 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>mini-2048</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-container">
-        <div id="header">
-            <h1 id="title">2048</h1>
-            <div class="scores-container">
-                <div class="score-box">
-                    <span class="label">SCORE</span>
-                    <span id="score">0</span>
+<body touch-action="none">
+    <div id="game-app">
+        <div id="game-container">
+            <header id="header">
+                <div id="title-group">
+                    <h1 id="title">2048</h1>
                 </div>
-                <div class="score-box">
-                    <span class="label">BEST</span>
-                    <span id="best">0</span>
+                <div class="scores-container">
+                    <div class="score-box">
+                        <span class="label">SCORE</span>
+                        <span id="score">0</span>
+                    </div>
+                    <div class="score-box">
+                        <span class="label">BEST</span>
+                        <span id="best">0</span>
+                    </div>
                 </div>
+            </header>
+
+            <div id="grid-container">
+                <!-- 背景の16マス -->
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                
+                <!-- 動くタイルがここに生成される -->
+                <div id="tile-container"></div>
             </div>
-        </div>
 
-        <div id="grid-container">
-            <!-- 背景の16マス -->
-            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-            
-            <!-- 動くタイルがここに生成される -->
-            <div id="tile-container"></div>
-        </div>
-
-        <div id="controls-hint">
-            Use ARROW KEYS or WASD to move tiles
+            <div id="controls-hint">
+                Swipe or use ARROW KEYS to move
+            </div>
         </div>
     </div>
 

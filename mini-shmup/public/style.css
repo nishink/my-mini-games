@@ -1,3 +1,13 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #000;
+    --accent-color: #00ff00;
+    --danger-color: #ff0000;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -5,20 +15,33 @@ body {
     color: #fff;
     font-family: 'Courier New', Courier, monospace;
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 #game-container {
     position: relative;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    border: 2px solid #333;
+    width: 100%;
+    height: 100%;
+    max-width: 600px; /* PCでの表示上限 */
+    background: #000;
+    display: flex;
+    justify-content: center;
 }
 
-canvas {
+#game-canvas {
     display: block;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: 9 / 16;
     background-color: #000;
 }
 
@@ -29,19 +52,41 @@ canvas {
     width: 100%;
     height: 100%;
     pointer-events: none;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#top-bar {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.5);
     padding: 10px;
-    box-sizing: border-box;
+    border-radius: 4px;
 }
 
 #score-board {
-    font-size: 20px;
-    text-shadow: 2px 2px #000;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--accent-color);
 }
 
 #hp-bar {
-    font-size: 16px;
-    margin-top: 5px;
-    color: #ff4444;
+    font-size: 14px;
+    color: var(--danger-color);
+}
+
+#touch-hint {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    padding-bottom: env(safe-area-inset-bottom, 10px);
+    animation: fadeOut 3s forwards 2s;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; }
 }
 
 #game-over {
@@ -49,11 +94,13 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 30px;
     text-align: center;
-    border: 2px solid #fff;
+    border: 2px solid var(--accent-color);
     pointer-events: auto;
+    width: 80%;
+    border-radius: 10px;
 }
 
 .hidden {
@@ -61,15 +108,18 @@ canvas {
 }
 
 button {
-    background: #fff;
+    background: var(--accent-color);
+    color: #000;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
     font-family: inherit;
-    transition: background 0.2s;
+    border-radius: 4px;
+    margin-top: 15px;
 }
 
-button:hover {
-    background: #ccc;
+button:active {
+    background: #00cc00;
 }

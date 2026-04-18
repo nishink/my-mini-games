@@ -8,9 +8,34 @@ window.addEventListener('load', () => {
     const finalScore = document.getElementById('final-score');
     const restartBtn = document.getElementById('restart-btn');
 
-    // キャンバスサイズの設定（縦長）
-    canvas.width = 400;
-    canvas.height = 600;
+    // 内部解像度の設定（固定してゲームバランスを維持）
+    const INTERNAL_WIDTH = 400;
+    const INTERNAL_HEIGHT = 600;
+    canvas.width = INTERNAL_WIDTH;
+    canvas.height = INTERNAL_HEIGHT;
+
+    // 表示サイズのリサイズ処理
+    function resizeCanvas() {
+        const container = document.getElementById('game-container');
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+        
+        const containerAspect = containerWidth / containerHeight;
+        const internalAspect = INTERNAL_WIDTH / INTERNAL_HEIGHT;
+        
+        if (containerAspect > internalAspect) {
+            // 縦に合わせる
+            canvas.style.height = '100%';
+            canvas.style.width = 'auto';
+        } else {
+            // 横に合わせる
+            canvas.style.width = '100%';
+            canvas.style.height = 'auto';
+        }
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     const game = new Game(canvas, {
         scoreBoard,

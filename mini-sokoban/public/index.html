@@ -2,17 +2,21 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mini SOKOBAN - 倉庫番パズル</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Mini SOKOBAN</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-container">
+<body touch-action="none">
+    <header id="hud">
+        <div id="status-bar">STAGE: <span id="stage-val">1</span> / <span id="stage-total">3</span></div>
+        <button id="reset-btn-ui">Reset</button>
+    </header>
+
+    <main id="game-container">
         <canvas id="game-canvas"></canvas>
         <div id="ui-overlay">
-            <div id="status-bar">STAGE: <span id="stage-val">1</span> / <span id="stage-total">3</span></div>
             <div id="message-display">Push all boxes to goals!</div>
-            <div id="controls-hint">Arrows/WASD: Move, R: Reset</div>
+            
             <div id="level-clear" class="hidden">
                 <h1>STAGE CLEAR!</h1>
                 <button id="next-btn">NEXT STAGE</button>
@@ -20,10 +24,23 @@
             <div id="game-complete" class="hidden">
                 <h1>ALL STAGES CLEAR!</h1>
                 <p>Congratulations!</p>
-                <button id="restart-btn">RESTART FROM STAGE 1</button>
+                <button id="restart-btn">RESTART</button>
             </div>
         </div>
-    </div>
+    </main>
+
+    <footer id="controls-footer">
+        <div id="touch-controls">
+            <div class="control-row">
+                <button class="ctrl-btn" data-action="UP" aria-label="Up">↑</button>
+            </div>
+            <div class="control-row">
+                <button class="ctrl-btn" data-action="LEFT" aria-label="Left">←</button>
+                <button class="ctrl-btn" data-action="DOWN" aria-label="Down">↓</button>
+                <button class="ctrl-btn" data-action="RIGHT" aria-label="Right">→</button>
+            </div>
+        </div>
+    </footer>
     <script type="module" src="main.js"></script>
 </body>
 </html>

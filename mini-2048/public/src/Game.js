@@ -14,7 +14,43 @@ export class Game {
         this.restartBtn = document.getElementById('restart-btn');
 
         this.restartBtn.onclick = () => this.reset();
+        
+        // Keyboard Input
         window.addEventListener('keydown', (e) => this.handleInput(e));
+
+        // Touch Input (Swipe)
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            this.touchStartX = e.touches[0].clientX;
+            this.touchStartY = e.touches[0].clientY;
+        }, { passive: false });
+
+        window.addEventListener('touchend', (e) => {
+            if (this.isGameOver) return;
+            
+            const dx = e.changedTouches[0].clientX - this.touchStartX;
+            const dy = e.changedTouches[0].clientY - this.touchStartY;
+            const absDx = Math.abs(dx);
+            const absDy = Math.abs(dy);
+
+            if (Math.max(absDx, absDy) > 30) {
+                let direction = null;
+                if (absDx > absDy) {
+                    direction = dx > 0 ? 'Right' : 'Left';
+                } else {
+                    direction = dy > 0 ? 'Down' : 'Up';
+                }
+                if (direction) this.executeMove(direction);
+            }
+        }, { passive: false });
+
+        // Resize support
+        window.addEventListener('resize', () => {
+            this.grid.cells.flat().forEach(tile => {
+                if (tile) tile.updatePosition();
+            });
+        });
 
         this.reset();
     }
@@ -25,7 +61,6 @@ export class Game {
         this.isGameOver = false;
         this.gameOverOverlay.classList.add('hidden');
         
-        // 最初に2枚タイルを出す
         this.grid.addRandomTile();
         this.grid.addRandomTile();
         
@@ -45,15 +80,19 @@ export class Game {
 
         if (direction) {
             e.preventDefault();
-            const result = this.grid.move(direction);
-            if (result.moved) {
-                this.score += result.score;
-                this.grid.addRandomTile();
-                this.updateUI();
+            this.executeMove(direction);
+        }
+    }
 
-                if (!this.grid.movesAvailable()) {
-                    this.endGame();
-                }
+    executeMove(direction) {
+        const result = this.grid.move(direction);
+        if (result.moved) {
+            this.score += result.score;
+            this.grid.addRandomTile();
+            this.updateUI();
+
+            if (!this.grid.movesAvailable()) {
+                this.endGame();
             }
         }
     }

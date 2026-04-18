@@ -1,11 +1,35 @@
 export class Renderer {
     constructor(canvas) {
+        this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.width = 400;
         this.height = 600;
         canvas.width = this.width;
         canvas.height = this.height;
         this.scrollOffset = 0;
+
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = document.getElementById('game-container');
+        if (!container) return;
+        
+        const rect = container.getBoundingClientRect();
+        const availableWidth = rect.width - 10;
+        const availableHeight = rect.height - 10;
+        
+        const aspect = this.width / this.height;
+        const containerAspect = availableWidth / availableHeight;
+        
+        if (containerAspect > aspect) {
+            this.canvas.style.height = `${availableHeight}px`;
+            this.canvas.style.width = 'auto';
+        } else {
+            this.canvas.style.width = `${availableWidth}px`;
+            this.canvas.style.height = 'auto';
+        }
     }
 
     draw(car, obstacleManager) {

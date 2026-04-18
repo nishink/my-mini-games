@@ -27,15 +27,16 @@ export class Player {
         if (input.keys.ArrowUp || input.keys.w) this.y -= this.speed * deltaTime;
         if (input.keys.ArrowDown || input.keys.s) this.y += this.speed * deltaTime;
 
-        // タッチ移動 (タッチ地点に自機を移動)
+        // タッチ移動 (タッチ地点の少し上に自機を移動)
         if (input.isTouching) {
-            // 自機の中心がタッチ位置に来るように計算
+            // 自機の中心がタッチ位置の少し上に来るように計算（指で隠れないように）
+            const offset = 60; 
             const targetX = input.touchX - this.width / 2;
-            const targetY = input.touchY - this.height / 2;
+            const targetY = input.touchY - this.height / 2 - offset;
             
             // 少し遊び（バッファ）を持たせて、急激な動きを抑制しつつ滑らかに追従
-            this.x += (targetX - this.x) * 0.2;
-            this.y += (targetY - this.y) * 0.2;
+            this.x += (targetX - this.x) * 0.25;
+            this.y += (targetY - this.y) * 0.25;
         }
 
         // 画面外に出ないように制限

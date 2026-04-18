@@ -18,12 +18,27 @@ export class UIManager {
             resultEvent: document.getElementById('result-event'),
             gameOver: document.getElementById('game-over'),
             finalDays: document.getElementById('final-days'),
-            // プログレスバー
             shelfBarRed: document.getElementById('shelf-bar-red'),
             shelfBarBlue: document.getElementById('shelf-bar-blue'),
             itemBarRed: document.getElementById('item-bar-red'),
             itemBarBlue: document.getElementById('item-bar-blue')
         };
+
+        this.initTabs();
+    }
+
+    initTabs() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+                
+                tabBtns.forEach(b => b.classList.toggle('active', b === btn));
+                tabContents.forEach(c => c.classList.toggle('active', c.id.includes(target)));
+            });
+        });
     }
 
     updateStatus(store) {
@@ -41,14 +56,16 @@ export class UIManager {
         this.elements.totalStockText.innerText = totalStock;
         this.elements.maxStockDisplay.innerText = max;
 
-        // プログレスバーの更新
+        // 棚全体の占有率
         const redPercent = (redStock / max) * 100;
         const bluePercent = (blueStock / max) * 100;
-
         this.elements.shelfBarRed.style.width = `${redPercent}%`;
         this.elements.shelfBarBlue.style.width = `${bluePercent}%`;
-        this.elements.itemBarRed.style.width = `${redPercent}%`;
-        this.elements.itemBarBlue.style.width = `${bluePercent}%`;
+
+        // 各アイテムのカード内バー（全在庫に占める割合ではなく、余裕度として表示）
+        const totalPercent = (totalStock / max) * 100;
+        this.elements.itemBarRed.style.width = `${(redStock / max) * 100}%`;
+        this.elements.itemBarBlue.style.width = `${(blueStock / max) * 100}%`;
 
         // ボタン制御
         document.getElementById('buy-red-1').disabled = store.gold < 10 || totalStock >= max;
@@ -60,7 +77,7 @@ export class UIManager {
     }
 
     addLog(message) {
-        const p = document.createElement('p');
+        const p = document.createElement('div');
         p.className = 'log-entry';
         p.innerText = `[${this.elements.dayCount.innerText}日目] ${message}`;
         this.elements.eventLog.prepend(p);

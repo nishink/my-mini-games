@@ -2,16 +2,21 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mini SHMUP - 縦スクロールシューティング</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Mini SHMUP</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body touch-action="none">
     <div id="game-container">
         <canvas id="game-canvas"></canvas>
         <div id="ui-overlay">
-            <div id="score-board">SCORE: 0</div>
-            <div id="hp-bar">HP: <span id="hp-val">100</span></div>
+            <div id="top-bar">
+                <div id="score-board">SCORE: 0</div>
+                <div id="hp-bar">HP: <span id="hp-val">100</span></div>
+            </div>
+            
+            <div id="touch-hint" class="hidden-mobile">Slide to move / Auto-fire on touch</div>
+
             <div id="game-over" class="hidden">
                 <h1>GAME OVER</h1>
                 <p>Final Score: <span id="final-score">0</span></p>

@@ -2,27 +2,36 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>mini-jumper</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-ui">
+<body touch-action="none">
+    <header id="hud">
         <div id="score-container">
             <span id="score">0</span>
         </div>
         <div id="high-score-container">
             BEST: <span id="high-score">0</span>
         </div>
-    </div>
+    </header>
 
-    <canvas id="game-canvas"></canvas>
+    <main id="game-container">
+        <canvas id="game-canvas"></canvas>
 
-    <div id="game-over" class="overlay hidden">
-        <h1>FALLEN...</h1>
-        <p>Score: <span id="final-score">0</span></p>
-        <button id="restart-btn">RETRY</button>
-    </div>
+        <div id="game-over" class="overlay hidden">
+            <h1>FALLEN...</h1>
+            <p>Score: <span id="final-score">0</span></p>
+            <button id="restart-btn">RETRY</button>
+        </div>
+    </main>
+
+    <footer id="controls-footer">
+        <div id="touch-controls">
+            <button class="ctrl-btn" data-action="left" aria-label="Left">←</button>
+            <button class="ctrl-btn" data-action="right" aria-label="Right">→</button>
+        </div>
+    </footer>
 
     <script type="module" src="main.js"></script>
 </body>

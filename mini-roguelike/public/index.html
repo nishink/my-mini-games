@@ -3,37 +3,56 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Mini Roguelike (Prototype)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Mini Roguelike</title>
     <link rel="stylesheet" href="./style.css" />
 </head>
 
-<body>
+<body touch-action="none">
     <header id="hud">
         <div id="hp">HP: <span id="hpVal">10</span></div>
         <div id="floor">Floor: <span id="floorVal">1</span></div>
         <div id="turn">Turn: <span id="turnVal">0</span></div>
+        <button id="logBtn" aria-label="Toggle Log">Log</button>
     </header>
 
-    <main>
-        <div id="gameArea">
-            <div id="grid" aria-label="game-grid"></div>
+    <main id="gameContainer">
+        <div id="gameAreaWrapper">
+            <div id="gameArea">
+                <div id="grid" aria-label="game-grid"></div>
+            </div>
         </div>
-        <aside id="rightPanel">
+        
+        <aside id="logPanel" class="hidden-mobile">
             <div id="log"></div>
-            <button id="nextFloorBtn" style="display:none">次の階へ</button>
+            <button id="closeLogBtn">閉じる</button>
         </aside>
     </main>
 
-    <!-- Mobile controls -->
-    <div id="touchControls" aria-hidden="true">
-        <button data-dir="0,-1">↑</button>
-        <div>
-            <button data-dir="-1,0">←</button>
-            <button data-dir="1,0">→</button>
+    <footer id="controlsFooter">
+        <div id="touchControls">
+            <div class="control-row">
+                <button class="ctrl-btn" data-dir="-1,-1">↖</button>
+                <button class="ctrl-btn" data-dir="0,-1">↑</button>
+                <button class="ctrl-btn" data-dir="1,-1">↗</button>
+            </div>
+            <div class="control-row">
+                <button class="ctrl-btn" data-dir="-1,0">←</button>
+                <button class="ctrl-btn action-btn" data-dir="0,0" id="waitBtn">●</button>
+                <button class="ctrl-btn" data-dir="1,0">→</button>
+            </div>
+            <div class="control-row">
+                <button class="ctrl-btn" data-dir="-1,1">↙</button>
+                <button class="ctrl-btn" data-dir="0,1">↓</button>
+                <button class="ctrl-btn" data-dir="1,1">↘</button>
+            </div>
         </div>
-        <button data-dir="0,1">↓</button>
-    </div>
+        
+        <div id="actionControls">
+            <button id="nextFloorBtn" style="display:none">次の階へ</button>
+            <button id="examineBtn">調べる</button>
+        </div>
+    </footer>
 
     <script type="module" src="./main.js"></script>
 

@@ -1,12 +1,14 @@
 :root {
     --cell-size: 20px;
     --cols: 40;
-    --rows: 25
+    --rows: 25;
+    --ui-bg: rgba(0, 0, 0, 0.4);
+    --accent-color: #3b82f6;
 }
 
 * {
     box-sizing: border-box;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto
+    font-family: 'Courier New', Courier, monospace;
 }
 
 body {
@@ -15,28 +17,65 @@ body {
     color: #e6eef8;
     display: flex;
     flex-direction: column;
-    min-height: 100vh
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    touch-action: none;
 }
 
 header#hud {
+    flex-shrink: 0;
     display: flex;
-    gap: 1rem;
-    padding: .5rem 1rem;
-    background: #111827
+    gap: 15px;
+    padding: 10px;
+    background: #111827;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
 }
 
-main {
+#hud div {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#hud span {
+    color: #f1c40f;
+}
+
+#logBtn {
+    background: #475569;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+#gameContainer {
+    flex: 1;
+    width: 100%;
     display: flex;
-    gap: 8px;
-    padding: 8px;
-    flex: 1
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 5px;
+}
+
+#gameAreaWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #gameArea {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start
+    position: relative;
+    /* この中のgridサイズを元に、jsでscaleを調整する */
+    transform-origin: center;
 }
 
 #grid {
@@ -46,7 +85,8 @@ main {
     gap: 1px;
     background: #0b1220;
     padding: 6px;
-    border-radius: 6px
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 .cell {
@@ -58,58 +98,111 @@ main {
     font-size: 14px;
     background: #0b1220;
     color: #fff;
-    user-select: none
+    user-select: none;
 }
 
-.cell.wall {
-    background: #1f2937
+.cell.wall { background: #1f2937; }
+.cell.stairs { background: #083f3f; color: #fbbf24; font-weight: bold; }
+.cell.player { color: #3b82f6; font-weight: bold; z-index: 2; }
+.cell.enemy { color: #ef4444; font-weight: bold; }
+.cell.item { color: #10b981; }
+
+#logPanel {
+    position: fixed;
+    top: 50px;
+    right: 0;
+    width: 100%;
+    max-width: 300px;
+    height: calc(100% - 200px);
+    background: rgba(7, 16, 32, 0.95);
+    z-index: 50;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    border-left: 2px solid var(--accent-color);
 }
 
-.cell.stairs {
-    background: #083f3f
-}
-
-#rightPanel {
-    width: 220px
+#logPanel.hidden-mobile {
+    transform: translateX(100%);
 }
 
 #log {
-    height: 60vh;
-    overflow: auto;
-    background: #071020;
-    padding: 8px;
-    border-radius: 6px
+    flex: 1;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 5px;
+}
+
+#closeLogBtn {
+    margin-top: 10px;
+    padding: 5px;
+    background: #475569;
+    color: white;
+    border: none;
+}
+
+#controlsFooter {
+    flex-shrink: 0;
+    width: 100%;
+    padding: 10px 10px calc(15px + env(safe-area-inset-bottom, 0px)) 10px;
+    background: var(--ui-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #touchControls {
-    position: fixed;
-    left: 12px;
-    bottom: 12px;
-    display: none;
-    gap: 6px
+    display: grid;
+    gap: 5px;
 }
 
-#touchControls button {
-    width: 46px;
-    height: 46px;
-    border-radius: 6px;
-    font-size: 18px
+.control-row {
+    display: flex;
+    gap: 5px;
 }
 
-@media (max-width:800px) {
-    :root {
-        --cell-size: 18px
-    }
-
-    #touchControls {
-        display: flex;
-        flex-direction: column
-    }
-
-    #rightPanel {
-        display: none
-    }
+.ctrl-btn {
+    width: clamp(45px, 12vw, 55px);
+    height: clamp(45px, 12vw, 55px);
+    background: #334155;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 0 #0f172a;
+    -webkit-tap-highlight-color: transparent;
 }
+
+.ctrl-btn:active {
+    background: var(--accent-color);
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #0f172a;
+}
+
+.action-btn { background: #475569; }
+
+#actionControls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#actionControls button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background: #1e293b;
+    color: white;
+    font-weight: bold;
+}
+
+#nextFloorBtn { background: #059669 !important; }
+#examineBtn { background: #3b82f6 !important; }
 
 .overlay {
     position: fixed;
@@ -117,7 +210,7 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 36, 0.8);
+    background: rgba(15, 23, 36, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -129,31 +222,18 @@ main {
     padding: 2rem;
     border-radius: 8px;
     text-align: center;
-    color: #e2e8f0;
     border: 1px solid #334155;
 }
 
-.overlay-content h2 {
-    margin-top: 0;
-    color: #f8fafc;
-}
-
-#finalStats {
-    margin: 1.5rem 0;
-    line-height: 1.6;
-}
-
-#retryBtn, #newGameBtn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-#retryBtn:hover, #gameClearBtn:hover {
-    background: #2563eb;
+@media (min-width: 800px) {
+    #logPanel {
+        position: relative;
+        top: 0;
+        transform: none !important;
+        height: 100%;
+        max-width: 250px;
+    }
+    #closeLogBtn { display: none; }
+    #logBtn { display: none; }
+    #gameContainer { flex-direction: row; }
 }

@@ -2,48 +2,59 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>mini-puyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-container">
-        <div id="side-panel-left" class="side-panel">
+<body touch-action="none">
+    <header id="hud">
+        <div class="info-box-group">
             <div class="info-box">
-                <h2>SCORE</h2>
-                <div id="score">0</div>
+                <span class="label">SCORE</span>
+                <span id="score">0</span>
             </div>
             <div class="info-box">
-                <h2>CHAIN</h2>
-                <div id="chain">0</div>
-            </div>
-            <div class="info-box">
-                <h2>MAX CHAIN</h2>
-                <div id="max-chain">0</div>
+                <span class="label">CHAIN</span>
+                <span id="chain">0</span>
             </div>
         </div>
         
-        <canvas id="game-canvas"></canvas>
+        <div class="info-box next-box">
+            <span class="label">NEXT</span>
+            <canvas id="next-canvas"></canvas>
+        </div>
 
-        <div id="side-panel-right" class="side-panel">
-            <div class="info-box">
-                <h2>NEXT</h2>
-                <canvas id="next-canvas"></canvas>
-            </div>
-            <div id="controls-hint">
-                <p>← → : MOVE</p>
-                <p>↓ : FAST DROP</p>
-                <p>↑ / X : ROTATE R</p>
-                <p>Z : ROTATE L</p>
+        <div class="info-box">
+            <span class="label">MAX CHAIN</span>
+            <span id="max-chain">0</span>
+        </div>
+    </header>
+
+    <main id="game-container">
+        <div id="game-area">
+            <canvas id="game-canvas"></canvas>
+
+            <div id="game-over" class="overlay hidden">
+                <h1>GAME OVER</h1>
+                <p>Score: <span id="final-score">0</span></p>
+                <button id="restart-btn">RETRY</button>
             </div>
         </div>
-    </div>
+    </main>
 
-    <div id="game-over" class="overlay hidden">
-        <h1>GAME OVER</h1>
-        <p>Score: <span id="final-score">0</span></p>
-        <button id="restart-btn">RETRY</button>
-    </div>
+    <footer id="controls-footer">
+        <div id="touch-controls">
+            <div class="control-group movement">
+                <button class="ctrl-btn" data-action="left" aria-label="Left">←</button>
+                <button class="ctrl-btn" data-action="down" aria-label="Down">↓</button>
+                <button class="ctrl-btn" data-action="right" aria-label="Right">→</button>
+            </div>
+            <div class="control-group actions">
+                <button class="ctrl-btn action-btn" data-action="rotate-l" aria-label="Rotate Left">Z</button>
+                <button class="ctrl-btn action-btn" data-action="rotate-r" aria-label="Rotate Right">X</button>
+            </div>
+        </div>
+    </footer>
 
     <script type="module" src="main.js"></script>
 </body>

@@ -2,97 +2,107 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ちいさな錬金工房 (mini-manager)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Mini MANAGER</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-container">
-        <header>
-            <h1>ちいさな錬金工房</h1>
+<body touch-action="none">
+    <div id="game-app">
+        <header id="game-header">
+            <h1>錬金工房</h1>
             <div class="day-info"><span id="day-count">1</span> 日目</div>
         </header>
 
         <section id="status-bar">
-            <div class="status-item">
-                <span class="label">資金</span>
-                <span id="gold" class="value">500</span> G
+            <div class="status-row">
+                <div class="status-item">
+                    <span class="label">資金</span>
+                    <span id="gold" class="value">500</span><small>G</small>
+                </div>
+                <div class="status-item">
+                    <span class="label">評判</span>
+                    <span id="reputation" class="value">10</span><small>pt</small>
+                </div>
             </div>
             <div class="status-item shelf-status">
-                <span class="label">棚の占有率 (合計在庫)</span>
+                <div class="shelf-label">
+                    <span class="label">棚の占有率</span>
+                    <span class="stock-text"><span id="total-stock-text">0</span> / <span id="max-stock-display">50</span></span>
+                </div>
                 <div class="progress-container main-shelf">
                     <div id="shelf-bar-red" class="progress-bar red"></div>
                     <div id="shelf-bar-blue" class="progress-bar blue"></div>
                 </div>
-                <div class="stock-text">
-                    <span id="total-stock-text">0</span> / <span id="max-stock-display">50</span> 個
-                </div>
-            </div>
-            <div class="status-item">
-                <span class="label">評判</span>
-                <span id="reputation" class="value">10</span> pt
             </div>
         </section>
 
-        <main>
-            <div id="actions">
-                <!-- 商品1: 赤のポーション -->
-                <div class="action-card item-red">
-                    <h3>赤のポーション (HP)</h3>
-                    <p>冒険者の必需品。安定して売れます。</p>
-                    <div class="item-stats">
-                        在庫: <span id="stock-red">0</span> 個
-                        <div class="progress-container mini">
-                            <div id="item-bar-red" class="progress-bar red"></div>
+        <nav id="mobile-tabs" class="mobile-only">
+            <button class="tab-btn active" data-tab="actions">仕入れ・強化</button>
+            <button class="tab-btn" data-tab="log">経営記録</button>
+        </nav>
+
+        <main id="main-content">
+            <div id="actions" class="tab-content active">
+                <div class="scroll-area">
+                    <!-- 商品1: 赤のポーション -->
+                    <div class="action-card item-red">
+                        <div class="card-header">
+                            <h3>赤のポーション (HP)</h3>
+                            <div class="item-price">仕入 10G | 売価 25G</div>
+                        </div>
+                        <div class="item-stats">
+                            在庫: <span id="stock-red">0</span> 個
+                            <div class="progress-container mini">
+                                <div id="item-bar-red" class="progress-bar red"></div>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button id="buy-red-1">+1</button>
+                            <button id="buy-red-10">+10</button>
                         </div>
                     </div>
-                    <div class="item-price">仕入: 10G | 売価: 25G</div>
-                    <div class="button-group">
-                        <button id="buy-red-1">+1</button>
-                        <button id="buy-red-10">+10</button>
-                    </div>
-                </div>
 
-                <!-- 商品2: 青のポーション -->
-                <div class="action-card item-blue">
-                    <h3>青のポーション (MP)</h3>
-                    <p>高価ですが、魔導士に需要があります。</p>
-                    <div class="item-stats">
-                        在庫: <span id="stock-blue">0</span> 個
-                        <div class="progress-container mini">
-                            <div id="item-bar-blue" class="progress-bar blue"></div>
+                    <!-- 商品2: 青のポーション -->
+                    <div class="action-card item-blue">
+                        <div class="card-header">
+                            <h3>青のポーション (MP)</h3>
+                            <div class="item-price">仕入 40G | 売価 100G</div>
+                        </div>
+                        <div class="item-stats">
+                            在庫: <span id="stock-blue">0</span> 個
+                            <div class="progress-container mini">
+                                <div id="item-bar-blue" class="progress-bar blue"></div>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button id="buy-blue-1">+1</button>
+                            <button id="buy-blue-5">+5</button>
                         </div>
                     </div>
-                    <div class="item-price">仕入: 40G | 売価: 100G</div>
-                    <div class="button-group">
-                        <button id="buy-blue-1">+1</button>
-                        <button id="buy-blue-5">+5</button>
-                    </div>
-                </div>
 
-                <!-- 設備投資 -->
-                <div class="action-card investment">
-                    <h3>お店の強化</h3>
-                    <div class="upgrade">
-                        <span>看板を出す (評判 +5)</span>
-                        <button id="upgrade-ad">50G</button>
-                    </div>
-                    <div class="upgrade">
-                        <span>棚を増やす (最大在庫 +20)</span>
-                        <button id="upgrade-shelf">100G</button>
+                    <!-- 設備投資 -->
+                    <div class="action-card investment">
+                        <h3>お店の強化</h3>
+                        <div class="upgrade">
+                            <span>看板を出す (+評判)</span>
+                            <button id="upgrade-ad">50G</button>
+                        </div>
+                        <div class="upgrade">
+                            <span>棚を増やす (+在庫)</span>
+                            <button id="upgrade-shelf">100G</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div id="log-container">
-                <h3>錬金工房の記録</h3>
+            <div id="log-container" class="tab-content">
                 <div id="event-log">
-                    <p class="log-entry">今日から錬金工房の経営が始まります！</p>
+                    <p class="log-entry">今日から経営開始です！</p>
                 </div>
             </div>
         </main>
 
-        <footer>
+        <footer id="game-footer">
             <button id="next-day-btn">店を開ける（次の日へ）</button>
         </footer>
     </div>

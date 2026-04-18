@@ -2,30 +2,29 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>mini-typer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-container">
-        <div id="side-panel" class="side-panel">
+<body touch-action="none">
+    <div id="game-app">
+        <header id="hud">
             <div class="info-box">
-                <div class="label">SCORE</div>
-                <div id="score">0</div>
+                <span class="label">SCORE</span>
+                <span id="score">0</span>
             </div>
             <div class="info-box">
-                <div class="label">BEST</div>
-                <div id="best">0</div>
+                <span class="label">BEST</span>
+                <span id="best">0</span>
             </div>
-            <div id="controls-hint">
-                <p>> TYPE A-Z</p>
-                <p>> CLEAR WORDS</p>
-                <p>> DON'T LET</p>
-                <p>  THEM FALL</p>
-            </div>
-        </div>
+            <button id="kb-trigger">Tap to Type</button>
+        </header>
 
-        <canvas id="game-canvas"></canvas>
+        <main id="game-container">
+            <canvas id="game-canvas"></canvas>
+            <!-- 隠し入力フィールド -->
+            <input type="text" id="hidden-input" autocomplete="off" autocapitalize="none" spellcheck="false" aria-hidden="true">
+        </main>
     </div>
 
     <div id="game-over" class="overlay hidden">

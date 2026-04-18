@@ -4,6 +4,9 @@ export class Input {
         
         // キーボード入力
         window.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 's', 'a', 'd', 'r'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
             switch (e.key) {
                 case 'ArrowUp':
                 case 'w':
@@ -32,49 +35,22 @@ export class Input {
             }
         });
 
-        // タッチ/クリック入力（画面分割による簡易操作）
-        window.addEventListener('mousedown', (e) => {
-            const canvas = document.getElementById('game-canvas');
-            if (!canvas) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            // 画面の中央からの相対位置で方向を判定
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const dx = x - centerX;
-            const dy = y - centerY;
-
-            if (Math.abs(dx) > Math.abs(dy)) {
-                this.callback(dx > 0 ? 'RIGHT' : 'LEFT');
-            } else {
-                this.callback(dy > 0 ? 'DOWN' : 'UP');
-            }
+        // タッチ操作（ボタン）
+        document.querySelectorAll('.ctrl-btn').forEach(btn => {
+            btn.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                const action = btn.dataset.action;
+                this.callback(action);
+            });
         });
 
-        // タッチ操作のサポート（1本指のみ）
-        window.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 1) {
-                const touch = e.touches[0];
-                const canvas = document.getElementById('game-canvas');
-                if (!canvas) return;
-                const rect = canvas.getBoundingClientRect();
-                const x = touch.clientX - rect.left;
-                const y = touch.clientY - rect.top;
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const dx = x - centerX;
-                const dy = y - centerY;
-
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    this.callback(dx > 0 ? 'RIGHT' : 'LEFT');
-                } else {
-                    this.callback(dy > 0 ? 'DOWN' : 'UP');
-                }
+        // リセットボタン (HUD)
+        const resetBtn = document.getElementById('reset-btn-ui');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-            }
-        }, { passive: false });
+                this.callback('RESET');
+            });
+        }
     }
 }

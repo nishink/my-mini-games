@@ -2,30 +2,39 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>mini-racer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-ui">
+<body touch-action="none">
+    <header id="hud">
         <div id="speedometer" class="info-box">
-            <span id="speed">0</span> KM/H
+            <span id="speed">0</span> <small>KM/H</small>
         </div>
         <div id="score-container" class="info-box">
-            DIST: <span id="score">0</span> M
+            <span id="score">0</span> <small>M</small>
         </div>
         <div id="high-score-container" class="info-box">
-            BEST: <span id="high-score">0</span> M
+            BEST: <span id="high-score">0</span>
         </div>
-    </div>
+    </header>
 
-    <canvas id="game-canvas"></canvas>
+    <main id="game-container">
+        <canvas id="game-canvas"></canvas>
 
-    <div id="game-over" class="overlay hidden">
-        <h1>CRASHED!</h1>
-        <p>Distance: <span id="final-score">0</span> m</p>
-        <button id="restart-btn">RETRY</button>
-    </div>
+        <div id="game-over" class="overlay hidden">
+            <h1>CRASHED!</h1>
+            <p>Distance: <span id="final-score">0</span> m</p>
+            <button id="restart-btn">RETRY</button>
+        </div>
+    </main>
+
+    <footer id="controls-footer">
+        <div id="touch-controls">
+            <button class="ctrl-btn" data-action="left" aria-label="Steer Left">←</button>
+            <button class="ctrl-btn" data-action="right" aria-label="Steer Right">→</button>
+        </div>
+    </footer>
 
     <script type="module" src="main.js"></script>
 </body>

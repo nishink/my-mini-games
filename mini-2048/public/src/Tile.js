@@ -18,12 +18,20 @@ export class Tile {
         element.className = 'tile';
         const valClass = this.value <= 2048 ? `tile-${this.value}` : 'tile-super';
         element.classList.add(valClass);
+        element.setAttribute('data-value', this.value);
         element.textContent = this.value;
     }
 
     updatePosition() {
-        // マスサイズ 87.5px + 隙間 10px = 97.5px
-        const offset = 97.5;
+        // グリッドコンテナの実際のサイズから、1マスの移動距離を計算する
+        const container = document.getElementById('grid-container');
+        if (!container) return;
+
+        const gridWidth = container.clientWidth;
+        // style.css の計算式: (gridWidth - (gap * 5)) / 4 
+        // 簡略化すると offset = gridWidth / 4
+        const offset = gridWidth / 4;
+        
         this.element.style.transform = `translate(${this.x * offset}px, ${this.y * offset}px)`;
     }
 

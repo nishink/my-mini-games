@@ -18,12 +18,14 @@ window.addEventListener('load', () => {
     let selectedTowerType = null;
 
     // UI初期化
-    document.querySelectorAll('.tower-btn').forEach(btn => {
+    const towerBtns = document.querySelectorAll('.tower-btn');
+    towerBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
             if (selectedTowerType === btn.dataset.type) {
                 selectedTowerType = null;
+                btn.classList.remove('selected');
             } else {
+                towerBtns.forEach(b => b.classList.remove('selected'));
                 selectedTowerType = btn.dataset.type;
                 btn.classList.add('selected');
             }
@@ -36,7 +38,7 @@ window.addEventListener('load', () => {
 
     document.getElementById('reset-btn').addEventListener('click', () => {
         game.reset();
-        document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
+        towerBtns.forEach(b => b.classList.remove('selected'));
         selectedTowerType = null;
     });
 
@@ -47,22 +49,33 @@ window.addEventListener('load', () => {
         });
     });
 
-    // 入力イベント
-    canvas.addEventListener('mousemove', (e) => {
+    // 座標計算の共通関数
+    function updatePointerPos(e) {
         const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        // 表示サイズと内部解像度の比率を計算
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        
         mousePos = {
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top
+            x: (clientX - rect.left) * scaleX,
+            y: (clientY - rect.top) * scaleY
         };
+    }
+
+    // 入力イベント (Pointer Events推奨)
+    canvas.addEventListener('pointermove', (e) => {
+        updatePointerPos(e);
     });
 
-    canvas.addEventListener('mousedown', (e) => {
+    canvas.addEventListener('pointerdown', (e) => {
+        updatePointerPos(e);
         if (selectedTowerType && mousePos) {
             const grid = game.map.pixelToGrid(mousePos.x, mousePos.y);
             if (game.buyTower(selectedTowerType, grid.x, grid.y)) {
-                // 購入成功したら選択解除（連続設置したい場合は解除しない）
-                // selectedTowerType = null;
-                // document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
+                // 購入成功時のフィードバック（必要ならここで選択解除）
             }
         }
     });
@@ -79,4 +92,9 @@ window.addEventListener('load', () => {
         requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
+
+    // リサイズ対応
+    window.addEventListener('resize', () => {
+        // CSSのリサイズに任せるが、必要ならここで再描画を促す
+    });
 });
