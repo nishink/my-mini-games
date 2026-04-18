@@ -1,14 +1,39 @@
 export class Renderer {
     constructor(canvas) {
+        this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.width = 800;
-        this.height = 600;
-        canvas.width = this.width;
-        canvas.height = this.height;
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        const maxWidth = Math.min(window.innerWidth - 40, 800);
+        const maxHeight = Math.min(window.innerHeight - 200, 600);
+        
+        // アスペクト比を維持してスケール
+        const scaleX = maxWidth / 800;
+        const scaleY = maxHeight / 600;
+        this.scale = Math.min(scaleX, scaleY);
+        
+        this.canvas.width = 800;
+        this.canvas.height = 600;
+        this.canvas.style.width = (800 * this.scale) + 'px';
+        this.canvas.style.height = (600 * this.scale) + 'px';
+        
+        // Show/hide virtual joystick on mobile
+        const joystick = document.getElementById('virtual-joystick');
+        if (window.innerWidth <= 768) {
+            joystick.classList.remove('hidden');
+        } else {
+            joystick.classList.add('hidden');
+        }
+        
+        if (this.onResize) this.onResize();
     }
 
     draw(player, enemies, map, alertLevel) {
-        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.clearRect(0, 0, 800, 600);
 
         // 壁の描画
         this.ctx.fillStyle = '#222';
@@ -50,7 +75,6 @@ export class Renderer {
         this.ctx.beginPath();
         this.ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
         this.ctx.fill();
-        this.ctx.shadowBlur = 0;
     }
 
     drawEnemyVision(e, walls) {

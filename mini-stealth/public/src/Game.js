@@ -31,8 +31,13 @@ export class Game {
         this.restartBtn.onclick = () => this.reset();
         this.nextBtn.onclick = () => this.reset();
 
-        this.reset();
+        this.renderer.onResize = () => this.onResize();
+        this.onResize();
         this.gameLoop();
+    }
+
+    onResize() {
+        this.reset();
     }
 
     reset() {

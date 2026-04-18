@@ -18,10 +18,18 @@ export class Player {
         let dx = 0;
         let dy = 0;
 
+        // Keyboard input
         if (input.isPressed('ArrowLeft') || input.isPressed('KeyA')) dx -= speed;
         if (input.isPressed('ArrowRight') || input.isPressed('KeyD')) dx += speed;
         if (input.isPressed('ArrowUp') || input.isPressed('KeyW')) dy -= speed;
         if (input.isPressed('ArrowDown') || input.isPressed('KeyS')) dy += speed;
+
+        // Joystick input (for mobile)
+        const joystick = input.getJoystick();
+        if (joystick.x !== 0 || joystick.y !== 0) {
+            dx += joystick.x * speed;
+            dy += joystick.y * speed;
+        }
 
         // 斜め移動の速度補正
         if (dx !== 0 && dy !== 0) {
