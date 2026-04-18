@@ -8,14 +8,22 @@
 </head>
 <body touch-action="none">
     <header id="hud">
-        <div class="info-box">
-            <span class="label">SCORE</span>
-            <span id="score">0</span>
+        <div class="info-box-group">
+            <div class="info-box">
+                <span class="label">SCORE</span>
+                <span id="score">0</span>
+            </div>
+            <div class="info-box">
+                <span class="label">LINES</span>
+                <span id="lines">0</span>
+            </div>
         </div>
-        <div class="info-box">
-            <span class="label">LINES</span>
-            <span id="lines">0</span>
+        
+        <div class="info-box next-box">
+            <span class="label">NEXT</span>
+            <canvas id="next-canvas"></canvas>
         </div>
+
         <div class="info-box">
             <span class="label">LEVEL</span>
             <span id="level">1</span>
@@ -25,13 +33,6 @@
     <main id="game-container">
         <div id="game-area">
             <canvas id="game-canvas"></canvas>
-            
-            <div id="side-panel">
-                <div class="info-box next-box">
-                    <span class="label">NEXT</span>
-                    <canvas id="next-canvas"></canvas>
-                </div>
-            </div>
 
             <div id="game-over" class="overlay hidden">
                 <h1>GAME OVER</h1>
