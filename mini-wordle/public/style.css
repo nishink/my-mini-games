@@ -7,6 +7,33 @@
     --tile-size: 62px;
 }
 
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    :root {
+        --tile-size: 50px;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    .keyboard-row {
+        gap: 3px;
+        margin-bottom: 4px;
+    }
+
+    .key {
+        padding: 10px 6px;
+        font-size: 12px;
+        min-width: 30px;
+    }
+
+    .key.large {
+        padding: 10px 12px;
+        font-size: 10px;
+    }
+}
+
 body {
     margin: 0;
     padding: 0;
