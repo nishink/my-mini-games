@@ -1,10 +1,27 @@
 export class Renderer {
     constructor(canvas) {
+        this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        const maxWidth = Math.min(window.innerWidth - 40, 800);
+        const maxHeight = Math.min(window.innerHeight - 200, 600);
+        
+        // アスペクト比を維持してスケール
+        const scaleX = maxWidth / 800;
+        const scaleY = maxHeight / 600;
+        this.scale = Math.min(scaleX, scaleY);
+        
         this.width = 800;
         this.height = 600;
-        canvas.width = this.width;
-        canvas.height = this.height;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.canvas.style.width = (800 * this.scale) + 'px';
+        this.canvas.style.height = (600 * this.scale) + 'px';
     }
 
     draw(ball, stage, dragStart, currentMouse) {

@@ -18,9 +18,11 @@ export class Input {
 
     getMousePos(e) {
         const rect = this.canvas.getBoundingClientRect();
+        const scaleX = 800 / rect.width;
+        const scaleY = 600 / rect.height;
         return {
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
         };
     }
 
