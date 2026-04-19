@@ -77,3 +77,45 @@ footer {
     padding-top: 30px;
     color: #95a5a6;
 }
+
+@media (max-width: 768px) {
+    #container {
+        padding: 20px 15px;
+    }
+
+    header h1 {
+        font-size: 32px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    .game-grid {
+        gap: 16px;
+    }
+
+    .game-card {
+        padding: 22px 16px;
+    }
+
+    .emoji {
+        font-size: 38px;
+        margin-bottom: 12px;
+    }
+
+    .game-card h3 {
+        font-size: 18px;
+    }
+
+    .game-card p {
+        font-size: 13px;
+    }
+
+    footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        font-size: 14px;
+    }
+}
+
