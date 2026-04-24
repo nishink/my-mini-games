@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Mini Story</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body touch-action="none">
+    <div id="gameViewport">
+        <!-- Background Layer -->
+        <div id="bgLayer"></div>
+
+        <!-- Character Layer -->
+        <div id="charLayer">
+            <div id="character"></div>
+        </div>
+
+        <!-- Choice Layer -->
+        <div id="choiceLayer" style="display: none;">
+            <div id="choiceContainer"></div>
+        </div>
+
+        <!-- Message Layer -->
+        <div id="msgLayer">
+            <div id="nameBox">名前</div>
+            <div id="msgBox">
+                <div id="msgText"></div>
+            </div>
+            <div id="nextCursor" class="blink">▼</div>
+        </div>
+
+        <!-- Reset Button -->
+        <button id="resetBtn">最初から</button>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>

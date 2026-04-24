@@ -1,0 +1,153 @@
+:root {
+    --bg-color: #222;
+    --text-color: #fff;
+    --primary-color: #4a90e2;
+    --accent-color: #f39c12;
+    --panel-bg: rgba(0, 0, 0, 0.7);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    touch-action: none;
+    user-select: none;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#hud {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    height: 50px;
+}
+
+#resetBtn {
+    padding: 5px 10px;
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#gameContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+#gameArea {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+canvas {
+    background-color: #000;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    border: 2px solid #555;
+}
+
+.message-window {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: var(--panel-bg);
+    border: 3px solid #fff;
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 80px;
+    color: #fff;
+    font-size: 16px;
+    z-index: 10;
+}
+
+.next-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+#controlsFooter {
+    height: 180px;
+    background-color: #333;
+    padding: 10px;
+}
+
+#touchControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.d-pad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horizontal-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.ctrl-btn {
+    width: 50px;
+    height: 50px;
+    background-color: #555;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    box-shadow: 0 4px #222;
+}
+
+.ctrl-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px #222;
+    background-color: #777;
+}
+
+.action-btn {
+    width: 70px;
+    height: 70px;
+    background-color: var(--accent-color);
+    font-size: 24px;
+    font-weight: bold;
+}

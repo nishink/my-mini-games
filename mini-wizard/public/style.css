@@ -1,0 +1,170 @@
+:root {
+    --bg-color: #111;
+    --text-color: #fff;
+    --primary-color: #3498db;
+    --accent-color: #e67e22;
+    --panel-bg: rgba(0, 0, 0, 0.8);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    touch-action: none;
+    user-select: none;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#hud {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    height: 50px;
+    border-bottom: 2px solid #444;
+}
+
+#resetBtn {
+    padding: 5px 10px;
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#gameContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: radial-gradient(circle, #222 0%, #000 100%);
+}
+
+#gameArea {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    max-width: 100%;
+}
+
+canvas#gameCanvas {
+    background-color: #000;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 3px solid #444;
+}
+
+#miniMapContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #000;
+    border: 2px solid #666;
+    padding: 2px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#miniMapCanvas {
+    display: block;
+}
+
+.message-window {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: var(--panel-bg);
+    border: 2px solid #fff;
+    padding: 15px;
+    min-height: 60px;
+    color: #fff;
+    z-index: 10;
+}
+
+.next-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+#controlsFooter {
+    height: 180px;
+    background-color: #222;
+    padding: 10px;
+    border-top: 2px solid #444;
+}
+
+#touchControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.d-pad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horizontal-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.ctrl-btn {
+    width: 50px;
+    height: 50px;
+    background-color: #444;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    box-shadow: 0 4px #111;
+}
+
+.ctrl-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px #111;
+    background-color: #666;
+}
+
+.action-btn {
+    width: 70px;
+    height: 70px;
+    background-color: #c0392b;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50%;
+}
