@@ -53,6 +53,28 @@ header p {
     border-color: #3498db;
 }
 
+.main-project {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.game-card.featured {
+    width: 100%;
+    max-width: 600px;
+    background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+    border: 2px solid #3b82f6;
+    padding: 30px;
+}
+
+.game-card.featured h3 {
+    font-size: 24px;
+}
+
+.game-card.featured .emoji {
+    font-size: 64px;
+}
+
 .emoji {
     font-size: 48px;
     margin-bottom: 15px;
