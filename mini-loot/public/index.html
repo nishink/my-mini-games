@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
+    <title>Mini Loot - Inventory Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <a href="../../index.html" class="back-link">← Back</a>
+            <h1>MINI LOOT</h1>
+        </header>
+
+        <div id="main-layout">
+            <section id="status-section">
+                <h2>Character Stats</h2>
+                <div id="stats-panel" class="panel">
+                    <div class="stat-row"><span>ATK:</span> <span id="stat-atk">0</span></div>
+                    <div class="stat-row"><span>DEF:</span> <span id="stat-def">0</span></div>
+                    <div class="stat-row"><span>HP:</span> <span id="stat-hp">0</span></div>
+                    <div class="stat-row"><span>MP:</span> <span id="stat-mp">0</span></div>
+                </div>
+
+                <h3>Equipment</h3>
+                <div id="equipment-slots" class="panel">
+                    <div class="eq-slot" data-slot="weapon">
+                        <div class="slot-label">Weapon</div>
+                        <div id="eq-weapon" class="slot-content">Empty</div>
+                    </div>
+                    <div class="eq-slot" data-slot="armor">
+                        <div class="slot-label">Armor</div>
+                        <div id="eq-armor" class="slot-content">Empty</div>
+                    </div>
+                    <div class="eq-slot" data-slot="accessory">
+                        <div class="slot-label">Accessory</div>
+                        <div id="eq-accessory" class="slot-content">Empty</div>
+                    </div>
+                </div>
+
+                <button id="loot-btn" class="primary-btn">GET LOOT (宝箱を開ける)</button>
+            </section>
+
+            <section id="inventory-section">
+                <h2>Inventory (<span id="inv-count">0</span> / <span id="inv-capacity">20</span>)</h2>
+                <div id="inventory-grid" class="panel">
+                    <!-- Items will be injected here -->
+                </div>
+            </section>
+        </div>
+
+        <div id="toast-container"></div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

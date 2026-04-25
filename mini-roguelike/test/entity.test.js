@@ -1,4 +1,4 @@
-import { Entity } from '../src/game/Entity.js';
+import { Entity } from '../public/src/game/Entity.js';
 
 export async function runTests({assert}){
   // エンティティの初期化と基本機能のテスト

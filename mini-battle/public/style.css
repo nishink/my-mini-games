@@ -1,0 +1,236 @@
+:root {
+    --bg-dark: #1a1a1a;
+    --panel-bg: rgba(40, 40, 40, 0.9);
+    --text-color: #eee;
+    --primary-color: #3498db;
+    --accent-color: #e74c3c;
+    --success-color: #2ecc71;
+    --warning-color: #f1c40f;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+#game-container {
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    position: relative;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.back-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 14px;
+    margin-right: 20px;
+}
+
+h1 {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+/* Battle Scene */
+#battle-scene {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+.unit-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.unit {
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.emoji {
+    font-size: 80px;
+    margin-bottom: 10px;
+}
+
+.player-emoji {
+    font-size: 60px;
+    margin-top: 10px;
+}
+
+.hp-bar-container {
+    width: 200px;
+    height: 12px;
+    background-color: #444;
+    border: 2px solid #666;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.hp-bar {
+    height: 100%;
+    background-color: var(--success-color);
+    width: 100%;
+    transition: width 0.3s ease-out, background-color 0.3s;
+}
+
+.hp-text {
+    font-size: 14px;
+}
+
+/* Status Panel */
+.status-panel {
+    background: var(--panel-bg);
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.status-panel .name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.status-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+/* Message Log */
+#message-log {
+    height: 80px;
+    background: var(--panel-bg);
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Command Menu */
+#command-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+.cmd-btn {
+    padding: 15px;
+    font-size: 16px;
+    background: #333;
+    color: white;
+    border: 2px solid #555;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.cmd-btn:active {
+    transform: scale(0.95);
+    background: #444;
+}
+
+.cmd-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Overlay */
+#result-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.result-content {
+    text-align: center;
+    padding: 30px;
+    background: #222;
+    border: 3px solid var(--primary-color);
+    border-radius: 15px;
+}
+
+.result-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+#restart-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out 2;
+}
+
+.damage-pop {
+    position: absolute;
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 24px;
+    pointer-events: none;
+    animation: floatUp 0.8s forwards;
+    z-index: 50;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-40px); }
+}

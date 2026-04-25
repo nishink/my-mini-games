@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
+    <title>Mini Battle - RPG Component</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <a href="../../index.html" class="back-link">← Back</a>
+            <h1>MINI BATTLE</h1>
+        </header>
+
+        <div id="battle-scene">
+            <div id="enemy-area" class="unit-area">
+                <!-- 敵キャラがここに表示される -->
+                <div id="enemy" class="unit">
+                    <div class="emoji">👾</div>
+                    <div class="hp-bar-container">
+                        <div id="enemy-hp-bar" class="hp-bar"></div>
+                    </div>
+                    <div id="enemy-hp-text" class="hp-text">HP: 100 / 100</div>
+                </div>
+            </div>
+
+            <div id="player-area" class="unit-area">
+                <!-- プレイヤーのステータス表示 -->
+                <div id="player-status" class="status-panel">
+                    <div class="name">Hero</div>
+                    <div class="hp-bar-container">
+                        <div id="player-hp-bar" class="hp-bar"></div>
+                    </div>
+                    <div class="status-values">
+                        <span id="player-hp-text">HP: 50 / 50</span>
+                        <span id="player-mp-text">MP: 20 / 20</span>
+                    </div>
+                </div>
+                <div class="player-emoji">⚔️</div>
+            </div>
+        </div>
+
+        <div id="message-log">
+            <div id="log-content">バトル開始！</div>
+        </div>
+
+        <div id="command-menu">
+            <button class="cmd-btn" data-action="attack">攻撃</button>
+            <button class="cmd-btn" data-action="magic">魔法</button>
+            <button class="cmd-btn" data-action="defend">防御</button>
+            <button class="cmd-btn" data-action="item">回復</button>
+        </div>
+
+        <div id="result-overlay" class="hidden">
+            <div class="result-content">
+                <h2 id="result-title">Victory!</h2>
+                <p id="result-message"></p>
+                <button id="restart-btn">もう一度挑戦</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

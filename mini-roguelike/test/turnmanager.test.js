@@ -1,5 +1,5 @@
-import { TurnManager } from '../src/game/TurnManager.js';
-import { Entity } from '../src/game/Entity.js';
+import { TurnManager } from '../public/src/game/TurnManager.js';
+import { Entity } from '../public/src/game/Entity.js';
 
 export async function runTests({assert}){
   // ターンマネージャーのキューソート機能をテスト

@@ -1,4 +1,4 @@
-import { generateMap } from '../src/game/MapGen.js';
+import { generateMap } from '../public/src/game/MapGen.js';
 
 export async function runTests({assert}){
   // マップ生成のテスト：基本的な形状とボーダー壁の検証

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
+    <title>Mini Hero - Growth Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <a href="../../index.html" class="back-link">← Back</a>
+            <h1>MINI HERO</h1>
+        </header>
+
+        <main id="main-layout">
+            <!-- ヒーローの基本情報 -->
+            <section id="hero-profile" class="panel">
+                <div class="avatar-container">
+                    <div class="avatar">🧙‍♂️</div>
+                    <div class="level-badge">Lv.<span id="level-val">1</span></div>
+                </div>
+                
+                <div class="exp-container">
+                    <div class="label-row">
+                        <span>EXP</span>
+                        <span id="exp-text">0 / 100</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="exp-fill" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <button id="train-btn" class="primary-btn">TRAIN (経験値獲得)</button>
+            </section>
+
+            <!-- ステータス管理 -->
+            <section id="stats-section" class="panel">
+                <div class="section-header">
+                    <h2>Stats</h2>
+                    <div id="points-container" class="hidden">
+                        Remaining Points: <span id="points-val">0</span>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-group">
+                        <div class="stat-main">
+                            <label>STR (力)</label>
+                            <span id="base-str">5</span>
+                            <button class="add-btn hidden" data-stat="str">+</button>
+                        </div>
+                        <div class="stat-desc">攻撃力に影響</div>
+                    </div>
+                    <div class="stat-group">
+                        <div class="stat-main">
+                            <label>DEX (技)</label>
+                            <span id="base-dex">5</span>
+                            <button class="add-btn hidden" data-stat="dex">+</button>
+                        </div>
+                        <div class="stat-desc">攻撃力に少し影響</div>
+                    </div>
+                    <div class="stat-group">
+                        <div class="stat-main">
+                            <label>INT (知)</label>
+                            <span id="base-int">5</span>
+                            <button class="add-btn hidden" data-stat="int">+</button>
+                        </div>
+                        <div class="stat-desc">最大MPに影響</div>
+                    </div>
+                    <div class="stat-group">
+                        <div class="stat-main">
+                            <label>VIT (体)</label>
+                            <span id="base-vit">5</span>
+                            <button class="add-btn hidden" data-stat="vit">+</button>
+                        </div>
+                        <div class="stat-desc">最大HP・防御力に影響</div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="derived-stats">
+                    <div class="d-stat"><span>ATK:</span> <span id="derived-atk">10</span></div>
+                    <div class="d-stat"><span>DEF:</span> <span id="derived-def">7</span></div>
+                    <div class="d-stat"><span>MAX HP:</span> <span id="derived-hp">150</span></div>
+                    <div class="d-stat"><span>MAX MP:</span> <span id="derived-mp">75</span></div>
+                </div>
+            </section>
+        </main>
+
+        <div id="notification-area"></div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
