@@ -1,13 +1,15 @@
 /**
  * Mini RPG Saga - MenuManager
- * メニュー画面（ステータス、インベントリ）を管理する。
+ * メニュー画面（ステータス、装備、もちもの）を管理する。
  */
 import { state } from '../Core/GlobalState.js';
+import { notificationManager } from './NotificationManager.js';
 
 export class MenuManager {
     constructor() {
         this.container = null;
         this.isActive = false;
+        this.currentTab = 'status';
     }
 
     init(parentContainer) {
@@ -19,6 +21,7 @@ export class MenuManager {
 
     open() {
         this.isActive = true;
+        this.currentTab = 'status';
         this.render();
         this.container.classList.remove('hidden');
     }
@@ -29,43 +32,13 @@ export class MenuManager {
         this.container.innerHTML = `
             <div class="menu-box ui-panel">
                 <div class="menu-tabs">
-                    <button class="tab-btn active" data-tab="status">ステータス</button>
-                    <button class="tab-btn" data-tab="items">もちもの</button>
+                    <button class="tab-btn ${this.currentTab === 'status' ? 'active' : ''}" data-tab="status">能力</button>
+                    <button class="tab-btn ${this.currentTab === 'equip' ? 'active' : ''}" data-tab="equip">装備</button>
+                    <button class="tab-btn ${this.currentTab === 'items' ? 'active' : ''}" data-tab="items">道具</button>
                 </div>
 
-                <div id="menu-content-status" class="menu-content">
-                    <div class="status-grid">
-                        <div class="status-header">
-                            <span class="p-name">${state.player.name}</span>
-                            <span class="p-lv">Lv.${state.player.level}</span>
-                        </div>
-                        <div class="stats-list">
-                            <div class="stat-row"><span>HP</span> <span>${state.player.currentHp} / ${stats.maxHp}</span></div>
-                            <div class="stat-row"><span>MP</span> <span>${state.player.currentMp} / ${stats.maxMp}</span></div>
-                            <div class="stat-row"><span>攻撃力</span> <span>${stats.atk}</span></div>
-                            <div class="stat-row"><span>防御力</span> <span>${stats.def}</span></div>
-                            <div class="stat-divider"></div>
-                            <div class="stat-row"><span>STR</span> <span>${state.player.baseStats.str}</span></div>
-                            <div class="stat-row"><span>DEX</span> <span>${state.player.baseStats.dex}</span></div>
-                            <div class="stat-row"><span>INT</span> <span>${state.player.baseStats.int}</span></div>
-                            <div class="stat-row"><span>VIT</span> <span>${state.player.baseStats.vit}</span></div>
-                            <div class="stat-divider"></div>
-                            <div class="stat-row"><span>GOLD</span> <span>${state.player.gold} G</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="menu-content-items" class="menu-content hidden">
-                    <div class="inventory-list">
-                        ${state.inventory.length === 0 ? '<p>なにも持っていない</p>' : 
-                            state.inventory.map(item => `
-                                <div class="inventory-item">
-                                    <span class="item-name">${item.name}</span>
-                                    <span class="item-count">x1</span>
-                                </div>
-                            `).join('')
-                        }
-                    </div>
+                <div class="menu-content">
+                    ${this.renderContent(stats)}
                 </div>
 
                 <div class="menu-footer">
@@ -74,25 +47,133 @@ export class MenuManager {
             </div>
         `;
 
-        // タブ切り替え
         this.container.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = () => {
-                const tab = btn.getAttribute('data-tab');
-                this.switchTab(tab);
+                this.currentTab = btn.getAttribute('data-tab');
+                this.render();
             };
         });
 
-        this.container.querySelector('#close-menu').onclick = () => {
-            this.close();
-        };
+        this.container.querySelectorAll('.action-btn-sm').forEach(btn => {
+            btn.onclick = () => {
+                const index = btn.getAttribute('data-index');
+                const action = btn.getAttribute('data-action');
+                const slot = btn.getAttribute('data-slot');
+
+                if (action === 'equip') this.equipItem(parseInt(index));
+                else if (action === 'unequip') this.unequipItem(slot);
+                else if (action === 'use') this.useItem(parseInt(index));
+            };
+        });
+
+        this.container.querySelector('#close-menu').onclick = () => this.close();
     }
 
-    switchTab(tabName) {
-        this.container.querySelectorAll('.menu-content').forEach(el => el.classList.add('hidden'));
-        this.container.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    renderContent(stats) {
+        switch (this.currentTab) {
+            case 'status': return this.renderStatus(stats);
+            case 'equip': return this.renderEquip();
+            case 'items': return this.renderItems();
+            default: return '';
+        }
+    }
+
+    renderStatus(stats) {
+        return `
+            <div class="stats-list">
+                <div class="status-header">
+                    <span class="p-name">${state.player.name}</span>
+                    <span class="p-lv">Lv.${state.player.level}</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-row"><span>HP</span> <span>${state.player.currentHp} / ${stats.maxHp}</span></div>
+                <div class="stat-row"><span>MP</span> <span>${state.player.currentMp} / ${stats.maxMp}</span></div>
+                <div class="stat-row"><span>攻撃力</span> <span>${stats.atk}</span></div>
+                <div class="stat-row"><span>防御力</span> <span>${stats.def}</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-row"><span>武器</span> <span class="eq-val">${state.equipment.weapon ? state.equipment.weapon.name : 'なし'}</span></div>
+                <div class="stat-row"><span>防具</span> <span class="eq-val">${state.equipment.armor ? state.equipment.armor.name : 'なし'}</span></div>
+            </div>
+        `;
+    }
+
+    renderEquip() {
+        const gear = state.inventory.filter(item => item.type === 'weapon' || item.type === 'armor' || item.id.includes('sword') || item.id.includes('armor'));
+        if (gear.length === 0) return '<p class="empty-msg">装備できるものがありません</p>';
         
-        this.container.querySelector(`#menu-content-${tabName}`).classList.remove('hidden');
-        this.container.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+        return `
+            <div class="inventory-list">
+                ${state.inventory.map((item, index) => {
+                    const canEquip = item.type === 'weapon' || item.type === 'armor' || item.id.includes('sword') || item.id.includes('armor');
+                    if (!canEquip) return '';
+                    const isEquipped = state.isEquipped(item);
+                    const slot = (item.type === 'weapon' || item.id.includes('sword')) ? 'weapon' : 'armor';
+
+                    return `
+                        <div class="inventory-item">
+                            <div class="item-info">
+                                <span class="item-name">${isEquipped ? '<span class="eq-mark">[E]</span> ' : ''}${item.name}</span>
+                                <span class="item-desc">${item.description}</span>
+                            </div>
+                            ${isEquipped ? `
+                                <button class="action-btn-sm unequip-btn" data-action="unequip" data-slot="${slot}">外す</button>
+                            ` : `
+                                <button class="action-btn-sm equip-btn" data-action="equip" data-index="${index}">装備</button>
+                            `}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    renderItems() {
+        const consumables = state.inventory.filter(item => item.type === 'consumable' || item.id.includes('potion') || item.id.includes('ether'));
+        if (consumables.length === 0) return '<p class="empty-msg">使える道具がありません</p>';
+        
+        return `
+            <div class="inventory-list">
+                ${state.inventory.map((item, index) => {
+                    const isConsumable = item.type === 'consumable' || item.id.includes('potion') || item.id.includes('ether');
+                    if (!isConsumable) return '';
+                    return `
+                        <div class="inventory-item">
+                            <div class="item-info">
+                                <span class="item-name">${item.name}</span>
+                                <span class="item-desc">${item.description}</span>
+                            </div>
+                            <button class="action-btn-sm use-btn" data-action="use" data-index="${index}">使用</button>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    equipItem(index) {
+        const item = state.inventory[index];
+        if (item) {
+            state.equipItem(item);
+            notificationManager.show(`${item.name} を装備しました`);
+            this.render();
+        }
+    }
+
+    unequipItem(slot) {
+        state.unequipItem(slot);
+        notificationManager.show('装備を外しました');
+        this.render();
+    }
+
+    useItem(index) {
+        const item = state.inventory[index];
+        const itemName = item ? item.name : 'アイテム';
+        if (state.consumeItem(index)) {
+            notificationManager.show(`${itemName} を使用しました`);
+            this.render();
+        } else {
+            notificationManager.show('今は使えません');
+        }
     }
 
     close() {

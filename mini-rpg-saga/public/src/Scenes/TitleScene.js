@@ -1,9 +1,11 @@
 import { SaveManager } from '../Core/SaveManager.js';
 import { sceneManager } from '../Core/SceneManager.js';
 import { state } from '../Core/GlobalState.js';
+import { dialogManager } from '../Systems/DialogManager.js';
 
 export class TitleScene {
     async enter(container) {
+        this.container = container;
         const view = document.createElement('div');
         view.id = 'title-scene';
         view.innerHTML = `
@@ -18,19 +20,20 @@ export class TitleScene {
         `;
         container.appendChild(view);
 
+        // ダイアログの初期化（タイトル画面でも使用するため）
+        dialogManager.init(container);
+
         document.getElementById('new-game-btn').onclick = () => this.startNewGame();
         document.getElementById('continue-btn').onclick = () => this.continueGame();
     }
 
-    startNewGame() {
+    async startNewGame() {
         if (SaveManager.exists()) {
-            if (!confirm('既存のセーブデータが上書きされます。よろしいですか？')) {
-                return;
-            }
+            const confirmed = await dialogManager.confirm('既存のセーブデータが上書きされます。よろしいですか？');
+            if (!confirmed) return;
         }
         state.reset();
         SaveManager.save();
-        // 次は Town シーンへ遷移予定
         sceneManager.switchScene('Town');
     }
 

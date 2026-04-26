@@ -5,6 +5,8 @@ import { input } from '../Core/Input.js';
 import { dialogueManager } from '../Systems/DialogueManager.js';
 import { shopManager } from '../Systems/ShopManager.js';
 import { menuManager } from '../Systems/MenuManager.js';
+import { notificationManager } from '../Systems/NotificationManager.js';
+import { dialogManager } from '../Systems/DialogManager.js';
 
 export class TownScene {
     constructor() {
@@ -45,6 +47,8 @@ export class TownScene {
         dialogueManager.init(this.container);
         shopManager.init(this.container);
         menuManager.init(this.container);
+        notificationManager.init(this.container);
+        dialogManager.init(this.container);
 
         this.container.addEventListener('click', () => {
             if (dialogueManager.isActive) dialogueManager.next();
@@ -89,14 +93,14 @@ export class TownScene {
 
         this.container.querySelector('#save-btn').onclick = (e) => {
             e.stopPropagation();
-            if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive) return;
+            if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) return;
             SaveManager.save();
-            alert('記録しました');
+            notificationManager.show('冒険を記録しました');
         };
 
         this.container.querySelector('#menu-btn').onclick = (e) => {
             e.stopPropagation();
-            if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive) return;
+            if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) return;
             menuManager.open();
         };
 
@@ -140,9 +144,7 @@ export class TownScene {
             for (let x = 0; x < this.map[y].length; x++) {
                 const cell = document.createElement('div');
                 cell.className = 'tile';
-                if (this.map[y][x] === 1) {
-                    cell.classList.add('wall');
-                }
+                if (this.map[y][x] === 1) cell.classList.add('wall');
                 
                 const npc = this.npcs.find(n => n.x === x && n.y === y);
                 if (npc) cell.innerHTML = npc.emoji;
@@ -155,13 +157,12 @@ export class TownScene {
 
     updatePlayerPosition() {
         if (!this.playerEl) return;
-        // JSで計算せず、CSSのタイルサイズ変数を利用した計算式をセットする
         this.playerEl.style.left = `calc(var(--tile-size) * ${this.playerPos.x})`;
         this.playerEl.style.top = `calc(var(--tile-size) * ${this.playerPos.y})`;
     }
 
     update(deltaTime) {
-        if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive) {
+        if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) {
             if (dialogueManager.isActive && (input.isPressed(' ') || input.isPressed('Enter'))) {
                 if (this.moveDelay <= 0) {
                     dialogueManager.next();
@@ -212,7 +213,7 @@ export class TownScene {
         const npc = this.npcs.find(n => n.x === targetX && n.y === targetY);
         if (npc) {
             if (npc.name === '商人') {
-                dialogueManager.show(npc.name, ['いらっしゃい！', '旅の準備はできているかい？'], () => {
+                dialogueManager.show(npc.name, ['いらっしゃい！', '旅に必要なものはそろっているかな？'], () => {
                     shopManager.open();
                 });
             } else {

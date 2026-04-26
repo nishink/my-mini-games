@@ -46,16 +46,75 @@ export class GlobalState {
 
     // データの取得用ヘルパー
     getDerivedStats() {
-        const { baseStats } = this.player;
+        const { baseStats, equipment } = this.player; // state.equipment ではなく state.player.equipment にある想定（シリアライズ対象）
+        
+        // 装備品の補正値を取得
+        let bonusAtk = 0;
+        let bonusDef = 0;
+
+        if (this.equipment.weapon) bonusAtk += this.equipment.weapon.atk || 0;
+        if (this.equipment.armor) bonusDef += this.equipment.armor.def || 0;
+
         const stats = {
-            atk: baseStats.str * 2 + Math.floor(baseStats.dex * 0.5),
-            def: Math.floor(baseStats.vit * 1.5),
-            maxHp: 100 + baseStats.vit * 10,
-            maxMp: 50 + baseStats.int * 5
+            atk: (this.player.baseStats.str * 2) + bonusAtk,
+            def: Math.floor(this.player.baseStats.vit * 1.5) + bonusDef,
+            maxHp: 100 + this.player.baseStats.vit * 10,
+            maxMp: 50 + this.player.baseStats.int * 5
         };
 
-        // 装備補正をここに加算予定
         return stats;
+    }
+
+    equipItem(item) {
+        if (item.type === 'weapon') {
+            this.equipment.weapon = item;
+        } else if (item.type === 'armor') {
+            this.equipment.armor = item;
+        }
+    }
+
+    unequipItem(slot) {
+        if (slot === 'weapon') {
+            this.equipment.weapon = null;
+        } else if (slot === 'armor') {
+            this.equipment.armor = null;
+        }
+    }
+
+    consumeItem(index) {
+        const item = this.inventory[index];
+        if (!item || item.type !== 'consumable') return false;
+
+        const stats = this.getDerivedStats();
+        let used = false;
+
+        if (item.id === 'potion') {
+            if (this.player.currentHp < stats.maxHp) {
+                this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 50);
+                used = true;
+            }
+        } else if (item.id === 'ether') {
+            if (this.player.currentMp < stats.maxMp) {
+                this.player.currentMp = Math.min(stats.maxMp, this.player.currentMp + 20);
+                used = true;
+            }
+        } else if (item.id === 'herb') {
+            // 現状は状態異常がないのでHPを少し回復
+            this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 10);
+            used = true;
+        }
+
+        if (used) {
+            this.inventory.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
+
+    isEquipped(item) {
+        if (!item) return false;
+        return (this.equipment.weapon && this.equipment.weapon.id === item.id) ||
+               (this.equipment.armor && this.equipment.armor.id === item.id);
     }
 
     // JSON形式でエクスポート（セーブ用）
