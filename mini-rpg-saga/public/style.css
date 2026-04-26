@@ -1,7 +1,8 @@
 :root {
     --bg-dark: #020617;
-    --panel-bg: #1e293b;
+    --panel-bg: rgba(15, 23, 42, 0.95);
     --text-main: #f8fafc;
+    --text-muted: #94a3b8;
     --primary: #3b82f6;
     --primary-hover: #2563eb;
     --accent: #f59e0b;
@@ -9,315 +10,202 @@
 }
 
 @media (max-width: 480px) {
-    :root {
-        --tile-size: 22px; /* スマホではタイルを小さくする (15マス×22=330px) */
-    }
+    :root { --tile-size: 24px; }
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-dark);
+    margin: 0; padding: 0;
+    background-color: #000;
     color: var(--text-main);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
     overflow: hidden;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
 }
 
 #game-container {
-    width: 100%;
-    max-width: 800px;
-    height: 100%;
-    max-height: 600px;
+    width: 100vw; height: 100vh;
+    max-width: 800px; max-height: 600px;
     background: #000;
     position: relative;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    border: 1px solid #334155;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
+    overflow: hidden;
 }
 
 #scene-container {
-    flex: 1;
-    width: 100%;
+    flex: 1; width: 100%; height: 100%;
     position: relative;
-    overflow: hidden;
 }
 
-/* 画面が小さい場合に全体を収めるための調整 */
-@media (max-width: 480px) {
-    #game-container {
-        max-height: 100vh;
-        border: none;
-    }
-    
-    .scene-header {
-        padding: 5px 10px;
-        font-size: 0.8rem;
-    }
-
-    #virtual-controller {
-        padding: 5px;
-        margin-top: 0;
-    }
-
-    .v-btn {
-        width: 45px;
-        height: 45px;
-    }
-
-    .action-btn {
-        width: 60px;
-        height: 60px;
-    }
+/* --- Shared UI Panel --- */
+.ui-panel {
+    background: var(--panel-bg);
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(59, 130, 246, 0.2);
+    color: var(--text-main);
 }
 
-/* Title Scene Styles */
+/* --- Title Scene --- */
 #title-scene {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     text-align: center;
 }
-
 .title-content h1 {
-    font-size: 3.5rem;
-    margin: 0;
-    letter-spacing: 8px;
-    color: var(--text-main);
-    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    margin: 0; letter-spacing: 6px;
+    text-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
 }
-
 .subtitle {
-    color: #94a3b8;
-    margin-bottom: 40px;
-    font-style: italic;
+    color: var(--text-muted);
+    margin: 10px 0 40px 0; font-style: italic;
 }
 
-.menu-options {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-}
-
-.menu-btn {
-    width: 200px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.menu-btn:hover:not(:disabled) {
-    background: var(--primary);
-    border-color: var(--primary);
-    transform: translateY(-2px);
-}
-
-.menu-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-/* Town Scene Styles (Basic) */
-#town-scene {
-    padding: 10px;
+/* --- Town Scene Layout --- */
+#game-ui {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    background: #0f172a;
 }
 
 .scene-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: 50px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 20px;
     border-bottom: 1px solid #334155;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    background: rgba(0,0,0,0.3);
 }
 
-.player-brief {
-    font-family: monospace;
-    background: var(--panel-bg);
-    padding: 4px 12px;
-    border-radius: 4px;
+#map-view {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    background: #1e293b;
+    position: relative;
 }
 
-.town-view {
-    background: rgba(255,255,255,0.05);
-    padding: 40px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-/* Map System */
 #map-container {
     position: relative;
-    width: fit-content;
-    margin: 10px auto;
     border: 2px solid #334155;
-    background: #1e293b;
-    overflow: hidden;
+    background: #0f172a;
+    width: fit-content; height: fit-content;
 }
 
+#map-grid { display: grid; }
 .tile {
-    width: var(--tile-size);
-    height: var(--tile-size);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(var(--tile-size) * 0.6);
+    width: var(--tile-size); height: var(--tile-size);
+    display: flex; align-items: center; justify-content: center;
+    font-size: calc(var(--tile-size) * 0.7);
 }
-
-.tile.wall {
-    background: #475569;
-}
+.tile.wall { background: #475569; }
 
 #player-sprite {
-    position: absolute;
-    width: var(--tile-size);
-    height: var(--tile-size);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute; top: 0; left: 0;
+    width: var(--tile-size); height: var(--tile-size);
+    display: flex; align-items: center; justify-content: center;
     font-size: calc(var(--tile-size) * 0.8);
     z-index: 10;
-    transition: left 0.1s linear, top 0.1s linear;
+    transition: left 0.15s linear, top 0.15s linear;
 }
 
-.controls-guide {
-    text-align: center;
-    color: #94a3b8;
-    font-size: 0.7rem;
-    margin: 5px 0;
+/* --- Virtual Controllers --- */
+#virtual-controller {
+    height: 160px;
+    display: flex; justify-content: space-around; align-items: center;
+    background: #0f172a;
+    border-top: 1px solid #334155;
 }
+.d-pad { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.d-pad-mid { display: flex; gap: 35px; }
+.v-btn {
+    width: 50px; height: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #334155; border-radius: 50%;
+    color: white; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; touch-action: none;
+}
+.v-btn.active { background: var(--primary); border-color: var(--text-main); }
+.action-btn { width: 75px; height: 75px; border-color: var(--primary); font-weight: bold; }
 
 .actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 10px;
+    height: 50px; display: flex; gap: 15px; justify-content: center; padding-bottom: 10px;
 }
 
-/* Dialogue System */
+/* --- Dialogue Window --- */
 #dialogue-window {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    z-index: 100;
+    position: absolute; bottom: 20px; left: 15px; right: 15px; z-index: 100;
 }
-
 .dialogue-box {
-    background: rgba(15, 23, 42, 0.95);
-    border: 3px solid #3b82f6;
-    border-radius: 8px;
-    padding: 15px;
-    height: 100px;
+    padding: 15px 20px; min-height: 90px;
     position: relative;
 }
-
-@media (max-width: 480px) {
-    .dialogue-box {
-        height: 80px;
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-    .name-tag {
-        font-size: 0.8rem;
-        top: -12px;
-    }
-}
-
 .name-tag {
-    position: absolute;
-    top: -15px;
-    left: 20px;
-    background: #3b82f6;
-    color: white;
-    padding: 2px 12px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.9rem;
+    position: absolute; top: -12px; left: 20px;
+    background: var(--primary); color: white;
+    padding: 2px 15px; border-radius: 4px;
+    font-weight: bold; font-size: 0.9rem;
+}
+.text-content { line-height: 1.6; font-size: 1.05rem; }
+
+/* --- Overlay Common (Shop & Menu) --- */
+.overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200; backdrop-filter: blur(2px);
 }
 
-.text-content {
-    font-size: 1.1rem;
-    line-height: 1.6;
+.shop-box, .menu-box {
+    width: 90%; max-width: 420px;
+    max-height: 85%;
+    display: flex; flex-direction: column;
+    padding: 20px;
 }
 
-.next-indicator {
-    position: absolute;
-    bottom: 10px;
-    right: 20px;
-    color: #3b82f6;
-    animation: bounce 1s infinite;
+.shop-header, .menu-tabs {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #334155;
+    margin-bottom: 15px; padding-bottom: 10px;
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(5px); }
-}
+.shop-gold { color: var(--accent); font-weight: bold; }
 
-.hidden { display: none; }
-
-/* Virtual Controller */
-#virtual-controller {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px;
-    margin-top: 10px;
-    user-select: none;
-    -webkit-user-select: none;
+/* Items List Styling */
+.shop-items, .inventory-list {
+    flex: 1; overflow-y: auto; padding-right: 5px;
 }
-
-.d-pad {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+.shop-item, .inventory-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 10px; margin-bottom: 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4px; border: 1px solid transparent;
 }
+.shop-item:hover { border-color: rgba(59, 130, 246, 0.5); background: rgba(59, 130, 246, 0.05); }
 
-.d-pad-mid {
-    display: flex;
-    gap: 35px;
-}
+.item-name { font-weight: bold; display: block; }
+.item-desc { font-size: 0.8rem; color: var(--text-muted); }
 
-.v-btn {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid #334155;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    touch-action: manipulation;
+.buy-btn, .menu-btn {
+    background: var(--primary); color: white;
+    border: none; padding: 8px 16px; border-radius: 4px;
+    font-weight: bold; cursor: pointer; transition: 0.2s;
 }
+.buy-btn:hover:not(:disabled) { background: var(--primary-hover); transform: scale(1.05); }
+.buy-btn:disabled { background: #475569; opacity: 0.5; }
 
-.v-btn.active {
-    background: var(--primary);
-    border-color: var(--text-main);
-    transform: scale(0.9);
+/* Menu Tabs */
+.tab-btn {
+    background: none; border: none; color: var(--text-muted);
+    font-size: 1rem; padding: 8px 15px; cursor: pointer;
 }
+.tab-btn.active { color: white; border-bottom: 2px solid var(--primary); }
 
-.action-btn {
-    width: 70px;
-    height: 70px;
-    background: rgba(59, 130, 246, 0.3);
-    border-color: var(--primary);
-    font-size: 1rem;
-    font-weight: bold;
-}
+/* Status List */
+.stats-list { flex: 1; padding: 10px 0; }
+.stat-row { display: flex; justify-content: space-between; padding: 6px 0; }
+.stat-divider { height: 1px; background: #334155; margin: 10px 0; }
+
+.hidden { display: none !important; }

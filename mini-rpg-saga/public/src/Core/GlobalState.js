@@ -17,6 +17,7 @@ export class GlobalState {
             name: '勇者',
             level: 1,
             exp: 0,
+            gold: 100,
             baseStats: {
                 str: 5,
                 dex: 5,

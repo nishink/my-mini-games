@@ -17,7 +17,7 @@ export class DialogueManager {
         this.container.id = 'dialogue-window';
         this.container.className = 'hidden';
         this.container.innerHTML = `
-            <div class="dialogue-box">
+            <div class="dialogue-box ui-panel">
                 <div id="dialogue-name" class="name-tag"></div>
                 <div id="dialogue-text" class="text-content"></div>
                 <div class="next-indicator">▼</div>
@@ -25,8 +25,8 @@ export class DialogueManager {
         `;
         parentContainer.appendChild(this.container);
 
-        this.nameEl = document.getElementById('dialogue-name');
-        this.textEl = document.getElementById('dialogue-text');
+        this.nameEl = this.container.querySelector('#dialogue-name');
+        this.textEl = this.container.querySelector('#dialogue-text');
 
         // クリック/タップで次へ進む
         this.container.addEventListener('click', (e) => {

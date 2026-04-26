@@ -19,8 +19,8 @@
 - [x] **Town Scene**: プレイヤーが移動し、NPCと会話できる拠点。
 - [x] **Dialogue System**: メッセージウィンドウとタイプライター演出、タップ/クリック送り。
 - [x] **Mobile Optimization**: レスポンシブレイアウトと仮想パッドの実装。
-- [ ] **Shop System**: アイテムの売買。
-- [ ] **Menu System**: ステータス確認と装備変更。
+- [x] **Shop System**: アイテムの売買。
+- [x] **Menu System**: ステータス確認と装備変更。
 
 ### 第3段階：試練の迷宮 (Dungeon & Battle)
 - [ ] **Dungeon Scene**: 敵と遭遇する探索エリア。
