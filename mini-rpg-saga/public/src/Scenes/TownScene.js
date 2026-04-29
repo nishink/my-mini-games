@@ -193,6 +193,13 @@ export class TownScene {
     tryMove(dx, dy) {
         const nextX = this.playerPos.x + dx;
         const nextY = this.playerPos.y + dy;
+
+        // 南の出口（y >= マップの高さ）
+        if (nextY >= this.map.length) {
+            sceneManager.switchScene('Dungeon');
+            return;
+        }
+
         if (this.isWalkable(nextX, nextY)) {
             this.playerPos.x = nextX;
             this.playerPos.y = nextY;
@@ -207,17 +214,16 @@ export class TownScene {
         return true;
     }
 
-    tryInteract() {
+    async tryInteract() {
         const targetX = this.playerPos.x + this.playerDir.x;
         const targetY = this.playerPos.y + this.playerDir.y;
         const npc = this.npcs.find(n => n.x === targetX && n.y === targetY);
         if (npc) {
             if (npc.name === '商人') {
-                dialogueManager.show(npc.name, ['いらっしゃい！', '旅に必要なものはそろっているかな？'], () => {
-                    shopManager.open();
-                });
+                await dialogueManager.show(npc.name, ['いらっしゃい！', '旅の準備はできているかい？']);
+                shopManager.open();
             } else {
-                dialogueManager.show(npc.name, npc.lines);
+                await dialogueManager.show(npc.name, npc.lines);
             }
         }
     }

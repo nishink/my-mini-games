@@ -26,6 +26,9 @@ export class SceneManager {
     async switchScene(name, data = {}) {
         console.log(`Switching to scene: ${name}`);
         
+        // シーン切り替えフラグを立てる（必要に応じて）
+        this.isSwitching = true;
+
         // 現在のシーンを終了
         if (this.currentScene) {
             if (this.currentScene.exit) {
@@ -34,19 +37,22 @@ export class SceneManager {
             this.container.innerHTML = '';
         }
 
-        // 新しいシーンを取得
         const nextScene = this.scenes.get(name);
         if (!nextScene) {
             console.error(`Scene not found: ${name}`);
+            this.isSwitching = false;
             return;
         }
 
         this.currentScene = nextScene;
         
-        // 新しいシーンを開始
         if (this.currentScene.enter) {
             await this.currentScene.enter(this.container, data);
         }
+
+        this.isSwitching = false;
+        // グローバルな時間をリセットするためのコールバックがあれば実行
+        if (this.onSceneChanged) this.onSceneChanged();
     }
 
     update(deltaTime) {

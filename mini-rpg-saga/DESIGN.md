@@ -15,17 +15,17 @@
 - [x] **SceneManager**: タイトル、街、ダンジョン、バトルを切り替える基盤。
 - [x] **Input System**: キーボードおよびモバイル用仮想コントローラーのサポート。
 
-### 第2段階：冒険の始まり (Town & Story) 🔄進行中
+### 第2段階：冒険の始まり (Town & Story) ✅完了
 - [x] **Town Scene**: プレイヤーが移動し、NPCと会話できる拠点。
 - [x] **Dialogue System**: メッセージウィンドウとタイプライター演出、タップ/クリック送り。
 - [x] **Mobile Optimization**: レスポンシブレイアウトと仮想パッドの実装。
 - [x] **Shop System**: アイテムの売買。
 - [x] **Menu System**: ステータス確認と装備変更。
 
-### 第3段階：試練の迷宮 (Dungeon & Battle)
-- [ ] **Dungeon Scene**: 敵と遭遇する探索エリア。
-- [ ] **Integrated Battle**: GlobalStateからステータスを読み込んで戦うバトルシーン。
-- [ ] **Reward Loop**: 勝利後の経験値獲得とルート取得の自動連携。
+### 第3段階：試練の迷宮 (Dungeon & Battle) ✅完了
+- [x] **Dungeon Scene**: 敵と遭遇する探索エリア。
+- [x] **Integrated Battle**: GlobalStateからステータスを読み込んで戦うバトルシーン。
+- [x] **Reward Loop**: 勝利後の経験値獲得とルート取得の自動連携。
 
 ### 第4段階：仕上げと拡張 (Polishing & Extras)
 - [ ] **World Map**: エリア選択。

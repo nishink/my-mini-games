@@ -38,17 +38,14 @@ export class GlobalState {
 
         this.flags = {
             hasMetKing: false,
-            tutorialComplete: false
+            tutorialComplete: false,
+            defeatedBoss: false
         };
 
         this.currentScene = 'Title';
     }
 
-    // データの取得用ヘルパー
     getDerivedStats() {
-        const { baseStats, equipment } = this.player; // state.equipment ではなく state.player.equipment にある想定（シリアライズ対象）
-        
-        // 装備品の補正値を取得
         let bonusAtk = 0;
         let bonusDef = 0;
 
@@ -66,19 +63,13 @@ export class GlobalState {
     }
 
     equipItem(item) {
-        if (item.type === 'weapon') {
-            this.equipment.weapon = item;
-        } else if (item.type === 'armor') {
-            this.equipment.armor = item;
-        }
+        if (item.type === 'weapon') this.equipment.weapon = item;
+        else if (item.type === 'armor') this.equipment.armor = item;
     }
 
     unequipItem(slot) {
-        if (slot === 'weapon') {
-            this.equipment.weapon = null;
-        } else if (slot === 'armor') {
-            this.equipment.armor = null;
-        }
+        if (slot === 'weapon') this.equipment.weapon = null;
+        else if (slot === 'armor') this.equipment.armor = null;
     }
 
     consumeItem(index) {
@@ -99,7 +90,6 @@ export class GlobalState {
                 used = true;
             }
         } else if (item.id === 'herb') {
-            // 現状は状態異常がないのでHPを少し回復
             this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 10);
             used = true;
         }
@@ -111,13 +101,43 @@ export class GlobalState {
         return false;
     }
 
+    getNextLevelExp() {
+        return this.player.level * 50;
+    }
+
+    addExp(amount) {
+        this.player.exp += amount;
+        let leveledUp = false;
+        
+        while (this.player.exp >= this.getNextLevelExp()) {
+            this.player.exp -= this.getNextLevelExp();
+            this.player.level++;
+            
+            this.player.baseStats.str += 1;
+            this.player.baseStats.vit += 1;
+            this.player.baseStats.int += 1;
+            this.player.baseStats.dex += 1;
+            
+            const stats = this.getDerivedStats();
+            this.player.currentHp = stats.maxHp;
+            this.player.currentMp = stats.maxMp;
+            
+            leveledUp = true;
+        }
+        return leveledUp;
+    }
+
+    addItem(item) {
+        if (!item) return;
+        this.inventory.push({ ...item });
+    }
+
     isEquipped(item) {
         if (!item) return false;
         return (this.equipment.weapon && this.equipment.weapon.id === item.id) ||
                (this.equipment.armor && this.equipment.armor.id === item.id);
     }
 
-    // JSON形式でエクスポート（セーブ用）
     serialize() {
         return JSON.stringify({
             player: this.player,
@@ -127,7 +147,6 @@ export class GlobalState {
         });
     }
 
-    // JSON形式からインポート（ロード用）
     deserialize(jsonString) {
         try {
             const data = JSON.parse(jsonString);

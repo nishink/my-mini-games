@@ -296,3 +296,169 @@ body {
 .dialog-actions .menu-btn {
     width: 80px;
 }
+
+/* --- First Person (3D) View --- */
+.first-person-view {
+    width: 100%; height: 100%;
+    position: relative;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+}
+
+#dungeon-3d-viewport {
+    width: 320px; height: 240px;
+    background: #020617;
+    position: relative;
+    border: 2px solid #334155;
+}
+
+#dungeon-compass {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.5); color: #fff;
+    padding: 2px 10px; border-radius: 4px; border: 1px solid #3b82f6;
+}
+
+.wall-3d {
+    position: absolute;
+    background: #1e293b;
+    border: 1px solid #3b82f6;
+    box-sizing: border-box;
+}
+
+/* 深度ごとの基本サイズ (中心を 160, 120 とする) */
+/* Depth 0 (Closest) */
+.wall-3d.depth-0.type-left { width: 40px; height: 240px; left: 0; top: 0; background: #2d3e50; }
+.wall-3d.depth-0.type-right { width: 40px; height: 240px; right: 0; top: 0; background: #2d3e50; }
+.wall-3d.depth-0.type-front { width: 240px; height: 240px; left: 40px; top: 0; background: #334155; }
+
+/* Depth 1 */
+.wall-3d.depth-1.type-left { width: 40px; height: 160px; left: 40px; top: 40px; background: #1e293b; }
+.wall-3d.depth-1.type-right { width: 40px; height: 160px; right: 40px; top: 40px; background: #1e293b; }
+.wall-3d.depth-1.type-front { width: 160px; height: 160px; left: 80px; top: 40px; background: #253344; }
+
+/* Depth 2 */
+.wall-3d.depth-2.type-left { width: 30px; height: 100px; left: 80px; top: 70px; background: #161e2b; }
+.wall-3d.depth-2.type-right { width: 30px; height: 100px; right: 80px; top: 70px; background: #161e2b; }
+.wall-3d.depth-2.type-front { width: 100px; height: 100px; left: 110px; top: 70px; background: #1c2636; }
+
+/* Depth 3 (Farthest) */
+.wall-3d.depth-3.type-left { width: 20px; height: 60px; left: 110px; top: 90px; background: #0f172a; }
+.wall-3d.depth-3.type-right { width: 20px; height: 60px; right: 110px; top: 90px; background: #0f172a; }
+.wall-3d.depth-3.type-front { width: 60px; height: 60px; left: 130px; top: 90px; background: #121c2f; }
+
+/* モバイル対応の調整 */
+@media (max-width: 480px) {
+    #dungeon-3d-viewport {
+        width: 240px; height: 180px;
+    }
+    /* モバイルサイズに合わせて壁の比率も調整が必要になるが、一旦基本サイズで表示 */
+}
+
+/* Mini Map */
+#mini-map-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #666;
+    padding: 2px;
+    pointer-events: none;
+}
+
+#mini-map-canvas {
+    display: block;
+}
+
+/* --- Battle Scene --- */
+.battle-ui {
+    background: linear-gradient(to bottom, #1e1b4b 0%, #020617 100%);
+}
+
+.battle-arena {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.enemy-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.enemy-sprite {
+    font-size: 80px;
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+    animation: monster-float 3s ease-in-out infinite;
+}
+
+@keyframes monster-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.enemy-info {
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+}
+
+.hp-bar-outer {
+    height: 8px;
+    background: #444;
+    border-radius: 4px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.hp-bar-inner {
+    height: 100%;
+    background: #ef4444;
+    transition: width 0.3s ease-out;
+}
+
+.player-status-bar {
+    margin: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.commands-area {
+    margin: 0 10px 15px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 15px;
+}
+
+.cmd-btn {
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--primary);
+    color: white;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cmd-btn:hover:not(:disabled) {
+    background: var(--primary);
+}
+
+.cmd-btn:disabled {
+    opacity: 0.3;
+}
+
+.cmd-btn.selected {
+    background: var(--primary);
+    border-color: white;
+    box-shadow: 0 0 10px var(--primary);
+    transform: scale(1.05);
+}

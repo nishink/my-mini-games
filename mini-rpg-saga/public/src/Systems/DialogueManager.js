@@ -7,12 +7,16 @@ export class DialogueManager {
         this.container = null;
         this.isActive = false;
         this.textQueue = [];
-        this.currentText = "";
+        this.currentFullText = "";
         this.isTyping = false;
         this.onComplete = null;
     }
 
     init(parentContainer) {
+        // すでに存在すれば削除して再作成（シーン切り替え時の重複防止）
+        const old = parentContainer.querySelector('#dialogue-window');
+        if (old) old.remove();
+
         this.container = document.createElement('div');
         this.container.id = 'dialogue-window';
         this.container.className = 'hidden';
@@ -28,22 +32,25 @@ export class DialogueManager {
         this.nameEl = this.container.querySelector('#dialogue-name');
         this.textEl = this.container.querySelector('#dialogue-text');
 
-        // クリック/タップで次へ進む
-        this.container.addEventListener('click', (e) => {
-            e.stopPropagation(); // 下層のイベントを防止
-            if (this.isActive) {
-                this.next();
-            }
-        });
+        this.container.onclick = (e) => {
+            e.stopPropagation();
+            if (this.isActive) this.next();
+        };
     }
 
-    async show(name, lines, onComplete = null) {
-        this.isActive = true;
-        this.onComplete = onComplete;
-        this.textQueue = [...lines];
-        this.nameEl.textContent = name;
-        this.container.classList.remove('hidden');
-        await this.next();
+    /**
+     * メッセージを表示し、終了するまで待機する
+     */
+    show(name, lines) {
+        return new Promise((resolve) => {
+            this.isActive = true;
+            this.onComplete = resolve; // 終了時に呼び出す
+            this.textQueue = [...lines];
+            this.nameEl.textContent = name;
+            this.nameEl.style.display = name ? 'block' : 'none';
+            this.container.classList.remove('hidden');
+            this.next();
+        });
     }
 
     async next() {
@@ -67,9 +74,9 @@ export class DialogueManager {
         this.textEl.textContent = "";
         
         for (let i = 0; i < text.length; i++) {
-            if (!this.isTyping) break; // スキップされた場合
+            if (!this.isTyping) break;
             this.textEl.textContent += text[i];
-            await new Promise(r => setTimeout(r, 30));
+            await new Promise(r => setTimeout(r, 20));
         }
         
         this.textEl.textContent = text;
@@ -84,7 +91,11 @@ export class DialogueManager {
     close() {
         this.isActive = false;
         this.container.classList.add('hidden');
-        if (this.onComplete) this.onComplete();
+        if (this.onComplete) {
+            const resolve = this.onComplete;
+            this.onComplete = null;
+            resolve();
+        }
     }
 }
 
