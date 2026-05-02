@@ -43,6 +43,13 @@ export class Input {
         }
         return !!this.keys[key];
     }
+
+    reset() {
+        this.keys = {};
+        for (let btn in this.virtualButtons) {
+            this.virtualButtons[btn] = false;
+        }
+    }
 }
 
 export const input = new Input();

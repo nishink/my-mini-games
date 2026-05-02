@@ -2,6 +2,8 @@
  * Mini RPG Saga - SceneManager
  * シーンの切り替えとライフサイクルを管理する。
  */
+import { input } from './Input.js';
+
 export class SceneManager {
     constructor() {
         this.scenes = new Map();
@@ -26,6 +28,9 @@ export class SceneManager {
     async switchScene(name, data = {}) {
         console.log(`Switching to scene: ${name}`);
         
+        // 入力状態のリセット
+        input.reset();
+
         // シーン切り替えフラグを立てる（必要に応じて）
         this.isSwitching = true;
 

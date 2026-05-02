@@ -171,7 +171,7 @@ export class DungeonScene {
         const nextX = this.playerPos.x + dx;
         const nextY = this.playerPos.y + dy;
         if (nextY >= this.map.length && this.playerPos.x === 7) {
-            sceneManager.switchScene('Town');
+            sceneManager.switchScene('WorldMap');
             return;
         }
         if (!this.isWall(nextX, nextY)) {
@@ -187,10 +187,17 @@ export class DungeonScene {
         const targetY = this.playerPos.y + this.playerDir.y;
         if (targetY >= 0 && targetY < this.map.length && targetX >= 0 && targetX < this.map[0].length) {
             if (this.map[targetY][targetX] === 2) {
-                await dialogueManager.show('宝箱', ['中には輝く宝石が入っていた！', '「試練の証」を手に入れた！']);
-                this.map[targetY][targetX] = 0;
-                state.flags.tutorialComplete = true;
-                this.updateView();
+                sceneManager.switchScene('MiniGame', {
+                    message: '宝箱には鍵がかかっている！',
+                    onSuccess: async () => {
+                        await dialogueManager.show('宝箱', ['鍵を開けることに成功した！', '中には輝く宝石が入っていた！', '「試練の証」を手に入れた！']);
+                        this.map[targetY][targetX] = 0;
+                        state.flags.tutorialComplete = true;
+                    },
+                    onFailure: async () => {
+                        await dialogueManager.show('宝箱', ['鍵を開けるのに失敗した...']);
+                    }
+                });
             }
         }
     }

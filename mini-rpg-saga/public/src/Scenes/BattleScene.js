@@ -4,6 +4,7 @@ import { input } from '../Core/Input.js';
 import { dialogueManager } from '../Systems/DialogueManager.js';
 import { notificationManager } from '../Systems/NotificationManager.js';
 import { enemies } from '../Core/EnemyDB.js';
+import { soundManager } from '../Core/SoundManager.js';
 
 export class BattleScene {
     constructor() {
@@ -133,6 +134,18 @@ export class BattleScene {
         const stats = state.getDerivedStats();
         let damage = Math.max(1, stats.atk - this.enemy.def + Math.floor(Math.random() * 3));
         this.enemy.hp -= damage;
+        
+        // エフェクト演出
+        soundManager.playHit();
+        const enemySprite = this.container.querySelector('.enemy-sprite');
+        enemySprite.classList.add('flash');
+        this.container.classList.add('shake');
+        
+        setTimeout(() => {
+            enemySprite.classList.remove('flash');
+            this.container.classList.remove('shake');
+        }, 500);
+
         this.updateHpBars();
         await dialogueManager.show('', [`${state.player.name} の攻撃！`, `${this.enemy.name} に ${damage} のダメージ！`]);
     }
@@ -141,6 +154,18 @@ export class BattleScene {
         const stats = state.getDerivedStats();
         let damage = Math.max(1, this.enemy.atk - stats.def + Math.floor(Math.random() * 3));
         state.player.currentHp = Math.max(0, state.player.currentHp - damage);
+        
+        // エフェクト演出
+        soundManager.playHit();
+        this.container.classList.add('shake');
+        const playerStats = this.container.querySelector('.player-status-bar');
+        playerStats.classList.add('flash');
+
+        setTimeout(() => {
+            this.container.classList.remove('shake');
+            playerStats.classList.remove('flash');
+        }, 500);
+
         this.updateHpBars();
         await dialogueManager.show('', [`${this.enemy.name} の攻撃！`, `${state.player.name} は ${damage} のダメージを受けた！`]);
         if (state.player.currentHp <= 0) await this.lose();

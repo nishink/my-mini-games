@@ -27,10 +27,10 @@
 - [x] **Integrated Battle**: GlobalStateからステータスを読み込んで戦うバトルシーン。
 - [x] **Reward Loop**: 勝利後の経験値獲得とルート取得の自動連携。
 
-### 第4段階：仕上げと拡張 (Polishing & Extras)
-- [ ] **World Map**: エリア選択。
-- [ ] **Visual Polish**: エフェクト、BGM、SE。
-- [ ] **Mini-game Integration**: 特定のイベントでのミニゲーム挿入。
+### 第4段階：仕上げと拡張 (Polishing & Extras) ✅完了
+- [x] **World Map**: エリア選択。
+- [x] **Visual Polish**: エフェクト、BGM、SE。
+- [x] **Mini-game Integration**: 特定のイベントでのミニゲーム挿入。
 
 ## 技術スタック
 - 言語: JavaScript (ES Modules)

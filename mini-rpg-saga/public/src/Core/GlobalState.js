@@ -1,6 +1,7 @@
+import { soundManager } from './SoundManager.js';
+
 /**
  * Mini RPG Saga - GlobalState
- * ゲーム全体のステート（プレイヤーの状態、インベントリ、フラグなど）を管理するシングルトン。
  */
 export class GlobalState {
     constructor() {
@@ -83,15 +84,18 @@ export class GlobalState {
             if (this.player.currentHp < stats.maxHp) {
                 this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 50);
                 used = true;
+                soundManager.playHeal();
             }
         } else if (item.id === 'ether') {
             if (this.player.currentMp < stats.maxMp) {
                 this.player.currentMp = Math.min(stats.maxMp, this.player.currentMp + 20);
                 used = true;
+                soundManager.playOk();
             }
         } else if (item.id === 'herb') {
             this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 10);
             used = true;
+            soundManager.playHeal();
         }
 
         if (used) {

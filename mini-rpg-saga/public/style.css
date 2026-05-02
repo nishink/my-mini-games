@@ -401,6 +401,25 @@ body {
     50% { transform: translateY(-15px); }
 }
 
+@keyframes screen-shake {
+    0%, 100% { transform: translate(0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-5px, 0); }
+    20%, 40%, 60%, 80% { transform: translate(5px, 0); }
+}
+
+@keyframes damage-flash {
+    0%, 100% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.5; filter: brightness(3); color: #ff0000; }
+}
+
+.shake {
+    animation: screen-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.flash {
+    animation: damage-flash 0.1s linear 3;
+}
+
 .enemy-info {
     width: 200px;
     padding: 10px;
@@ -461,4 +480,135 @@ body {
     border-color: white;
     box-shadow: 0 0 10px var(--primary);
     transform: scale(1.05);
+}
+
+/* --- World Map Scene --- */
+.world-map-ui {
+    background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+}
+
+.map-locations {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.location-card {
+    width: 80%;
+    max-width: 300px;
+    padding: 20px;
+    background: var(--panel-bg);
+    border: 2px solid #334155;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.location-card.selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px var(--primary);
+    transform: scale(1.05);
+}
+
+.location-card.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.location-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.location-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.location-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* --- MiniGame Scene --- */
+.minigame-ui {
+    background: #020617;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.minigame-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.minigame-msg {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: var(--accent);
+}
+
+.timing-bar-bg {
+    width: 80%;
+    max-width: 400px;
+    height: 30px;
+    background: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.timing-target {
+    position: absolute;
+    height: 100%;
+    background: rgba(59, 130, 246, 0.5);
+    border-left: 2px solid var(--primary);
+    border-right: 2px solid var(--primary);
+}
+
+.timing-cursor {
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 0 0 10px #fff;
+    transform: translateX(-50%);
+}
+
+.minigame-hint {
+    margin-top: 20px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* --- Castle Scene --- */
+.castle-ui {
+    background: linear-gradient(to bottom, #1e3a8a 0%, #0f172a 100%);
+}
+
+.castle-gate {
+    font-size: 8rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.4));
+}
+
+.construction-msg {
+    text-align: center;
+    color: var(--accent);
+    font-size: 1.2rem;
+    line-height: 1.6;
 }

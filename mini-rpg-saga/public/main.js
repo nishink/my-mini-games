@@ -3,6 +3,9 @@ import { TitleScene } from './src/Scenes/TitleScene.js';
 import { TownScene } from './src/Scenes/TownScene.js';
 import { DungeonScene } from './src/Scenes/DungeonScene.js';
 import { BattleScene } from './src/Scenes/BattleScene.js';
+import { WorldMapScene } from './src/Scenes/WorldMapScene.js';
+import { MiniGameScene } from './src/Scenes/MiniGameScene.js';
+import { CastleScene } from './src/Scenes/CastleScene.js';
 
 class Game {
     constructor() {
@@ -15,6 +18,9 @@ class Game {
         sceneManager.register('Town', new TownScene());
         sceneManager.register('Dungeon', new DungeonScene());
         sceneManager.register('Battle', new BattleScene());
+        sceneManager.register('WorldMap', new WorldMapScene());
+        sceneManager.register('MiniGame', new MiniGameScene());
+        sceneManager.register('Castle', new CastleScene());
 
         // シーン切り替え直後にDeltaTimeが跳ね上がらないように時間をリセット
         sceneManager.onSceneChanged = () => {

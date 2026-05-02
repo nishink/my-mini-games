@@ -196,7 +196,7 @@ export class TownScene {
 
         // 南の出口（y >= マップの高さ）
         if (nextY >= this.map.length) {
-            sceneManager.switchScene('Dungeon');
+            sceneManager.switchScene('WorldMap');
             return;
         }
 
