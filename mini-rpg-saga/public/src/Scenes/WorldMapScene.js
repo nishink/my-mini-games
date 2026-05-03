@@ -21,6 +21,19 @@ export class WorldMapScene {
         // 進行状況に合わせて場所のアンロック状態を更新
         this.locations.find(l => l.id === 'Castle').unlocked = state.flags.tutorialComplete;
         
+        // 魔王城のアンロック判定を追加
+        if (!this.locations.some(l => l.id === 'DemonKingCastle')) {
+            this.locations.push({ 
+                id: 'DemonKingCastle', 
+                name: '魔王城', 
+                desc: '全ての元凶が住まう不浄の城', 
+                icon: '🏰', 
+                unlocked: state.flags.acceptedQuest 
+            });
+        } else {
+            this.locations.find(l => l.id === 'DemonKingCastle').unlocked = state.flags.acceptedQuest;
+        }
+        
         this.render();
         notificationManager.init(this.container);
         menuManager.init(this.container);

@@ -14,17 +14,20 @@ export class BattleScene {
         this.commands = ['attack', 'guard', 'run'];
         this.commandNames = ['攻撃', '防御', '逃げる'];
         this.inputDelay = 0;
+        this.returnScene = 'Dungeon';
 
         // アイテム情報の簡易定義（ドロップ表示用）
         this.itemCatalog = {
             potion: { id: 'potion', name: 'ポーション', description: 'HPを50回復', price: 20, type: 'consumable' },
             ether: { id: 'ether', name: 'エーテル', description: 'MPを20回復', price: 50, type: 'consumable' },
-            herb: { id: 'herb', name: 'やくそう', description: 'HPを10回復', price: 10, type: 'consumable' }
+            herb: { id: 'herb', name: 'やくそう', description: 'HPを10回復', price: 10, type: 'consumable' },
+            elixir: { id: 'elixir', name: 'エリクサー', description: 'HPとMPを全回復', price: 500, type: 'consumable' }
         };
     }
 
     async enter(container, data) {
         this.container = container;
+        this.returnScene = data?.returnScene || 'Dungeon';
         const enemyKeys = Object.keys(enemies);
         const randomKey = enemyKeys[Math.floor(Math.random() * enemyKeys.length)];
         this.enemy = { ...enemies[data?.enemyId || randomKey] };
@@ -32,6 +35,10 @@ export class BattleScene {
         this.renderLayout();
         dialogueManager.init(this.container);
         notificationManager.init(this.container);
+
+        if (this.enemy.isBoss) {
+            this.container.classList.add('boss-battle');
+        }
 
         await dialogueManager.show('', [`${this.enemy.name} があらわれた！`]);
         this.startTurn();
@@ -120,12 +127,17 @@ export class BattleScene {
         if (action === 'attack') await this.playerAttack();
         else if (action === 'guard') await dialogueManager.show('', [`${state.player.name} は身を固めた！`]);
         else if (action === 'run') {
-            if (Math.random() > 0.4) {
+            if (this.enemy.isBoss) {
+                await dialogueManager.show('', ['魔王からは逃げられない！']);
+            } else if (Math.random() > 0.4) {
                 await dialogueManager.show('', ['うまく逃げ切れた！']);
-                sceneManager.switchScene('Dungeon', { fromBattle: true });
+                sceneManager.switchScene(this.returnScene, { fromBattle: true });
                 return;
-            } else { await dialogueManager.show('', ['逃げられなかった！']); }
+            } else { 
+                await dialogueManager.show('', ['逃げられなかった！']); 
+            }
         }
+        
         if (this.enemy.hp <= 0) await this.win();
         else await this.enemyTurn();
     }
@@ -173,7 +185,16 @@ export class BattleScene {
     }
 
     async win() {
-        const lines = [`${this.enemy.name} をたおした！`, `${this.enemy.exp} の経験値と ${this.enemy.gold} G を手に入れた！`];
+        const lines = [`${this.enemy.name} をたおした！`];
+        
+        if (this.enemy.isBoss) {
+            lines.push('ついに、ついに魔王を打ち倒した！', '世界に平和が戻ったのだ！');
+            await dialogueManager.show('', lines);
+            sceneManager.switchScene('Ending');
+            return;
+        }
+
+        lines.push(`${this.enemy.exp} の経験値と ${this.enemy.gold} G を手に入れた！`);
         
         // 経験値加算とレベルアップ判定
         const leveledUp = state.addExp(this.enemy.exp);
@@ -197,7 +218,7 @@ export class BattleScene {
         }
 
         await dialogueManager.show('', lines);
-        sceneManager.switchScene('Dungeon', { fromBattle: true });
+        sceneManager.switchScene(this.returnScene, { fromBattle: true });
     }
 
     async lose() {

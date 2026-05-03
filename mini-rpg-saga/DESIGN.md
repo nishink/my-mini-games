@@ -38,10 +38,10 @@
 - [x] **Quest System**: 王様からの依頼（フラグ管理の深化）。
 - [x] **Character Growth**: ステータスポイントによる自由な成長要素。
 
-### 第6段階：決戦の刻 (Final Battle)
-- [ ] **Demon King's Castle**: 最終ダンジョンの実装。
-- [ ] **Boss Mechanics**: 特殊な行動パターンを持つボスバトル。
-- [ ] **Ending**: 冒険の結末とスタッフロール。
+### 第6段階：決戦の刻 (Final Battle) ✅完了
+- [x] **Demon King's Castle**: 最終ダンジョンの実装。
+- [x] **Boss Mechanics**: 特殊な行動パターンを持つボスバトル。
+- [x] **Ending**: 冒険の結末とスタッフロール。
 
 ## 技術スタック
 - 言語: JavaScript (ES Modules)

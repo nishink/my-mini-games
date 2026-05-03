@@ -38,5 +38,47 @@ export const enemies = {
         exp: 12,
         gold: 8,
         drops: [{ id: 'potion', chance: 0.1 }]
+    },
+    skeleton: {
+        id: 'skeleton',
+        name: 'スケルトン',
+        emoji: '💀',
+        hp: 120,
+        maxHp: 120,
+        atk: 25,
+        def: 10,
+        exp: 80,
+        gold: 40,
+        drops: [{ id: 'ether', chance: 0.2 }]
+    },
+    dragon: {
+        id: 'dragon',
+        name: 'ドラゴン',
+        emoji: '🐉',
+        hp: 300,
+        maxHp: 300,
+        atk: 45,
+        def: 20,
+        exp: 250,
+        gold: 200,
+        drops: [{ id: 'elixir', chance: 0.1 }]
+    },
+    demon_king: {
+        id: 'demon_king',
+        name: '魔王',
+        emoji: '👿',
+        hp: 1000,
+        maxHp: 1000,
+        atk: 60,
+        def: 30,
+        exp: 0,
+        gold: 0,
+        isBoss: true
     }
+};
+
+// エリアごとの出現テーブル
+export const encounterTables = {
+    Dungeon: ['slime', 'goblin', 'bat'],
+    DemonKingCastle: ['skeleton', 'dragon']
 };

@@ -501,17 +501,18 @@ body {
 .map-locations {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 15px;
+    padding: 15px;
+    overflow-y: auto;
 }
 
 .location-card {
-    width: 80%;
-    max-width: 300px;
-    padding: 20px;
+    width: 42%;
+    max-width: 180px;
+    padding: 12px;
     background: var(--panel-bg);
     border: 2px solid #334155;
     border-radius: 12px;
@@ -532,18 +533,18 @@ body {
 }
 
 .location-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-.location-name {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 2rem;
     margin-bottom: 5px;
 }
 
+.location-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
 .location-desc {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
@@ -668,4 +669,54 @@ body {
     justify-content: center;
     border-radius: 50%;
     font-size: 1.1rem;
+}
+
+/* --- Demon King Castle & Final Battle --- */
+.demon-castle-ui {
+    background: linear-gradient(to bottom, #450a0a 0%, #020617 100%);
+}
+
+.boss-battle {
+    background: radial-gradient(circle, #7f1d1d 0%, #020617 100%) !important;
+}
+
+.boss-battle .enemy-sprite {
+    font-size: 120px;
+    filter: drop-shadow(0 0 40px #ff0000);
+}
+
+/* --- Ending Scene --- */
+.ending-scene {
+    background: #000 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ending-title {
+    font-size: 4rem;
+    color: var(--accent);
+    margin-bottom: 50px;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+}
+
+.credits-roll {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.credit-line {
+    opacity: 0;
+    margin: 15px 0;
+    font-size: 1.1rem;
+    transition: opacity 1.5s ease-out;
+}
+
+.credit-line.fade-in {
+    opacity: 1;
+}
+
+#return-title {
+    margin-top: 20px;
 }
