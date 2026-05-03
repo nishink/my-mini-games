@@ -10,13 +10,15 @@ export class ShopManager {
         this.container = null;
         this.isActive = false;
         this.currentMode = 'buy';
+        this.shopTitle = 'ショップ';
         
-        this.catalog = [
+        this.defaultCatalog = [
             { id: 'potion', name: 'ポーション', description: 'HPを50回復', price: 20, type: 'consumable' },
             { id: 'ether', name: 'エーテル', description: 'MPを20回復', price: 50, type: 'consumable' },
             { id: 'iron_sword', name: '鉄の剣', description: '攻撃力 +10', price: 150, type: 'weapon', atk: 10 },
             { id: 'leather_armor', name: '皮の服', description: '防御力 +5', price: 100, type: 'armor', def: 5 }
         ];
+        this.catalog = [...this.defaultCatalog];
     }
 
     init(parentContainer) {
@@ -26,9 +28,11 @@ export class ShopManager {
         parentContainer.appendChild(this.container);
     }
 
-    open() {
+    open(catalog = null, title = 'ショップ') {
         this.isActive = true;
         this.currentMode = 'buy';
+        this.catalog = catalog || this.defaultCatalog;
+        this.shopTitle = title;
         this.render();
         this.container.classList.remove('hidden');
     }
@@ -37,11 +41,13 @@ export class ShopManager {
         this.container.innerHTML = `
             <div class="shop-box ui-panel">
                 <div class="shop-header">
-                    <div class="shop-tabs">
-                        <button class="tab-btn ${this.currentMode === 'buy' ? 'active' : ''}" data-mode="buy">買う</button>
-                        <button class="tab-btn ${this.currentMode === 'sell' ? 'active' : ''}" data-mode="sell">売る</button>
-                    </div>
+                    <h3 class="shop-name">${this.shopTitle}</h3>
                     <div class="shop-gold">${state.player.gold} G</div>
+                </div>
+                
+                <div class="shop-tabs">
+                    <button class="tab-btn ${this.currentMode === 'buy' ? 'active' : ''}" data-mode="buy">買う</button>
+                    <button class="tab-btn ${this.currentMode === 'sell' ? 'active' : ''}" data-mode="sell">売る</button>
                 </div>
 
                 <div class="shop-content">

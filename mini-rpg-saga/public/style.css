@@ -160,31 +160,42 @@ body {
 
 .shop-box, .menu-box {
     width: 90%; max-width: 440px;
-    min-height: 300px;
-    max-height: 85%;
+    height: 480px; /* 固定高さを設定 */
     display: flex; flex-direction: column;
     padding: 15px;
+    overflow: hidden;
 }
 
-.menu-content {
+.shop-content, .menu-content {
     flex: 1;
     overflow-y: auto;
     margin: 10px 0;
+    min-height: 0; /* Flexboxのオーバーフロー対策 */
 }
 
 .shop-header, .menu-tabs {
     display: flex; justify-content: space-between; align-items: center;
     border-bottom: 1px solid #334155;
     margin-bottom: 15px; padding-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.shop-name {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--primary);
 }
 
 .shop-gold { color: var(--accent); font-weight: bold; }
 
 /* Items List Styling */
 .shop-items, .inventory-list {
-    flex: 1; overflow-y: auto; padding-right: 5px;
+    display: flex;
+    flex-direction: column;
+    padding-right: 5px;
 }
 .shop-item, .inventory-item {
+...
     display: flex; justify-content: space-between; align-items: center;
     padding: 12px 10px; margin-bottom: 8px;
     background: rgba(255,255,255,0.03);
@@ -611,4 +622,50 @@ body {
     color: var(--accent);
     font-size: 1.2rem;
     line-height: 1.6;
+}
+
+/* --- Character Growth UI --- */
+.menu-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.menu-stat-points {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.menu-stat-points.active {
+    color: var(--accent);
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.stat-group {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.stat-group .stat-row {
+    align-items: center;
+}
+
+.stat-group .action-btn-sm {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
 }

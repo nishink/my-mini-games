@@ -42,6 +42,9 @@ export class MenuManager {
                 </div>
 
                 <div class="menu-footer">
+                    <div class="menu-stat-points ${state.player.statPoints > 0 ? 'active' : ''}">
+                        残りポイント: <span>${state.player.statPoints}</span>
+                    </div>
                     <button id="close-menu" class="menu-btn">閉じる</button>
                 </div>
             </div>
@@ -59,10 +62,12 @@ export class MenuManager {
                 const index = btn.getAttribute('data-index');
                 const action = btn.getAttribute('data-action');
                 const slot = btn.getAttribute('data-slot');
+                const stat = btn.getAttribute('data-stat');
 
                 if (action === 'equip') this.equipItem(parseInt(index));
                 else if (action === 'unequip') this.unequipItem(slot);
                 else if (action === 'use') this.useItem(parseInt(index));
+                else if (action === 'upgrade') this.upgradeStat(stat);
             };
         });
 
@@ -91,10 +96,29 @@ export class MenuManager {
                 <div class="stat-row"><span>攻撃力</span> <span>${stats.atk}</span></div>
                 <div class="stat-row"><span>防御力</span> <span>${stats.def}</span></div>
                 <div class="stat-divider"></div>
-                <div class="stat-row"><span>武器</span> <span class="eq-val">${state.equipment.weapon ? state.equipment.weapon.name : 'なし'}</span></div>
-                <div class="stat-row"><span>防具</span> <span class="eq-val">${state.equipment.armor ? state.equipment.armor.name : 'なし'}</span></div>
+                <div class="stat-group">
+                    <div class="stat-row">
+                        <span>力 (STR): ${state.player.baseStats.str + state.player.bonusStats.str}</span>
+                        ${state.player.statPoints > 0 ? `<button class="action-btn-sm" data-action="upgrade" data-stat="str">+</button>` : ''}
+                    </div>
+                    <div class="stat-row">
+                        <span>体 (VIT): ${state.player.baseStats.vit + state.player.bonusStats.vit}</span>
+                        ${state.player.statPoints > 0 ? `<button class="action-btn-sm" data-action="upgrade" data-stat="vit">+</button>` : ''}
+                    </div>
+                    <div class="stat-row">
+                        <span>知 (INT): ${state.player.baseStats.int + state.player.bonusStats.int}</span>
+                        ${state.player.statPoints > 0 ? `<button class="action-btn-sm" data-action="upgrade" data-stat="int">+</button>` : ''}
+                    </div>
+                </div>
             </div>
         `;
+    }
+
+    upgradeStat(stat) {
+        if (state.upgradeStat(stat)) {
+            notificationManager.show(`${stat.toUpperCase()} が上昇しました`);
+            this.render();
+        }
     }
 
     renderEquip() {

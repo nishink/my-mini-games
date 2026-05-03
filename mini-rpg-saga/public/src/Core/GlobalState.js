@@ -25,6 +25,12 @@ export class GlobalState {
                 int: 5,
                 vit: 5
             },
+            bonusStats: {
+                str: 0,
+                dex: 0,
+                int: 0,
+                vit: 0
+            },
             statPoints: 0,
             currentHp: 150,
             currentMp: 75
@@ -39,6 +45,7 @@ export class GlobalState {
 
         this.flags = {
             hasMetKing: false,
+            acceptedQuest: false,
             tutorialComplete: false,
             defeatedBoss: false
         };
@@ -53,11 +60,17 @@ export class GlobalState {
         if (this.equipment.weapon) bonusAtk += this.equipment.weapon.atk || 0;
         if (this.equipment.armor) bonusDef += this.equipment.armor.def || 0;
 
+        // 安全な値の取得（undefined対策）
+        const b = this.player.bonusStats || { str: 0, vit: 0, int: 0 };
+        const totalStr = this.player.baseStats.str + (b.str || 0);
+        const totalVit = this.player.baseStats.vit + (b.vit || 0);
+        const totalInt = this.player.baseStats.int + (b.int || 0);
+
         const stats = {
-            atk: (this.player.baseStats.str * 2) + bonusAtk,
-            def: Math.floor(this.player.baseStats.vit * 1.5) + bonusDef,
-            maxHp: 100 + this.player.baseStats.vit * 10,
-            maxMp: 50 + this.player.baseStats.int * 5
+            atk: (totalStr * 2) + bonusAtk,
+            def: Math.floor(totalVit * 1.5) + bonusDef,
+            maxHp: 100 + totalVit * 10,
+            maxMp: 50 + totalInt * 5
         };
 
         return stats;
@@ -116,6 +129,7 @@ export class GlobalState {
         while (this.player.exp >= this.getNextLevelExp()) {
             this.player.exp -= this.getNextLevelExp();
             this.player.level++;
+            this.player.statPoints += 3; // レベルアップで3ポイント付与
             
             this.player.baseStats.str += 1;
             this.player.baseStats.vit += 1;
@@ -129,6 +143,15 @@ export class GlobalState {
             leveledUp = true;
         }
         return leveledUp;
+    }
+
+    upgradeStat(stat) {
+        if (this.player.statPoints > 0 && this.player.bonusStats.hasOwnProperty(stat)) {
+            this.player.bonusStats[stat]++;
+            this.player.statPoints--;
+            return true;
+        }
+        return false;
     }
 
     addItem(item) {
@@ -157,7 +180,16 @@ export class GlobalState {
             this.player = data.player;
             this.inventory = data.inventory;
             this.equipment = data.equipment;
-            this.flags = data.flags;
+            this.flags = { ...this.flags, ...data.flags }; // 既存のデフォルトフラグとマージ
+
+            // 互換性維持：古いセーブデータに新しいパラメータがない場合の補完
+            if (!this.player.bonusStats) {
+                this.player.bonusStats = { str: 0, dex: 0, int: 0, vit: 0 };
+            }
+            if (this.player.statPoints === undefined) {
+                this.player.statPoints = 0;
+            }
+
             return true;
         } catch (e) {
             console.error('Failed to deserialize state:', e);

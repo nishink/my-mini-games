@@ -32,6 +32,17 @@
 - [x] **Visual Polish**: エフェクト、BGM、SE。
 - [x] **Mini-game Integration**: 特定のイベントでのミニゲーム挿入。
 
+### 第5段階：王都の繁栄 (Royal Capital) ✅完了
+- [x] **Castle Town**: 広大な王都のマップ実装（複数の施設）。
+- [x] **Advanced Shop**: 強力な装備品と魔法アイテムの追加。
+- [x] **Quest System**: 王様からの依頼（フラグ管理の深化）。
+- [x] **Character Growth**: ステータスポイントによる自由な成長要素。
+
+### 第6段階：決戦の刻 (Final Battle)
+- [ ] **Demon King's Castle**: 最終ダンジョンの実装。
+- [ ] **Boss Mechanics**: 特殊な行動パターンを持つボスバトル。
+- [ ] **Ending**: 冒険の結末とスタッフロール。
+
 ## 技術スタック
 - 言語: JavaScript (ES Modules)
 - 基盤: オリジナル・シーン管理システム

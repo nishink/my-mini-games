@@ -5,23 +5,25 @@
 export class Input {
     constructor() {
         this.keys = {};
-        this.virtualButtons = {
-            up: false, down: false, left: false, right: false, action: false
-        };
+        this.virtualButtons = {};
 
         window.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Enter', 'w', 'a', 's', 'd'].includes(e.key)) {
+                e.preventDefault();
+            }
             this.keys[e.key] = true;
         });
 
         window.addEventListener('keyup', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Enter', 'w', 'a', 's', 'd'].includes(e.key)) {
+                e.preventDefault();
+            }
             this.keys[e.key] = false;
         });
     }
 
     setVirtualButton(btn, active) {
-        if (this.virtualButtons.hasOwnProperty(btn)) {
-            this.virtualButtons[btn] = active;
-        }
+        this.virtualButtons[btn] = active;
     }
 
     get direction() {
@@ -31,23 +33,22 @@ export class Input {
         if (this.keys['ArrowLeft'] || this.keys['a'] || this.virtualButtons.left) dir.x = -1;
         if (this.keys['ArrowRight'] || this.keys['d'] || this.virtualButtons.right) dir.x = 1;
         
-        // 斜め移動の抑制（4方向移動にする場合）
         if (dir.x !== 0) dir.y = 0;
-        
         return dir;
     }
 
     isPressed(key) {
-        if (key === ' ' || key === 'Enter') {
-            return !!this.keys[key] || this.virtualButtons.action;
+        if (key === ' ' || key === 'Enter' || key === 'action') {
+            return !!this.keys[' '] || !!this.keys['Enter'] || !!this.virtualButtons.action;
         }
-        return !!this.keys[key];
+        return !!this.keys[key] || !!this.virtualButtons[key];
     }
 
     reset() {
         this.keys = {};
-        for (let btn in this.virtualButtons) {
-            this.virtualButtons[btn] = false;
+        // 仮想ボタンの状態をクリア
+        for (let key in this.virtualButtons) {
+            this.virtualButtons[key] = false;
         }
     }
 }

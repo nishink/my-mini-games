@@ -49,10 +49,6 @@ export class TownScene {
         menuManager.init(this.container);
         notificationManager.init(this.container);
         dialogManager.init(this.container);
-
-        this.container.addEventListener('click', () => {
-            if (dialogueManager.isActive) dialogueManager.next();
-        });
     }
 
     renderLayout() {
@@ -85,24 +81,11 @@ export class TownScene {
                 </div>
 
                 <div class="actions">
-                    <button id="save-btn" class="menu-btn">記録</button>
-                    <button id="menu-btn" class="menu-btn">メニュー</button>
+                    <button id="v-save" class="menu-btn" tabindex="-1">記録</button>
+                    <button id="v-menu" class="menu-btn" tabindex="-1">メニュー</button>
                 </div>
             </div>
         `;
-
-        this.container.querySelector('#save-btn').onclick = (e) => {
-            e.stopPropagation();
-            if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) return;
-            SaveManager.save();
-            notificationManager.show('冒険を記録しました');
-        };
-
-        this.container.querySelector('#menu-btn').onclick = (e) => {
-            e.stopPropagation();
-            if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) return;
-            menuManager.open();
-        };
 
         this.setupVirtualController();
     }
@@ -130,7 +113,7 @@ export class TownScene {
             btn.addEventListener('mouseleave', end);
         };
 
-        ['up', 'down', 'left', 'right', 'action'].forEach(k => bindBtn(`v-${k}`, k));
+        ['up', 'down', 'left', 'right', 'action', 'save', 'menu'].forEach(k => bindBtn(`v-${k}`, k));
     }
 
     renderMap() {
@@ -163,7 +146,7 @@ export class TownScene {
 
     update(deltaTime) {
         if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) {
-            if (dialogueManager.isActive && (input.isPressed(' ') || input.isPressed('Enter'))) {
+            if (dialogueManager.isActive && (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action'))) {
                 if (this.moveDelay <= 0) {
                     dialogueManager.next();
                     this.moveDelay = 300;
@@ -181,10 +164,17 @@ export class TownScene {
                 this.playerDir = { ...dir };
                 this.tryMove(dir.x, dir.y);
                 this.moveDelay = 150;
-            }
-
-            if (input.isPressed(' ') || input.isPressed('Enter')) {
+            } else if (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action')) {
                 this.tryInteract();
+                this.moveDelay = 300;
+            } else if (input.isPressed('save')) {
+                SaveManager.save();
+                notificationManager.show('冒険を記録しました');
+                input.setVirtualButton('save', false); // 処理後にリセット
+                this.moveDelay = 500;
+            } else if (input.isPressed('menu')) {
+                menuManager.open();
+                input.setVirtualButton('menu', false); // 処理後にリセット
                 this.moveDelay = 300;
             }
         }
