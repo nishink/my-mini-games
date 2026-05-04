@@ -43,6 +43,11 @@
 - [x] **Boss Mechanics**: 特殊な行動パターンを持つボスバトル。
 - [x] **Ending**: 冒険の結末とスタッフロール。
 
+### 第7段階：魔法と安らぎ (Magic & Recovery) ✅完了
+- [x] **Recovery Facilities**: 宿屋（始まりの村）や回復の泉（魔王城）の実装。
+- [x] **Magic System**: MPを消費して放つ強力な魔法（攻撃・回復）の導入。移動中の回復魔法使用にも対応。
+- [x] **Skill Progression**: レベルアップに伴う新魔法の習得。
+
 ## 技術スタック
 - 言語: JavaScript (ES Modules)
 - 基盤: オリジナル・シーン管理システム

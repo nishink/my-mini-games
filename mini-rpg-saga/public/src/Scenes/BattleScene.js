@@ -11,8 +11,8 @@ export class BattleScene {
         this.enemy = null;
         this.isPlayerTurn = false;
         this.selectedCommandIdx = 0;
-        this.commands = ['attack', 'guard', 'run'];
-        this.commandNames = ['攻撃', '防御', '逃げる'];
+        this.commands = ['attack', 'magic', 'guard', 'run'];
+        this.commandNames = ['攻撃', '魔法', '防御', '逃げる'];
         this.inputDelay = 0;
         this.returnScene = 'Dungeon';
 
@@ -124,9 +124,15 @@ export class BattleScene {
     async handleCommand(action) {
         this.isPlayerTurn = false;
         this.container.querySelector('#battle-commands').classList.add('hidden');
-        if (action === 'attack') await this.playerAttack();
-        else if (action === 'guard') await dialogueManager.show('', [`${state.player.name} は身を固めた！`]);
-        else if (action === 'run') {
+        
+        if (action === 'attack') {
+            await this.playerAttack();
+        } else if (action === 'magic') {
+            await this.openMagicMenu();
+            return; // 魔法メニュー内で次のターンへの遷移を管理
+        } else if (action === 'guard') {
+            await dialogueManager.show('', [`${state.player.name} は身を固めた！`]);
+        } else if (action === 'run') {
             if (this.enemy.isBoss) {
                 await dialogueManager.show('', ['魔王からは逃げられない！']);
             } else if (Math.random() > 0.4) {
@@ -142,12 +148,57 @@ export class BattleScene {
         else await this.enemyTurn();
     }
 
+    async openMagicMenu() {
+        if (state.player.spells.length === 0) {
+            await dialogueManager.show('', ['魔法を覚えていない！']);
+            this.startTurn();
+            return;
+        }
+
+        const magicList = state.player.spells.map(id => state.spellMaster[id]);
+        
+        // 最初の魔法を自動選択（簡易実装）
+        const spell = magicList[0];
+        await this.playerCastSpell(spell.id);
+    }
+
+    async playerCastSpell(spellId) {
+        const result = state.castSpell(spellId, true);
+        if (!result.success) {
+            await dialogueManager.show('', [result.msg]);
+            this.startTurn();
+            return;
+        }
+
+        if (result.spell.type === 'recovery') {
+            await dialogueManager.show('', [result.msg]);
+        } else if (result.spell.type === 'attack') {
+            let damage = result.spell.power + Math.floor(state.player.baseStats.int * 1.5) - this.enemy.def;
+            damage = Math.max(5, damage + Math.floor(Math.random() * 5));
+            this.enemy.hp -= damage;
+            
+            soundManager.playHit();
+            const enemySprite = this.container.querySelector('.enemy-sprite');
+            enemySprite.classList.add('flash');
+            this.container.classList.add('shake');
+            setTimeout(() => {
+                enemySprite.classList.remove('flash');
+                this.container.classList.remove('shake');
+            }, 500);
+
+            await dialogueManager.show('', [`${state.player.name} は ${result.spell.name} を唱えた！`, `${this.enemy.name} に ${damage} のダメージ！`]);
+        }
+
+        this.updateHpBars();
+        if (this.enemy.hp <= 0) await this.win();
+        else await this.enemyTurn();
+    }
+
     async playerAttack() {
         const stats = state.getDerivedStats();
         let damage = Math.max(1, stats.atk - this.enemy.def + Math.floor(Math.random() * 3));
         this.enemy.hp -= damage;
         
-        // エフェクト演出
         soundManager.playHit();
         const enemySprite = this.container.querySelector('.enemy-sprite');
         enemySprite.classList.add('flash');
@@ -167,7 +218,6 @@ export class BattleScene {
         let damage = Math.max(1, this.enemy.atk - stats.def + Math.floor(Math.random() * 3));
         state.player.currentHp = Math.max(0, state.player.currentHp - damage);
         
-        // エフェクト演出
         soundManager.playHit();
         this.container.classList.add('shake');
         const playerStats = this.container.querySelector('.player-status-bar');
@@ -196,11 +246,9 @@ export class BattleScene {
 
         lines.push(`${this.enemy.exp} の経験値と ${this.enemy.gold} G を手に入れた！`);
         
-        // 経験値加算とレベルアップ判定
         const leveledUp = state.addExp(this.enemy.exp);
         state.player.gold += this.enemy.gold;
 
-        // アイテムドロップ判定
         if (this.enemy.drops) {
             for (const drop of this.enemy.drops) {
                 if (Math.random() < drop.chance) {

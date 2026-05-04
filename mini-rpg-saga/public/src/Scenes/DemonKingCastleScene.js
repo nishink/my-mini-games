@@ -17,7 +17,7 @@ export class DemonKingCastleScene extends BaseDungeonScene {
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,1,1,1,1,1,1,1,1,1,1,1,0,1],
             [1,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
-            [1,0,1,0,1,1,1,0,1,1,1,0,1,0,1],
+            [1,0,1,0,1,1,1,3,1,1,1,0,1,0,1],
             [1,0,1,0,1,0,0,0,0,0,1,0,1,0,1],
             [1,0,0,0,1,0,1,0,1,0,1,0,0,0,1],
             [1,0,1,0,0,0,1,0,1,0,0,0,1,0,1],
@@ -31,7 +31,7 @@ export class DemonKingCastleScene extends BaseDungeonScene {
         ];
     }
 
-    async tryInteract() {
+    async handleInteraction() {
         const targetX = this.playerPos.x + this.playerDir.x;
         const targetY = this.playerPos.y + this.playerDir.y;
         if (targetY >= 0 && targetY < this.map.length && targetX >= 0 && targetX < this.map[0].length) {
@@ -39,6 +39,10 @@ export class DemonKingCastleScene extends BaseDungeonScene {
             if (tile === 2) {
                 await dialogueManager.show('魔王', ['よくぞここまでたどり着いた、勇者よ。', 'だが、ここがお前の墓場となるのだ！']);
                 sceneManager.switchScene('Battle', { enemyId: 'demon_king', isBoss: true, returnScene: this.sceneId });
+            } else if (tile === 3) {
+                state.rest();
+                await dialogueManager.show('回復の泉', ['泉から清らかな水が湧き出ている...', '体力が全快した！']);
+                this.updateView();
             }
         }
     }

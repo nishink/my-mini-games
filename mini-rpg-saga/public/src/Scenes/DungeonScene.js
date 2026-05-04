@@ -31,7 +31,7 @@ export class DungeonScene extends BaseDungeonScene {
         ];
     }
 
-    async tryInteract() {
+    async handleInteraction() {
         const targetX = this.playerPos.x + this.playerDir.x;
         const targetY = this.playerPos.y + this.playerDir.y;
         if (targetY >= 0 && targetY < this.map.length && targetX >= 0 && targetX < this.map[0].length) {

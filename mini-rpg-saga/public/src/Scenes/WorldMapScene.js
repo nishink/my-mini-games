@@ -109,10 +109,13 @@ export class WorldMapScene {
     updateSelection() {
         const cards = this.container.querySelectorAll('.location-card');
         cards.forEach((card, index) => {
-            card.classList.toggle('selected', index === this.selectedIndex);
-            if (index === this.selectedIndex) {
+            const isSelected = index === this.selectedIndex;
+            card.classList.toggle('selected', isSelected);
+            if (isSelected) {
                 card.style.borderColor = 'var(--primary)';
                 card.style.boxShadow = '0 0 15px var(--primary)';
+                // 選択された要素まで自動スクロール
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
                 card.style.borderColor = '#334155';
                 card.style.boxShadow = 'none';

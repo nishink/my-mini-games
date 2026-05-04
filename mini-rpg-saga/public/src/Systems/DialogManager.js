@@ -10,6 +10,10 @@ export class DialogManager {
     }
 
     init(parentContainer) {
+        // 重複防止
+        const old = parentContainer.querySelector('#dialog-overlay');
+        if (old) old.remove();
+
         this.container = document.createElement('div');
         this.container.id = 'dialog-overlay';
         this.container.className = 'hidden overlay';
@@ -45,13 +49,20 @@ export class DialogManager {
             </div>
         `;
 
-        this.container.querySelector('#dialog-yes').onclick = () => this.onResolve(true);
-        this.container.querySelector('#dialog-no').onclick = () => this.onResolve(false);
+        this.container.querySelector('#dialog-yes').onclick = (e) => {
+            e.stopPropagation();
+            if (this.onResolve) this.onResolve(true);
+        };
+        this.container.querySelector('#dialog-no').onclick = (e) => {
+            e.stopPropagation();
+            if (this.onResolve) this.onResolve(false);
+        };
     }
 
     close() {
         this.isActive = false;
         this.container.classList.add('hidden');
+        this.onResolve = null;
     }
 }
 

@@ -2,12 +2,18 @@ import { soundManager } from './SoundManager.js';
 
 /**
  * Mini RPG Saga - GlobalState
+ * ゲーム全体のステート（プレイヤーの状態、インベントリ、フラグなど）を管理するシングルトン。
  */
 export class GlobalState {
     constructor() {
         if (GlobalState.instance) {
             return GlobalState.instance;
         }
+
+        this.spellMaster = {
+            heal: { id: 'heal', name: 'ヒール', cost: 10, type: 'recovery', power: 50, field: true, desc: 'HPを約50回復' },
+            fire: { id: 'fire', name: 'ファイア', cost: 15, type: 'attack', power: 40, field: false, desc: '敵に火炎ダメージ' }
+        };
 
         this.reset();
         GlobalState.instance = this;
@@ -33,7 +39,8 @@ export class GlobalState {
             },
             statPoints: 0,
             currentHp: 150,
-            currentMp: 75
+            currentMp: 75,
+            spells: []
         };
 
         this.inventory = [];
@@ -135,6 +142,10 @@ export class GlobalState {
             this.player.baseStats.vit += 1;
             this.player.baseStats.int += 1;
             this.player.baseStats.dex += 1;
+
+            // 魔法の習得
+            if (this.player.level === 2) this.learnSpell('heal');
+            if (this.player.level === 4) this.learnSpell('fire');
             
             const stats = this.getDerivedStats();
             this.player.currentHp = stats.maxHp;
@@ -145,7 +156,42 @@ export class GlobalState {
         return leveledUp;
     }
 
+    learnSpell(spellId) {
+        if (!this.player.spells) this.player.spells = [];
+        if (!this.player.spells.includes(spellId)) {
+            this.player.spells.push(spellId);
+            return true;
+        }
+        return false;
+    }
+
+    castSpell(spellId, isBattle = false) {
+        const spell = this.spellMaster[spellId];
+        if (!spell || this.player.currentMp < spell.cost) return { success: false, msg: 'MPが足りません' };
+        if (!isBattle && !spell.field) return { success: false, msg: 'ここでは使えません' };
+
+        this.player.currentMp -= spell.cost;
+        let resultMsg = '';
+
+        if (spell.type === 'recovery') {
+            const stats = this.getDerivedStats();
+            const amount = spell.power + Math.floor((this.player.baseStats.int + (this.player.bonusStats?.int || 0)) * 0.5);
+            this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + amount);
+            resultMsg = `${spell.name}を唱えた！ HPが ${amount} 回復した！`;
+            soundManager.playHeal();
+        }
+
+        return { success: true, msg: resultMsg, spell };
+    }
+
+    rest() {
+        const stats = this.getDerivedStats();
+        this.player.currentHp = stats.maxHp;
+        this.player.currentMp = stats.maxMp;
+    }
+
     upgradeStat(stat) {
+        if (!this.player.bonusStats) this.player.bonusStats = { str: 0, dex: 0, int: 0, vit: 0 };
         if (this.player.statPoints > 0 && this.player.bonusStats.hasOwnProperty(stat)) {
             this.player.bonusStats[stat]++;
             this.player.statPoints--;
@@ -180,14 +226,17 @@ export class GlobalState {
             this.player = data.player;
             this.inventory = data.inventory;
             this.equipment = data.equipment;
-            this.flags = { ...this.flags, ...data.flags }; // 既存のデフォルトフラグとマージ
+            this.flags = { ...this.flags, ...data.flags };
 
-            // 互換性維持：古いセーブデータに新しいパラメータがない場合の補完
+            // 互換性補完
             if (!this.player.bonusStats) {
                 this.player.bonusStats = { str: 0, dex: 0, int: 0, vit: 0 };
             }
             if (this.player.statPoints === undefined) {
                 this.player.statPoints = 0;
+            }
+            if (!this.player.spells) {
+                this.player.spells = [];
             }
 
             return true;

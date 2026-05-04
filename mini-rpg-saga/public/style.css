@@ -287,11 +287,50 @@ body {
     color: var(--accent);
     font-weight: bold;
     font-family: monospace;
-}
 .eq-val {
     color: var(--accent);
 }
+
+/* --- Magic List UI --- */
+.magic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.magic-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #334155;
+    border-radius: 8px;
+}
+
+.magic-info {
+    flex: 1;
+}
+
+.magic-name {
+    font-weight: bold;
+    color: var(--primary);
+    margin-right: 10px;
+}
+
+.magic-cost {
+    font-size: 0.85rem;
+    color: var(--accent);
+}
+
+.magic-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
 .empty-msg {
+...
     text-align: center;
     color: var(--text-muted);
     padding: 20px;

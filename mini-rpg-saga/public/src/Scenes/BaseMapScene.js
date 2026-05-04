@@ -2,6 +2,7 @@ import { state } from '../Core/GlobalState.js';
 import { sceneManager } from '../Core/SceneManager.js';
 import { input } from '../Core/Input.js';
 import { dialogueManager } from '../Systems/DialogueManager.js';
+import { dialogManager } from '../Systems/DialogManager.js';
 import { shopManager } from '../Systems/ShopManager.js';
 import { menuManager } from '../Systems/MenuManager.js';
 import { notificationManager } from '../Systems/NotificationManager.js';
@@ -18,6 +19,7 @@ export class BaseMapScene {
         this.inputDelay = 0;
         this.sceneTitle = "Map";
         this.canSave = false;
+        this.isProcessing = false; // 非同期処理中のガード用
     }
 
     async enter(container, data) {
@@ -31,13 +33,14 @@ export class BaseMapScene {
         this.updatePlayerPosition();
         
         dialogueManager.init(this.container);
+        dialogManager.init(this.container);
         shopManager.init(this.container);
         menuManager.init(this.container);
         notificationManager.init(this.container);
 
         this.inputDelay = 500;
+        this.isProcessing = false;
         
-        // 子クラスで追加の初期化が必要な場合
         if (this.onEnter) await this.onEnter(data);
     }
 
@@ -153,7 +156,7 @@ export class BaseMapScene {
             this.inputDelay -= deltaTime;
         }
 
-        if (dialogueManager.isActive || shopManager.isActive || menuManager.isActive) {
+        if (this.isProcessing || dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) {
             if (dialogueManager.isActive && (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action'))) {
                 if (this.inputDelay <= 0) {
                     dialogueManager.next();
@@ -218,11 +221,15 @@ export class BaseMapScene {
     }
 
     async tryInteract() {
+        if (this.isProcessing) return;
+
         const targetX = this.playerPos.x + this.playerDir.x;
         const targetY = this.playerPos.y + this.playerDir.y;
         const npc = this.npcs.find(n => n.x === targetX && n.y === targetY);
         if (npc) {
+            this.isProcessing = true;
             await this.handleInteraction(npc);
+            this.isProcessing = false;
         }
     }
 

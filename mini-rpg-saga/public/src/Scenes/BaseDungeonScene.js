@@ -18,6 +18,7 @@ export class BaseDungeonScene {
         this.moveDelay = 0;
         this.stepsToEncounter = 8;
         this.isEncountering = false;
+        this.isProcessing = false; // 非同期イベントガード用
         this.sceneTitle = "Dungeon";
         this.encounterPool = [];
         this.sceneId = "Dungeon"; // Battle終了後の戻り先用
@@ -37,6 +38,7 @@ export class BaseDungeonScene {
         // 状態のリセット
         this.moveDelay = 0;
         this.isEncountering = false;
+        this.isProcessing = false;
         dialogueManager.isActive = false;
         menuManager.isActive = false;
 
@@ -116,7 +118,7 @@ export class BaseDungeonScene {
             return;
         }
 
-        if (menuManager.isActive || dialogueManager.isActive || this.isEncountering) {
+        if (this.isProcessing || menuManager.isActive || dialogueManager.isActive || this.isEncountering) {
             if (dialogueManager.isActive && (input.isPressed('action') || input.isPressed(' ') || input.isPressed('Enter'))) {
                 dialogueManager.next();
                 this.moveDelay = 250;
@@ -167,7 +169,6 @@ export class BaseDungeonScene {
             this.updateView();
             this.checkEncounter();
         } else {
-            // 壁やイベントマスへの移動試行（向きの更新はrotateで行われるが、前進しようとして壁だった場合も一応View更新）
             this.updateView();
         }
     }
@@ -177,6 +178,13 @@ export class BaseDungeonScene {
     }
 
     async tryInteract() {
+        if (this.isProcessing) return;
+        this.isProcessing = true;
+        await this.handleInteraction();
+        this.isProcessing = false;
+    }
+
+    async handleInteraction() {
         // 子クラスで実装
     }
 
