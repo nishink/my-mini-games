@@ -82,22 +82,30 @@ export class MenuManager {
             default: return '';
         }
     }
+renderStatus(stats) {
+    const nextExp = state.getNextLevelExp();
+    const currentExp = state.player.exp;
 
-    renderStatus(stats) {
-        return `
-            <div class="stats-list">
-                <div class="status-header">
-                    <span class="p-name">${state.player.name}</span>
-                    <span class="p-lv">Lv.${state.player.level}</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-row"><span>HP</span> <span>${state.player.currentHp} / ${stats.maxHp}</span></div>
-                <div class="stat-row"><span>MP</span> <span>${state.player.currentMp} / ${stats.maxMp}</span></div>
-                <div class="stat-row"><span>攻撃力</span> <span>${stats.atk}</span></div>
-                <div class="stat-row"><span>防御力</span> <span>${stats.def}</span></div>
-                <div class="stat-divider"></div>
-                <div class="stat-group">
-                    <div class="stat-row">
+    return `
+        <div class="stats-list">
+            <div class="status-header">
+                <span class="p-name">${state.player.name}</span>
+                <span class="p-lv">Lv.${state.player.level}</span>
+            </div>
+            <div class="stat-row">
+                <span>所持金</span>
+                <span class="eq-val">${state.player.gold} G</span>
+                <span>経験値</span>
+                <span>${currentExp} / ${nextExp}</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-row"><span>HP</span> <span>${state.player.currentHp} / ${stats.maxHp}</span></div>
+            <div class="stat-row"><span>MP</span> <span>${state.player.currentMp} / ${stats.maxMp}</span></div>
+            <div class="stat-row"><span>攻撃力</span> <span>${stats.atk}</span></div>
+            <div class="stat-row"><span>防御力</span> <span>${stats.def}</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat-group">
+                <div class="stat-row">
                         <span>力 (STR): ${state.player.baseStats.str + state.player.bonusStats.str}</span>
                         ${state.player.statPoints > 0 ? `<button class="action-btn-sm" data-action="upgrade" data-stat="str">+</button>` : ''}
                     </div>
