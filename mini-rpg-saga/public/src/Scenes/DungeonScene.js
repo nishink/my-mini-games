@@ -1,6 +1,6 @@
 import { state } from '../Core/GlobalState.js';
 import { sceneManager } from '../Core/SceneManager.js';
-import { dialogueManager } from '../Systems/DialogueManager.js';
+import { messageManager } from '../Systems/MessageManager.js';
 import { BaseDungeonScene } from './BaseDungeonScene.js';
 import { encounterTables } from '../Core/EnemyDB.js';
 
@@ -39,13 +39,13 @@ export class DungeonScene extends BaseDungeonScene {
                 sceneManager.switchScene('MiniGame', {
                     message: '宝箱には鍵がかかっている！',
                     onSuccess: async () => {
-                        await dialogueManager.show('宝箱', ['鍵を開けることに成功した！', '中には輝く宝石が入っていた！', '「試練の証」を手に入れた！']);
+                        await messageManager.show('宝箱', ['鍵を開けることに成功した！', '中には輝く宝石が入っていた！', '「試練の証」を手に入れた！']);
                         this.map[targetY][targetX] = 0;
                         state.flags.tutorialComplete = true;
                         this.updateView();
                     },
                     onFailure: async () => {
-                        await dialogueManager.show('宝箱', ['鍵を開けるのに失敗した...']);
+                        await messageManager.show('宝箱', ['鍵を開けるのに失敗した...']);
                     }
                 });
             }

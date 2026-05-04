@@ -1,7 +1,7 @@
 import { state } from '../Core/GlobalState.js';
 import { sceneManager } from '../Core/SceneManager.js';
 import { input } from '../Core/Input.js';
-import { dialogueManager } from '../Systems/DialogueManager.js';
+import { messageManager } from '../Systems/MessageManager.js';
 import { menuManager } from '../Systems/MenuManager.js';
 import { notificationManager } from '../Systems/NotificationManager.js';
 import { DungeonRenderer3D } from '../Systems/DungeonRenderer3D.js';
@@ -31,7 +31,7 @@ export class BaseDungeonScene {
         this.miniMapCanvas = this.container.querySelector('#mini-map-canvas');
         this.renderer = new DungeonRenderer3D(canvas);
         
-        dialogueManager.init(this.container);
+        messageManager.init(this.container);
         menuManager.init(this.container);
         notificationManager.init(this.container);
 
@@ -39,7 +39,7 @@ export class BaseDungeonScene {
         this.moveDelay = 0;
         this.isEncountering = false;
         this.isProcessing = false;
-        dialogueManager.isActive = false;
+        messageManager.isActive = false;
         menuManager.isActive = false;
 
         if (!data || !data.fromBattle) {
@@ -86,8 +86,8 @@ export class BaseDungeonScene {
             if (!btn) return;
             const start = (e) => { 
                 e.preventDefault(); e.stopPropagation();
-                if (dialogueManager.isActive) {
-                    dialogueManager.next();
+                if (messageManager.isActive) {
+                    messageManager.next();
                     return;
                 }
                 input.setVirtualButton(key, true); 
@@ -118,9 +118,9 @@ export class BaseDungeonScene {
             return;
         }
 
-        if (this.isProcessing || menuManager.isActive || dialogueManager.isActive || this.isEncountering) {
-            if (dialogueManager.isActive && (input.isPressed('action') || input.isPressed(' ') || input.isPressed('Enter'))) {
-                dialogueManager.next();
+        if (this.isProcessing || menuManager.isActive || messageManager.isActive || this.isEncountering) {
+            if (messageManager.isActive && (input.isPressed('action') || input.isPressed(' ') || input.isPressed('Enter'))) {
+                messageManager.next();
                 this.moveDelay = 250;
             }
             return;

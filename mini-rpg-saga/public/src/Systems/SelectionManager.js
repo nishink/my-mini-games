@@ -1,8 +1,8 @@
 /**
- * Mini RPG Saga - DialogManager
+ * Mini RPG Saga - SelectionManager
  * 「はい/いいえ」などの選択肢を持つダイアログを表示する。
  */
-export class DialogManager {
+export class SelectionManager {
     constructor() {
         this.container = null;
         this.isActive = false;
@@ -66,4 +66,4 @@ export class DialogManager {
     }
 }
 
-export const dialogManager = new DialogManager();
+export const selectionManager = new SelectionManager();

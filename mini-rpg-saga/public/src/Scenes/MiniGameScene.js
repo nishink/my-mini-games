@@ -1,6 +1,6 @@
 import { sceneManager } from '../Core/SceneManager.js';
 import { input } from '../Core/Input.js';
-import { dialogueManager } from '../Systems/DialogueManager.js';
+import { messageManager } from '../Systems/MessageManager.js';
 
 export class MiniGameScene {
     constructor() {
@@ -24,13 +24,12 @@ export class MiniGameScene {
         this.message = data.message || 'タイミングよくボタンを押せ！';
         
         this.render();
-        dialogueManager.init(this.container);
+        messageManager.init(this.container);
         this.isFinished = false;
         this.inputDelay = 500; // 入力の受付開始まで0.5秒待つ
     }
 
     render() {
-        // ... (省略されるが全体を保持するように指示)
         this.container.innerHTML = `
             <div id="game-ui" class="minigame-ui">
                 <div class="minigame-header">
@@ -70,10 +69,10 @@ export class MiniGameScene {
     }
 
     update(deltaTime) {
-        if (dialogueManager.isActive) {
-            if (input.isPressed(' ') || input.isPressed('Enter')) {
+        if (messageManager.isActive) {
+            if (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action')) {
                 if (this.moveDelay <= 0) {
-                    dialogueManager.next();
+                    messageManager.next();
                     this.moveDelay = 300;
                 }
             }
@@ -101,7 +100,7 @@ export class MiniGameScene {
             return;
         }
 
-        if (input.isPressed(' ') || input.isPressed('Enter')) {
+        if (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action')) {
             this.stop();
         }
     }

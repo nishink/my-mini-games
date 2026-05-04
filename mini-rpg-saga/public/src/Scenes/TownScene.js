@@ -1,7 +1,7 @@
 import { state } from '../Core/GlobalState.js';
 import { BaseMapScene } from './BaseMapScene.js';
-import { dialogueManager } from '../Systems/DialogueManager.js';
-import { dialogManager } from '../Systems/DialogManager.js';
+import { messageManager } from '../Systems/MessageManager.js';
+import { selectionManager } from '../Systems/SelectionManager.js';
 import { shopManager } from '../Systems/ShopManager.js';
 
 export class TownScene extends BaseMapScene {
@@ -35,17 +35,17 @@ export class TownScene extends BaseMapScene {
 
     async handleInteraction(npc) {
         if (npc.name === '商人') {
-            await dialogueManager.show(npc.name, ['いらっしゃい！', '旅の準備はできているかい？']);
+            await messageManager.show(npc.name, ['いらっしゃい！', '旅の準備はできているかい？']);
             shopManager.open();
         } else if (npc.name === '宿屋') {
-            const confirmed = await dialogManager.confirm(npc.lines[1]);
+            const confirmed = await selectionManager.confirm(npc.lines[1]);
             if (confirmed) {
                 if (state.player.gold >= 10) {
                     state.player.gold -= 10;
                     state.rest();
-                    await dialogueManager.show(npc.name, ['ゆっくりお休みください...。', '......', '体力が全快しました！']);
+                    await messageManager.show(npc.name, ['ゆっくりお休みください...。', '......', '体力が全快しました！']);
                 } else {
-                    await dialogueManager.show(npc.name, ['おや、お金が足りないようですね...。']);
+                    await messageManager.show(npc.name, ['おや、お金が足りないようですね...。']);
                 }
             }
         } else {

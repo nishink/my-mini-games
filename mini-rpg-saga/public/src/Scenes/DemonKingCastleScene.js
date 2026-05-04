@@ -1,6 +1,6 @@
 import { state } from '../Core/GlobalState.js';
 import { sceneManager } from '../Core/SceneManager.js';
-import { dialogueManager } from '../Systems/DialogueManager.js';
+import { messageManager } from '../Systems/MessageManager.js';
 import { BaseDungeonScene } from './BaseDungeonScene.js';
 import { encounterTables } from '../Core/EnemyDB.js';
 
@@ -37,11 +37,11 @@ export class DemonKingCastleScene extends BaseDungeonScene {
         if (targetY >= 0 && targetY < this.map.length && targetX >= 0 && targetX < this.map[0].length) {
             const tile = this.map[targetY][targetX];
             if (tile === 2) {
-                await dialogueManager.show('魔王', ['よくぞここまでたどり着いた、勇者よ。', 'だが、ここがお前の墓場となるのだ！']);
+                await messageManager.show('魔王', ['よくぞここまでたどり着いた、勇者よ。', 'だが、ここがお前の墓場となるのだ！']);
                 sceneManager.switchScene('Battle', { enemyId: 'demon_king', isBoss: true, returnScene: this.sceneId });
             } else if (tile === 3) {
                 state.rest();
-                await dialogueManager.show('回復の泉', ['泉から清らかな水が湧き出ている...', '体力が全快した！']);
+                await messageManager.show('回復の泉', ['泉から清らかな水が湧き出ている...', '体力が全快した！']);
                 this.updateView();
             }
         }

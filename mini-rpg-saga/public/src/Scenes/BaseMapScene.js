@@ -1,8 +1,8 @@
 import { state } from '../Core/GlobalState.js';
 import { sceneManager } from '../Core/SceneManager.js';
 import { input } from '../Core/Input.js';
-import { dialogueManager } from '../Systems/DialogueManager.js';
-import { dialogManager } from '../Systems/DialogManager.js';
+import { messageManager } from '../Systems/MessageManager.js';
+import { selectionManager } from '../Systems/SelectionManager.js';
 import { shopManager } from '../Systems/ShopManager.js';
 import { menuManager } from '../Systems/MenuManager.js';
 import { notificationManager } from '../Systems/NotificationManager.js';
@@ -32,8 +32,8 @@ export class BaseMapScene {
         this.renderMap();
         this.updatePlayerPosition();
         
-        dialogueManager.init(this.container);
-        dialogManager.init(this.container);
+        messageManager.init(this.container);
+        selectionManager.init(this.container);
         shopManager.init(this.container);
         menuManager.init(this.container);
         notificationManager.init(this.container);
@@ -156,10 +156,10 @@ export class BaseMapScene {
             this.inputDelay -= deltaTime;
         }
 
-        if (this.isProcessing || dialogueManager.isActive || shopManager.isActive || menuManager.isActive || dialogManager.isActive) {
-            if (dialogueManager.isActive && (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action'))) {
+        if (this.isProcessing || messageManager.isActive || shopManager.isActive || menuManager.isActive || selectionManager.isActive) {
+            if (messageManager.isActive && (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action'))) {
                 if (this.inputDelay <= 0) {
-                    dialogueManager.next();
+                    messageManager.next();
                     this.inputDelay = 300;
                 }
             }
@@ -234,7 +234,7 @@ export class BaseMapScene {
     }
 
     async handleInteraction(npc) {
-        await dialogueManager.show(npc.name, npc.lines);
+        await messageManager.show(npc.name, npc.lines);
     }
 
     async exit() {

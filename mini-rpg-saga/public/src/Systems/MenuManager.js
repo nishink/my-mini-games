@@ -97,15 +97,15 @@ export class MenuManager {
                     <span class="p-name">${state.player.name}</span>
                     <span class="p-lv">Lv.${state.player.level}</span>
                 </div>
+                <div class="stat-row">
+                    <span>所持金</span> <span class="eq-val">${state.player.gold} G</span>
+                    <span>経験値</span> <span>${currentExp} / ${nextExp}</span>
+                </div>
                 <div class="stat-divider"></div>
                 <div class="stat-row"><span>HP</span> <span>${state.player.currentHp} / ${stats.maxHp}</span></div>
                 <div class="stat-row"><span>MP</span> <span>${state.player.currentMp} / ${stats.maxMp}</span></div>
                 <div class="stat-row"><span>攻撃力</span> <span>${stats.atk}</span></div>
                 <div class="stat-row"><span>防御力</span> <span>${stats.def}</span></div>
-                <div class="stat-divider"></div>
-                <div class="stat-row"><span>所持金</span> <span class="eq-val">${state.player.gold} G</span></div>
-                <div class="stat-row"><span>経験値</span> <span>${currentExp} / ${nextExp}</span></div>
-                <div class="stat-row"><span style="font-size: 0.8rem; color: var(--text-muted);">次まで</span> <span style="font-size: 0.8rem; color: var(--text-muted);">${nextExp - currentExp}</span></div>
                 <div class="stat-divider"></div>
                 <div class="stat-group">
                     <div class="stat-row">

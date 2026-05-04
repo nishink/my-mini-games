@@ -1,49 +1,53 @@
 import { SaveManager } from '../Core/SaveManager.js';
 import { sceneManager } from '../Core/SceneManager.js';
-import { state } from '../Core/GlobalState.js';
-import { dialogManager } from '../Systems/DialogManager.js';
+import { selectionManager } from '../Systems/SelectionManager.js';
 
 export class TitleScene {
+    constructor() {
+        this.container = null;
+    }
+
     async enter(container) {
         this.container = container;
         const view = document.createElement('div');
         view.id = 'title-scene';
+        view.className = 'scene';
         view.innerHTML = `
             <div class="title-content">
-                <h1>MINI RPG SAGA</h1>
-                <p class="subtitle">小さな部品たちが紡ぐ、一つの冒険譚</p>
-                <div class="menu-options">
-                    <button id="new-game-btn" class="menu-btn">はじめから</button>
-                    <button id="continue-btn" class="menu-btn" ${SaveManager.exists() ? '' : 'disabled'}>つづきから</button>
+                <h1 class="game-title">Mini RPG Saga</h1>
+                <p class="game-subtitle">〜勇者と魔王の叙事詩〜</p>
+                <div class="title-menu">
+                    <button id="start-btn" class="menu-btn">冒険を始める</button>
+                    <button id="load-btn" class="menu-btn ${!SaveManager.exists() ? 'disabled' : ''}" ${!SaveManager.exists() ? 'disabled' : ''}>つづきから</button>
+                    <button id="clear-btn" class="menu-btn ${!SaveManager.exists() ? 'disabled' : ''}" ${!SaveManager.exists() ? 'disabled' : ''}>データを消去</button>
                 </div>
             </div>
         `;
         container.appendChild(view);
 
-        // ダイアログの初期化（タイトル画面でも使用するため）
-        dialogManager.init(container);
+        selectionManager.init(this.container);
 
-        document.getElementById('new-game-btn').onclick = () => this.startNewGame();
-        document.getElementById('continue-btn').onclick = () => this.continueGame();
-    }
-
-    async startNewGame() {
-        if (SaveManager.exists()) {
-            const confirmed = await dialogManager.confirm('既存のセーブデータが上書きされます。よろしいですか？');
-            if (!confirmed) return;
-        }
-        state.reset();
-        SaveManager.save();
-        sceneManager.switchScene('Town');
-    }
-
-    continueGame() {
-        if (SaveManager.load()) {
+        view.querySelector('#start-btn').onclick = () => {
+            SaveManager.clear();
             sceneManager.switchScene('Town');
-        }
+        };
+
+        view.querySelector('#load-btn').onclick = () => {
+            if (SaveManager.load()) {
+                sceneManager.switchScene('Town');
+            }
+        };
+
+        view.querySelector('#clear-btn').onclick = async () => {
+            const confirmed = await selectionManager.confirm('本当にセーブデータを消去しますか？');
+            if (confirmed) {
+                SaveManager.clear();
+                location.reload();
+            }
+        };
     }
 
     async exit() {
-        console.log('Exiting Title Scene');
+        this.container.innerHTML = '';
     }
 }

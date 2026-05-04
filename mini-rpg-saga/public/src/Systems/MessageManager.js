@@ -1,8 +1,8 @@
 /**
- * Mini RPG Saga - DialogueManager
+ * Mini RPG Saga - MessageManager
  * メッセージウィンドウの表示とテキスト送りを管理する。
  */
-export class DialogueManager {
+export class MessageManager {
     constructor() {
         this.container = null;
         this.isActive = false;
@@ -99,4 +99,4 @@ export class DialogueManager {
     }
 }
 
-export const dialogueManager = new DialogueManager();
+export const messageManager = new MessageManager();

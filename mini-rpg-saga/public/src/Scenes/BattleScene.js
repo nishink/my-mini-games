@@ -1,7 +1,7 @@
 import { state } from '../Core/GlobalState.js';
 import { sceneManager } from '../Core/SceneManager.js';
 import { input } from '../Core/Input.js';
-import { dialogueManager } from '../Systems/DialogueManager.js';
+import { messageManager } from '../Systems/MessageManager.js';
 import { notificationManager } from '../Systems/NotificationManager.js';
 import { enemies } from '../Core/EnemyDB.js';
 import { soundManager } from '../Core/SoundManager.js';
@@ -33,14 +33,14 @@ export class BattleScene {
         this.enemy = { ...enemies[data?.enemyId || randomKey] };
 
         this.renderLayout();
-        dialogueManager.init(this.container);
+        messageManager.init(this.container);
         notificationManager.init(this.container);
 
         if (this.enemy.isBoss) {
             this.container.classList.add('boss-battle');
         }
 
-        await dialogueManager.show('', [`${this.enemy.name} があらわれた！`]);
+        await messageManager.show('', [`${this.enemy.name} があらわれた！`]);
         this.startTurn();
     }
 
@@ -72,14 +72,14 @@ export class BattleScene {
         this.commandBtns.forEach(btn => {
             btn.onclick = (e) => {
                 e.stopPropagation();
-                if (!this.isPlayerTurn || dialogueManager.isActive) return;
+                if (!this.isPlayerTurn || messageManager.isActive) return;
                 const idx = parseInt(btn.getAttribute('data-idx'));
                 this.selectedCommandIdx = idx;
                 this.updateCommandUI();
                 this.handleCommand(btn.getAttribute('data-action'));
             };
         });
-        this.container.onclick = () => { if (dialogueManager.isActive) dialogueManager.next(); };
+        this.container.onclick = () => { if (messageManager.isActive) messageManager.next(); };
     }
 
     updateHpBars() {
@@ -103,8 +103,8 @@ export class BattleScene {
 
     update(deltaTime) {
         if (this.inputDelay > 0) { this.inputDelay -= deltaTime; return; }
-        if (dialogueManager.isActive) {
-            if (input.isPressed(' ') || input.isPressed('Enter')) { dialogueManager.next(); this.inputDelay = 250; }
+        if (messageManager.isActive) {
+            if (input.isPressed(' ') || input.isPressed('Enter')) { messageManager.next(); this.inputDelay = 250; }
             return;
         }
         if (!this.isPlayerTurn) return;
@@ -129,18 +129,18 @@ export class BattleScene {
             await this.playerAttack();
         } else if (action === 'magic') {
             await this.openMagicMenu();
-            return; // 魔法メニュー内で次のターンへの遷移を管理
+            return;
         } else if (action === 'guard') {
-            await dialogueManager.show('', [`${state.player.name} は身を固めた！`]);
+            await messageManager.show('', [`${state.player.name} は身を固めた！`]);
         } else if (action === 'run') {
             if (this.enemy.isBoss) {
-                await dialogueManager.show('', ['魔王からは逃げられない！']);
+                await messageManager.show('', ['魔王からは逃げられない！']);
             } else if (Math.random() > 0.4) {
-                await dialogueManager.show('', ['うまく逃げ切れた！']);
+                await messageManager.show('', ['うまく逃げ切れた！']);
                 sceneManager.switchScene(this.returnScene, { fromBattle: true });
                 return;
             } else { 
-                await dialogueManager.show('', ['逃げられなかった！']); 
+                await messageManager.show('', ['逃げられなかった！']); 
             }
         }
         
@@ -150,14 +150,12 @@ export class BattleScene {
 
     async openMagicMenu() {
         if (state.player.spells.length === 0) {
-            await dialogueManager.show('', ['魔法を覚えていない！']);
+            await messageManager.show('', ['魔法を覚えていない！']);
             this.startTurn();
             return;
         }
 
         const magicList = state.player.spells.map(id => state.spellMaster[id]);
-        
-        // 最初の魔法を自動選択（簡易実装）
         const spell = magicList[0];
         await this.playerCastSpell(spell.id);
     }
@@ -165,13 +163,13 @@ export class BattleScene {
     async playerCastSpell(spellId) {
         const result = state.castSpell(spellId, true);
         if (!result.success) {
-            await dialogueManager.show('', [result.msg]);
+            await messageManager.show('', [result.msg]);
             this.startTurn();
             return;
         }
 
         if (result.spell.type === 'recovery') {
-            await dialogueManager.show('', [result.msg]);
+            await messageManager.show('', [result.msg]);
         } else if (result.spell.type === 'attack') {
             let damage = result.spell.power + Math.floor(state.player.baseStats.int * 1.5) - this.enemy.def;
             damage = Math.max(5, damage + Math.floor(Math.random() * 5));
@@ -186,7 +184,7 @@ export class BattleScene {
                 this.container.classList.remove('shake');
             }, 500);
 
-            await dialogueManager.show('', [`${state.player.name} は ${result.spell.name} を唱えた！`, `${this.enemy.name} に ${damage} のダメージ！`]);
+            await messageManager.show('', [`${state.player.name} は ${result.spell.name} を唱えた！`, `${this.enemy.name} に ${damage} のダメージ！`]);
         }
 
         this.updateHpBars();
@@ -210,7 +208,7 @@ export class BattleScene {
         }, 500);
 
         this.updateHpBars();
-        await dialogueManager.show('', [`${state.player.name} の攻撃！`, `${this.enemy.name} に ${damage} のダメージ！`]);
+        await messageManager.show('', [`${state.player.name} の攻撃！`, `${this.enemy.name} に ${damage} のダメージ！`]);
     }
 
     async enemyTurn() {
@@ -229,7 +227,7 @@ export class BattleScene {
         }, 500);
 
         this.updateHpBars();
-        await dialogueManager.show('', [`${this.enemy.name} の攻撃！`, `${state.player.name} は ${damage} のダメージを受けた！`]);
+        await messageManager.show('', [`${this.enemy.name} の攻撃！`, `${state.player.name} は ${damage} のダメージを受けた！`]);
         if (state.player.currentHp <= 0) await this.lose();
         else this.startTurn();
     }
@@ -239,7 +237,7 @@ export class BattleScene {
         
         if (this.enemy.isBoss) {
             lines.push('ついに、ついに魔王を打ち倒した！', '世界に平和が戻ったのだ！');
-            await dialogueManager.show('', lines);
+            await messageManager.show('', lines);
             sceneManager.switchScene('Ending');
             return;
         }
@@ -265,12 +263,12 @@ export class BattleScene {
             lines.push(`${state.player.name} はレベル ${state.player.level} に上がった！`, `全ての能力値が上昇し、HPとMPが回復した！`);
         }
 
-        await dialogueManager.show('', lines);
+        await messageManager.show('', lines);
         sceneManager.switchScene(this.returnScene, { fromBattle: true });
     }
 
     async lose() {
-        await dialogueManager.show('', [`${state.player.name} は力尽きた...`]);
+        await messageManager.show('', [`${state.player.name} は力尽きた...`]);
         state.reset();
         sceneManager.switchScene('Title');
     }

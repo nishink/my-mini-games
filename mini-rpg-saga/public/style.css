@@ -237,7 +237,6 @@ body {
     padding-right: 5px;
 }
 .shop-item, .inventory-item {
-...
     display: flex; justify-content: space-between; align-items: center;
     padding: 12px 10px; margin-bottom: 8px;
     background: rgba(255,255,255,0.03);
@@ -287,6 +286,7 @@ body {
     color: var(--accent);
     font-weight: bold;
     font-family: monospace;
+}
 .eq-val {
     color: var(--accent);
 }
@@ -330,7 +330,6 @@ body {
 }
 
 .empty-msg {
-...
     text-align: center;
     color: var(--text-muted);
     padding: 20px;
