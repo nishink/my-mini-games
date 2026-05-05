@@ -42,7 +42,7 @@ export class BaseDungeonScene {
         messageManager.isActive = false;
         menuManager.isActive = false;
 
-        if (!data || !data.fromBattle) {
+        if (!data || (!data.fromBattle && !data.fromMiniGame)) {
             notificationManager.show(`${this.sceneTitle}に入った`);
         }
 
@@ -101,7 +101,7 @@ export class BaseDungeonScene {
 
     updateView() {
         if (!this.renderer) return;
-        this.renderer.draw(this.playerPos, this.playerDir, this.map);
+        this.renderer.draw(this.playerPos, this.playerDir, this.map, this.sceneTitle);
         this.renderer.drawMiniMap(this.miniMapCanvas, this.playerPos, this.playerDir, this.map);
         
         const compass = this.container.querySelector('#dungeon-compass');

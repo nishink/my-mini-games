@@ -539,7 +539,7 @@ body {
     font-weight: bold;
 }
 
-.commands-area {
+.commands-area, .submenu-area {
     margin: 0 10px 15px 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -547,7 +547,25 @@ body {
     padding: 15px;
 }
 
-.cmd-btn {
+.submenu-area {
+    grid-template-columns: 1fr;
+}
+
+.submenu-title {
+    grid-column: 1;
+    text-align: center;
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.submenu-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.cmd-btn, .sub-btn {
     padding: 12px;
     background: rgba(255,255,255,0.05);
     border: 1px solid var(--primary);
@@ -556,21 +574,27 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: 0.2s;
+    text-align: center;
 }
 
-.cmd-btn:hover:not(:disabled) {
+.cmd-btn:hover:not(:disabled), .sub-btn:hover:not(:disabled) {
     background: var(--primary);
 }
 
-.cmd-btn:disabled {
+.cmd-btn:disabled, .sub-btn:disabled {
     opacity: 0.3;
 }
 
-.cmd-btn.selected {
+.cmd-btn.selected, .sub-btn.selected {
     background: var(--primary);
     border-color: white;
     box-shadow: 0 0 10px var(--primary);
     transform: scale(1.05);
+}
+
+.back-btn {
+    margin-top: 5px;
+    border-color: var(--text-muted);
 }
 
 /* --- World Map Scene --- */

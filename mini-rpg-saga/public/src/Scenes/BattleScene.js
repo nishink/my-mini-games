@@ -11,8 +11,10 @@ export class BattleScene {
         this.enemy = null;
         this.isPlayerTurn = false;
         this.selectedCommandIdx = 0;
-        this.commands = ['attack', 'magic', 'guard', 'run'];
-        this.commandNames = ['攻撃', '魔法', '防御', '逃げる'];
+        this.subMenuIdx = 0;
+        this.battleMode = 'main'; // 'main', 'magic', 'item'
+        this.commands = ['attack', 'magic', 'item', 'run'];
+        this.commandNames = ['攻撃', '魔法', '道具', '逃げる'];
         this.inputDelay = 0;
         this.returnScene = 'Dungeon';
 
@@ -59,12 +61,17 @@ export class BattleScene {
                 </div>
                 <div class="player-status-bar ui-panel">
                     <div class="p-info"><span>${state.player.name}</span> Lv.${state.player.level}</div>
-                    <div class="p-stats">HP: <span id="player-hp-val">${state.player.currentHp}</span> / ${stats.maxHp}</div>
+                    <div class="p-stats">
+                        HP: <span id="player-hp-val">${state.player.currentHp}</span> / ${stats.maxHp}<br>
+                        MP: <span id="player-mp-val">${state.player.currentMp}</span> / ${stats.maxMp}
+                    </div>
                 </div>
                 <div id="battle-commands" class="commands-area ui-panel hidden">
                     ${this.commands.map((cmd, i) => `
                         <button class="cmd-btn" data-idx="${i}" data-action="${cmd}">${this.commandNames[i]}</button>
                     `).join('')}
+                </div>
+                <div id="battle-submenu" class="submenu-area ui-panel hidden">
                 </div>
             </div>
         `;
@@ -72,7 +79,7 @@ export class BattleScene {
         this.commandBtns.forEach(btn => {
             btn.onclick = (e) => {
                 e.stopPropagation();
-                if (!this.isPlayerTurn || messageManager.isActive) return;
+                if (!this.isPlayerTurn || messageManager.isActive || this.battleMode !== 'main') return;
                 const idx = parseInt(btn.getAttribute('data-idx'));
                 this.selectedCommandIdx = idx;
                 this.updateCommandUI();
@@ -86,53 +93,88 @@ export class BattleScene {
         const enemyHpPercent = Math.max(0, (this.enemy.hp / this.enemy.maxHp) * 100);
         this.container.querySelector('#enemy-hp-bar').style.width = `${enemyHpPercent}%`;
         this.container.querySelector('#player-hp-val').textContent = state.player.currentHp;
+        this.container.querySelector('#player-mp-val').textContent = state.player.currentMp;
     }
 
     startTurn() {
         this.isPlayerTurn = true;
+        this.battleMode = 'main';
         this.selectedCommandIdx = 0;
+        this.subMenuIdx = 0;
         this.updateCommandUI();
         this.container.querySelector('#battle-commands').classList.remove('hidden');
+        this.container.querySelector('#battle-submenu').classList.add('hidden');
     }
 
     updateCommandUI() {
-        this.commandBtns.forEach((btn, i) => {
-            btn.classList.toggle('selected', i === this.selectedCommandIdx);
-        });
+        if (this.battleMode === 'main') {
+            this.commandBtns.forEach((btn, i) => {
+                btn.classList.toggle('selected', i === this.selectedCommandIdx);
+            });
+        } else {
+            const subBtns = this.container.querySelectorAll('.sub-btn');
+            subBtns.forEach((btn, i) => {
+                btn.classList.toggle('selected', i === this.subMenuIdx);
+            });
+        }
     }
 
     update(deltaTime) {
         if (this.inputDelay > 0) { this.inputDelay -= deltaTime; return; }
         if (messageManager.isActive) {
-            if (input.isPressed(' ') || input.isPressed('Enter')) { messageManager.next(); this.inputDelay = 250; }
+            if (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action')) { messageManager.next(); this.inputDelay = 250; }
             return;
         }
         if (!this.isPlayerTurn) return;
-        if (input.isPressed('ArrowUp') || input.isPressed('w')) {
-            this.selectedCommandIdx = (this.selectedCommandIdx - 1 + this.commands.length) % this.commands.length;
-            this.updateCommandUI(); this.inputDelay = 150;
-        } else if (input.isPressed('ArrowDown') || input.isPressed('s')) {
-            this.selectedCommandIdx = (this.selectedCommandIdx + 1) % this.commands.length;
-            this.updateCommandUI(); this.inputDelay = 150;
-        }
-        if (input.isPressed(' ') || input.isPressed('Enter')) {
-            this.handleCommand(this.commands[this.selectedCommandIdx]);
-            this.inputDelay = 300;
+
+        if (this.battleMode === 'main') {
+            if (input.isPressed('ArrowUp') || input.isPressed('w') || input.isPressed('left')) {
+                this.selectedCommandIdx = (this.selectedCommandIdx - 1 + this.commands.length) % this.commands.length;
+                this.updateCommandUI(); this.inputDelay = 150;
+            } else if (input.isPressed('ArrowDown') || input.isPressed('s') || input.isPressed('right')) {
+                this.selectedCommandIdx = (this.selectedCommandIdx + 1) % this.commands.length;
+                this.updateCommandUI(); this.inputDelay = 150;
+            }
+            if (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action')) {
+                this.handleCommand(this.commands[this.selectedCommandIdx]);
+                this.inputDelay = 300;
+            }
+        } else {
+            const items = this.battleMode === 'magic' ? state.player.spells : state.inventory.filter(i => i.type === 'consumable');
+            if (items.length > 0) {
+                if (input.isPressed('ArrowUp') || input.isPressed('w') || input.isPressed('left')) {
+                    this.subMenuIdx = (this.subMenuIdx - 1 + items.length) % items.length;
+                    this.updateCommandUI(); this.inputDelay = 150;
+                } else if (input.isPressed('ArrowDown') || input.isPressed('s') || input.isPressed('right')) {
+                    this.subMenuIdx = (this.subMenuIdx + 1) % items.length;
+                    this.updateCommandUI(); this.inputDelay = 150;
+                }
+                if (input.isPressed(' ') || input.isPressed('Enter') || input.isPressed('action')) {
+                    this.handleSubCommand(items[this.subMenuIdx]);
+                    this.inputDelay = 300;
+                }
+            }
+            if (input.isPressed('Escape') || input.isPressed('menu')) {
+                this.startTurn();
+                this.inputDelay = 200;
+            }
         }
     }
 
     async handleCommand(action) {
-        this.isPlayerTurn = false;
-        this.container.querySelector('#battle-commands').classList.add('hidden');
-        
         if (action === 'attack') {
+            this.isPlayerTurn = false;
+            this.container.querySelector('#battle-commands').classList.add('hidden');
             await this.playerAttack();
         } else if (action === 'magic') {
             await this.openMagicMenu();
             return;
-        } else if (action === 'guard') {
-            await messageManager.show('', [`${state.player.name} は身を固めた！`]);
+        } else if (action === 'item') {
+            await this.openItemMenu();
+            return;
         } else if (action === 'run') {
+            this.isPlayerTurn = false;
+            this.container.querySelector('#battle-commands').classList.add('hidden');
             if (this.enemy.isBoss) {
                 await messageManager.show('', ['魔王からは逃げられない！']);
             } else if (Math.random() > 0.4) {
@@ -145,7 +187,7 @@ export class BattleScene {
         }
         
         if (this.enemy.hp <= 0) await this.win();
-        else await this.enemyTurn();
+        else if (!this.isPlayerTurn) await this.enemyTurn();
     }
 
     async openMagicMenu() {
@@ -155,12 +197,85 @@ export class BattleScene {
             return;
         }
 
-        const magicList = state.player.spells.map(id => state.spellMaster[id]);
-        const spell = magicList[0];
-        await this.playerCastSpell(spell.id);
+        this.battleMode = 'magic';
+        this.subMenuIdx = 0;
+        this.renderSubMenu(state.player.spells.map(id => state.spellMaster[id]));
+    }
+
+    async openItemMenu() {
+        const consumables = state.inventory.filter(i => i.type === 'consumable');
+        if (consumables.length === 0) {
+            await messageManager.show('', ['使える道具がない！']);
+            this.startTurn();
+            return;
+        }
+
+        this.battleMode = 'item';
+        this.subMenuIdx = 0;
+        this.renderSubMenu(consumables);
+    }
+
+    renderSubMenu(items) {
+        const subMenu = this.container.querySelector('#battle-submenu');
+        subMenu.innerHTML = `
+            <div class="submenu-title">${this.battleMode === 'magic' ? '魔法' : '道具'}を選択</div>
+            <div class="submenu-list">
+                ${items.map((item, i) => `
+                    <button class="sub-btn" data-idx="${i}">${item.name} ${item.cost ? `(MP:${item.cost})` : ''}</button>
+                `).join('')}
+            </div>
+            <button class="sub-btn back-btn" data-action="back">戻る</button>
+        `;
+        subMenu.classList.remove('hidden');
+        this.container.querySelector('#battle-commands').classList.add('hidden');
+
+        this.container.querySelectorAll('.sub-btn').forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                if (btn.getAttribute('data-action') === 'back') {
+                    this.startTurn();
+                    return;
+                }
+                const idx = parseInt(btn.getAttribute('data-idx'));
+                this.subMenuIdx = idx;
+                this.updateCommandUI();
+                this.handleSubCommand(items[idx]);
+            };
+        });
+        this.updateCommandUI();
+    }
+
+    async handleSubCommand(item) {
+        if (this.battleMode === 'magic') {
+            await this.playerCastSpell(item.id);
+        } else {
+            await this.playerUseItem(item);
+        }
+    }
+
+    async playerUseItem(item) {
+        // インベントリ内での実際のインデックスを探す
+        const realIdx = state.inventory.findIndex(i => i === item);
+        if (realIdx === -1) return;
+
+        this.isPlayerTurn = false;
+        this.container.querySelector('#battle-submenu').classList.add('hidden');
+        
+        const itemName = item.name;
+        if (state.consumeItem(realIdx)) {
+            await messageManager.show('', [`${state.player.name} は ${itemName} を使った！`]);
+            this.updateHpBars();
+            await this.enemyTurn();
+        } else {
+            await messageManager.show('', ['今は使えない！']);
+            this.startTurn();
+        }
     }
 
     async playerCastSpell(spellId) {
+        this.isPlayerTurn = false;
+        this.container.querySelector('#battle-submenu').classList.add('hidden');
+        
         const result = state.castSpell(spellId, true);
         if (!result.success) {
             await messageManager.show('', [result.msg]);

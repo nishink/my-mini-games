@@ -121,7 +121,7 @@ export class MiniGameScene {
         }
 
         setTimeout(() => {
-            sceneManager.switchScene(this.callbackScene);
+            sceneManager.switchScene(this.callbackScene, { fromMiniGame: true });
         }, 1000);
     }
 

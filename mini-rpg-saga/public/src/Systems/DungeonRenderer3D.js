@@ -10,7 +10,8 @@ export class DungeonRenderer3D {
         this.height = canvas.height;
     }
 
-    draw(playerPos, playerDir, map) {
+    draw(playerPos, playerDir, map, sceneTitle = '') {
+        this.currentSceneTitle = sceneTitle;
         // 背景（天井と床）
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0, 0, this.width, this.height);
@@ -44,13 +45,11 @@ export class DungeonRenderer3D {
             const x = playerPos.x + dx[dirIdx] * fwd + dx[rightDir] * side;
             const y = playerPos.y + dy[dirIdx] * fwd + dy[rightDir] * side;
             
-            let isWall = true;
-            let isGoal = false;
+            let tile = 0;
             if (y >= 0 && y < map.length && x >= 0 && x < map[0].length) {
-                isWall = (map[y][x] === 1);
-                isGoal = (map[y][x] === 2); // マップデータの 2 を宝物とする
+                tile = map[y][x];
             }
-            return { isWall, isGoal };
+            return tile;
         };
 
         const step = 0.4;
@@ -62,13 +61,13 @@ export class DungeonRenderer3D {
         if (dist >= 1) {
             for (let side of [-1, 1, 0]) {
                 const tile = getTile(dist, side);
-                if (tile.isWall) {
+                if (tile === 1) { // 壁
                     // 手前が壁でない場合のみ正面を描画
-                    if (dist === 1 || !getTile(dist - 1, side).isWall) {
+                    if (dist === 1 || getTile(dist - 1, side) !== 1) {
                         this.drawFrontWall(zFront, side);
                     }
-                } else if (side === 0 && tile.isGoal) {
-                    this.drawGoal(zFront, 0);
+                } else if (side === 0 && tile > 1) {
+                    this.drawObject(zFront, 0, tile);
                 }
             }
         }
@@ -76,15 +75,15 @@ export class DungeonRenderer3D {
         // 横の壁の描画
         let centerBlocked = false;
         for (let d = 1; d < dist; d++) {
-            if (getTile(d, 0).isWall) {
+            if (getTile(d, 0) === 1) {
                 centerBlocked = true;
                 break;
             }
         }
 
-        if (!centerBlocked && !getTile(dist, 0).isWall) {
+        if (!centerBlocked && getTile(dist, 0) !== 1) {
             for (let side of [-1, 1]) {
-                if (getTile(dist, side).isWall) {
+                if (getTile(dist, side) === 1) {
                     this.drawSideWall(zNear, zFar, side === -1);
                 }
             }
@@ -136,17 +135,22 @@ export class DungeonRenderer3D {
         this.ctx.stroke();
     }
 
-    drawGoal(z, side) {
+    drawObject(z, side, tile) {
         const r = this.getWallRect(z, side);
         
-        // 💎 のサイズを壁の大きさに合わせる
+        let emoji = '❓';
+        if (tile === 2) {
+            emoji = this.currentSceneTitle === '魔王城' ? '👿' : '💎';
+        } else if (tile === 3) {
+            emoji = '⛲';
+        }
+
         const fontSize = Math.floor(60 * r.scale);
         this.ctx.font = `${fontSize}px serif`;
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         
-        // 壁と同じ中心位置に描画
-        this.ctx.fillText('💎', this.width / 2, this.height / 2);
+        this.ctx.fillText(emoji, this.width / 2, this.height / 2);
     }
 
     /**

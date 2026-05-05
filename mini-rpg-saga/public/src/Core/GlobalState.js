@@ -106,6 +106,12 @@ export class GlobalState {
                 used = true;
                 soundManager.playHeal();
             }
+        } else if (item.id === 'high_potion') {
+            if (this.player.currentHp < stats.maxHp) {
+                this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 150);
+                used = true;
+                soundManager.playHeal();
+            }
         } else if (item.id === 'ether') {
             if (this.player.currentMp < stats.maxMp) {
                 this.player.currentMp = Math.min(stats.maxMp, this.player.currentMp + 20);
@@ -113,9 +119,18 @@ export class GlobalState {
                 soundManager.playOk();
             }
         } else if (item.id === 'herb') {
-            this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 10);
-            used = true;
-            soundManager.playHeal();
+            if (this.player.currentHp < stats.maxHp) {
+                this.player.currentHp = Math.min(stats.maxHp, this.player.currentHp + 10);
+                used = true;
+                soundManager.playHeal();
+            }
+        } else if (item.id === 'elixir') {
+            if (this.player.currentHp < stats.maxHp || this.player.currentMp < stats.maxMp) {
+                this.player.currentHp = stats.maxHp;
+                this.player.currentMp = stats.maxMp;
+                used = true;
+                soundManager.playHeal();
+            }
         }
 
         if (used) {
