@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="32" viewBox="0 0 64 32" shape-rendering="crispEdges">
+  <!-- 
+    Sci-Fi Tiles
+    Frame 0: Wall/Floor (Metallic)
+    Frame 1: Goal (Warp Gate)
+  -->
+
+  <!-- Frame 0: Metallic Wall -->
+  <g transform="translate(0, 0)">
+    <rect x="0" y="0" width="32" height="32" fill="#34495e" />
+    <rect x="2" y="2" width="28" height="28" fill="#2c3e50" />
+    <!-- Bolts -->
+    <rect x="4" y="4" width="2" height="2" fill="#7f8c8d" />
+    <rect x="26" y="4" width="2" height="2" fill="#7f8c8d" />
+    <rect x="4" y="26" width="2" height="2" fill="#7f8c8d" />
+    <rect x="26" y="26" width="2" height="2" fill="#7f8c8d" />
+    <!-- Center Line -->
+    <rect x="8" y="15" width="16" height="2" fill="#34495e" />
+  </g>
+
+  <!-- Frame 1: Warp Gate (Goal) -->
+  <g transform="translate(32, 0)">
+    <rect x="0" y="0" width="32" height="32" fill="#2c3e50" />
+    <!-- Gate Frame -->
+    <rect x="2" y="2" width="28" height="28" fill="#7f8c8d" />
+    <rect x="4" y="4" width="24" height="24" fill="#000000" />
+    <!-- Energy Swirl -->
+    <rect x="8" y="8" width="16" height="16" fill="#8e44ad" />
+    <rect x="12" y="12" width="8" height="8" fill="#00f2ff" />
+    <rect x="14" y="14" width="4" height="4" fill="#ffffff" />
+  </g>
+</svg>

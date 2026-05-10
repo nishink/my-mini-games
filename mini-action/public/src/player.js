@@ -10,6 +10,11 @@ export class Player {
         this.height = 32;
         this.onGround = false;
         this.jumpCount = 0; // for double jump
+        
+        // Animation properties
+        this.animationFrame = 0;
+        this.animationTimer = 0;
+        this.facing = 1; // 1 for right, -1 for left
     }
 
     update(input, map, delta, bullets) {
@@ -19,9 +24,17 @@ export class Player {
         const gravity = 800;  // pixels per second^2
         const jumpSpeed = -400; // initial vy (pixels per second)
 
-        if (input.isDown('ArrowLeft')) this.vx = -speed;
-        else if (input.isDown('ArrowRight')) this.vx = speed;
-        else this.vx = 0;
+        if (input.isDown('ArrowLeft')) {
+            this.vx = -speed;
+            this.facing = -1;
+        }
+        else if (input.isDown('ArrowRight')) {
+            this.vx = speed;
+            this.facing = 1;
+        }
+        else {
+            this.vx = 0;
+        }
 
         if (input.isPressed('ArrowUp') && this.jumpCount < 2) {
             this.vy = jumpSpeed;
@@ -33,7 +46,7 @@ export class Player {
         if (input.isPressed('Space')) {
             const bulletX = this.x + this.width / 2 - 8;
             const bulletY = this.y + this.height / 2 - 8;
-            bullets.push(new Bullet(bulletX, bulletY, 400, 0)); // rightward bullet
+            bullets.push(new Bullet(bulletX, bulletY, 400 * this.facing, 0)); // direction based on facing
         }
 
         // physics update
@@ -58,6 +71,19 @@ export class Player {
                 this.jumpCount = 0; // reset jump count on landing
             }
             this.vy = 0;
+        }
+
+        // Update animation
+        this.animationTimer += delta;
+        if (!this.onGround) {
+            this.animationFrame = 3; // Jump frame
+        } else if (this.vx !== 0) {
+            if (this.animationTimer > 100) {
+                this.animationFrame = this.animationFrame === 1 ? 2 : 1; // Toggle walk frames
+                this.animationTimer = 0;
+            }
+        } else {
+            this.animationFrame = 0; // Idle
         }
     }
 

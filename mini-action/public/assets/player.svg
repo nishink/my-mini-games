@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="32" viewBox="0 0 128 32" shape-rendering="crispEdges">
+  <!-- 
+    Sci-Fi Cyber Soldier Sprite Sheet
+    Theme: Metallic Armor, Neon Visor, Energy Core
+    Palette: 
+      - Armor: #7f8c8d (Gray), #bdc3c7 (Silver)
+      - Tech-suit: #2c3e50 (Dark Blue)
+      - Neon: #00f2ff (Cyan Energy)
+      - Visor: #f1c40f (Gold/Yellow)
+  -->
+
+  <!-- Frame 0: Idle (Sci-Fi) -->
+  <g transform="translate(0, 0)">
+    <!-- Back Thruster/Pack -->
+    <rect x="9" y="11" width="4" height="9" fill="#34495e" />
+    <rect x="8" y="14" width="2" height="3" fill="#00f2ff" /> <!-- Energy Glow -->
+    
+    <!-- Body Armor -->
+    <rect x="12" y="10" width="8" height="13" fill="#2c3e50" /> <!-- Under-suit -->
+    <rect x="12" y="11" width="7" height="6" fill="#7f8c8d" /> <!-- Chest Plate -->
+    <rect x="13" y="12" width="2" height="2" fill="#bdc3c7" /> <!-- Plate Highlight -->
+    <rect x="15" y="18" width="3" height="2" fill="#00f2ff" /> <!-- Power Core -->
+    
+    <!-- Helmet -->
+    <rect x="13" y="3" width="9" height="8" fill="#7f8c8d" />
+    <rect x="16" y="5" width="6" height="3" fill="#f1c40f" /> <!-- Glowing Visor -->
+    <rect x="13" y="3" width="3" height="3" fill="#bdc3c7" /> <!-- Helmet Highlight -->
+    
+    <!-- Arm (Mechanical) -->
+    <rect x="14" y="12" width="4" height="8" fill="#95a5a6" />
+    <rect x="15" y="13" width="1" height="6" fill="#00f2ff" /> <!-- Arm Glow -->
+    
+    <!-- Legs (Heavy Boots) -->
+    <rect x="11" y="23" width="5" height="7" fill="#34495e" />
+    <rect x="11" y="28" width="5" height="2" fill="#7f8c8d" /> <!-- Boot Sole -->
+    <rect x="16" y="23" width="5" height="7" fill="#2c3e50" /> <!-- Back Leg -->
+  </g>
+
+  <!-- Frame 1: Walk 1 -->
+  <g transform="translate(32, 0)">
+    <rect x="9" y="10" width="4" height="9" fill="#34495e" />
+    <rect x="12" y="9" width="8" height="13" fill="#2c3e50" />
+    <rect x="12" y="10" width="7" height="6" fill="#7f8c8d" />
+    <rect x="15" y="17" width="3" height="2" fill="#00f2ff" />
+    <rect x="13" y="2" width="9" height="8" fill="#7f8c8d" />
+    <rect x="16" y="4" width="6" height="3" fill="#f1c40f" />
+    <!-- Arm swinging forward -->
+    <rect x="17" y="11" width="4" height="7" fill="#95a5a6" />
+    <!-- Legs split -->
+    <rect x="18" y="22" width="5" height="8" fill="#34495e" /> <!-- Front -->
+    <rect x="8" y="22" width="5" height="6" fill="#2c3e50" />  <!-- Back -->
+  </g>
+
+  <!-- Frame 2: Walk 2 -->
+  <g transform="translate(64, 0)">
+    <rect x="9" y="10" width="4" height="9" fill="#34495e" />
+    <rect x="12" y="9" width="8" height="13" fill="#2c3e50" />
+    <rect x="12" y="10" width="7" height="6" fill="#7f8c8d" />
+    <rect x="15" y="17" width="3" height="2" fill="#00f2ff" />
+    <rect x="13" y="2" width="9" height="8" fill="#7f8c8d" />
+    <rect x="16" y="4" width="6" height="3" fill="#f1c40f" />
+    <!-- Arm swinging back -->
+    <rect x="10" y="11" width="4" height="7" fill="#95a5a6" />
+    <!-- Legs split -->
+    <rect x="8" y="22" width="5" height="8" fill="#34495e" /> <!-- Front -->
+    <rect x="18" y="22" width="5" height="6" fill="#2c3e50" /> <!-- Back -->
+  </g>
+
+  <!-- Frame 3: Jump -->
+  <g transform="translate(96, 0)">
+    <rect x="9" y="9" width="4" height="9" fill="#34495e" />
+    <rect x="8" y="18" width="2" height="4" fill="#00f2ff" /> <!-- Jump Thruster Flare -->
+    <rect x="12" y="8" width="8" height="13" fill="#2c3e50" />
+    <rect x="12" y="9" width="7" height="6" fill="#7f8c8d" />
+    <rect x="15" y="16" width="3" height="2" fill="#00f2ff" />
+    <rect x="13" y="1" width="9" height="8" fill="#7f8c8d" />
+    <rect x="16" y="3" width="6" height="3" fill="#f1c40f" />
+    <!-- Arm aiming/up -->
+    <rect x="11" y="7" width="4" height="7" fill="#95a5a6" />
+    <!-- Legs tucked -->
+    <rect x="10" y="21" width="5" height="5" fill="#34495e" />
+    <rect x="17" y="20" width="5" height="5" fill="#2c3e50" />
+  </g>
+</svg>

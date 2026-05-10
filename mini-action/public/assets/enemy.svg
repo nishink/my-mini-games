@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="32" viewBox="0 0 64 32" shape-rendering="crispEdges">
+  <!-- 
+    Sci-Fi Enemy Drones
+    Frame 0: Normal Drone (Pink/Purple)
+    Frame 1: Jumping Drone (Blue)
+  -->
+  
+  <!-- Frame 0: Normal Drone -->
+  <g transform="translate(0, 0)">
+    <!-- Body -->
+    <rect x="8" y="8" width="16" height="12" fill="#8e44ad" /> <!-- Dark Purple Body -->
+    <rect x="10" y="10" width="12" height="4" fill="#9b59b6" /> <!-- Highlight -->
+    <!-- Glowing Eye -->
+    <rect x="20" y="11" width="4" height="4" fill="#ff00ff" /> 
+    <!-- Mechanical Bits -->
+    <rect x="6" y="12" width="4" height="4" fill="#2c3e50" />
+    <rect x="22" y="12" width="4" height="4" fill="#2c3e50" />
+    <!-- Bottom Glow -->
+    <rect x="12" y="20" width="8" height="2" fill="#ff00ff" opacity="0.6" />
+  </g>
+
+  <!-- Frame 1: Jumping Drone -->
+  <g transform="translate(32, 0)">
+    <!-- Body -->
+    <rect x="8" y="8" width="16" height="12" fill="#2980b9" /> <!-- Dark Blue Body -->
+    <rect x="10" y="10" width="12" height="4" fill="#3498db" /> <!-- Highlight -->
+    <!-- Glowing Eye -->
+    <rect x="20" y="11" width="4" height="4" fill="#00f2ff" /> 
+    <!-- Mechanical Bits -->
+    <rect x="6" y="12" width="4" height="4" fill="#2c3e50" />
+    <rect x="22" y="12" width="4" height="4" fill="#2c3e50" />
+    <!-- Bottom Thruster -->
+    <rect x="12" y="20" width="8" height="4" fill="#00f2ff" />
+  </g>
+</svg>
