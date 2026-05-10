@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+  <defs>
+    <!-- Skin Tone with shading -->
+    <radialGradient id="skinGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#fdf5e6" />
+      <stop offset="80%" style="stop-color:#ebc9af" />
+      <stop offset="100%" style="stop-color:#d4a381" />
+    </radialGradient>
+    <!-- Hair Texture -->
+    <linearGradient id="hairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a235a" />
+      <stop offset="50%" style="stop-color:#5b2c6f" />
+      <stop offset="100%" style="stop-color:#2e1534" />
+    </linearGradient>
+    <!-- Suit/Vest Gradient -->
+    <linearGradient id="vestGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#212f3c" />
+      <stop offset="100%" style="stop-color:#17202a" />
+    </linearGradient>
+  </defs>
+
+  <!-- Body (Suit & Vest) -->
+  <g id="clothing">
+    <!-- Shirt Collar -->
+    <path d="M150 350 L200 380 L250 350 L250 400 L150 400 Z" fill="#fdfefe" stroke="#d5dbdb" />
+    <!-- Cravat/Tie -->
+    <path d="M190 375 L210 375 L220 450 L180 450 Z" fill="#7b241c" />
+    <!-- Vest -->
+    <path d="M120 400 Q120 380 150 370 L250 370 Q280 380 280 400 L320 600 L80 600 Z" fill="url(#vestGrad)" />
+    <!-- Buttons -->
+    <circle cx="200" cy="450" r="4" fill="#d4ac0d" />
+    <circle cx="200" cy="480" r="4" fill="#d4ac0d" />
+    <circle cx="200" cy="510" r="4" fill="#d4ac0d" />
+    <!-- Lapels -->
+    <path d="M150 370 L200 450 L120 400 Z" fill="#2c3e50" opacity="0.5" />
+    <path d="M250 370 L200 450 L280 400 Z" fill="#2c3e50" opacity="0.5" />
+  </g>
+
+  <!-- Neck -->
+  <rect x="180" y="320" width="40" height="50" fill="#ebc9af" />
+
+  <!-- Head Shape -->
+  <path d="M140 240 Q140 120 200 120 Q260 120 260 240 Q260 340 200 340 Q140 340 140 240" fill="url(#skinGlow)" />
+
+  <!-- Hair (Detailed strands simulation) -->
+  <g id="hair">
+    <path d="M135 240 Q135 110 200 110 Q265 110 265 240 L275 250 Q280 150 200 90 Q120 150 125 250 Z" fill="url(#hairGrad)" />
+    <!-- Strands/Highlights -->
+    <path d="M160 120 Q200 110 240 120" fill="none" stroke="#8e44ad" stroke-width="1" opacity="0.4" />
+    <path d="M150 150 Q200 140 250 150" fill="none" stroke="#8e44ad" stroke-width="1" opacity="0.3" />
+  </g>
+
+  <!-- Face Details -->
+  <g id="face">
+    <!-- Eyes -->
+    <ellipse cx="175" cy="235" rx="8" ry="4" fill="#fff" />
+    <ellipse cx="225" cy="235" rx="8" ry="4" fill="#fff" />
+    <circle cx="175" cy="235" r="4" fill="#1b2631" /> <!-- Pupil -->
+    <circle cx="225" cy="235" r="4" fill="#1b2631" /> <!-- Pupil -->
+    <circle cx="173" cy="233" r="1.5" fill="#fff" /> <!-- Reflection -->
+    <circle cx="223" cy="233" r="1.5" fill="#fff" /> <!-- Reflection -->
+    
+    <!-- Brows -->
+    <path d="M160 220 Q175 210 190 220" fill="none" stroke="#4a235a" stroke-width="2" />
+    <path d="M210 220 Q225 210 240 220" fill="none" stroke="#4a235a" stroke-width="2" />
+
+    <!-- Glasses (Semi-rimless style) -->
+    <g stroke="#7f8c8d" stroke-width="1.5" fill="none">
+      <path d="M160 235 Q160 220 190 220 Q190 235 175 245 Q160 235 160 235" stroke="#34495e" stroke-width="2" />
+      <path d="M210 235 Q210 220 240 220 Q240 235 225 245 Q210 235 210 235" stroke="#34495e" stroke-width="2" />
+      <line x1="190" y1="225" x2="210" y2="225" /> <!-- Bridge -->
+      <!-- Glass reflection -->
+      <path d="M165 225 L180 225" stroke="#fff" stroke-width="1" opacity="0.5" />
+      <path d="M215 225 L230 225" stroke="#fff" stroke-width="1" opacity="0.5" />
+    </g>
+
+    <!-- Nose -->
+    <path d="M195 240 L200 280 L205 240" fill="#d4a381" opacity="0.3" />
+    
+    <!-- Mouth (Thoughtful/Serious) -->
+    <line x1="185" y1="310" x2="215" y2="310" stroke="#7b241c" stroke-width="1.5" />
+  </g>
+
+  <!-- Shadow under chin -->
+  <path d="M160 330 Q200 350 240 330" fill="none" stroke="#000" stroke-width="2" opacity="0.1" />
+</svg>

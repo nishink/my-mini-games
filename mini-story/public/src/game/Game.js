@@ -30,8 +30,22 @@ export class Game {
         const scene = SCENARIO[sceneId];
         
         // Update UI
-        this.bgLayer.style.backgroundColor = scene.bg;
-        this.charBox.style.backgroundColor = scene.char;
+        if (scene.bgImg) {
+            this.bgLayer.style.backgroundImage = `url(${scene.bgImg})`;
+            this.bgLayer.style.backgroundColor = 'transparent';
+        } else {
+            this.bgLayer.style.backgroundImage = 'none';
+            this.bgLayer.style.backgroundColor = scene.bg;
+        }
+
+        if (scene.charImg) {
+            this.charBox.innerHTML = `<img src="${scene.charImg}" style="height: 100%; width: auto;">`;
+            this.charBox.style.backgroundColor = 'transparent';
+        } else {
+            this.charBox.innerHTML = '';
+            this.charBox.style.backgroundColor = scene.char;
+        }
+
         this.nameBox.innerText = scene.name;
         
         // Start text

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <!-- Sky Gradient -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#85c1e9" />
+      <stop offset="100%" style="stop-color:#d6eaf8" />
+    </linearGradient>
+    <!-- Sun Glow -->
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fdf2e9;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#fdf2e9;stop-opacity:0" />
+    </radialGradient>
+    <!-- Grass Gradient -->
+    <linearGradient id="grassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#52be80" />
+      <stop offset="100%" style="stop-color:#1d8348" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="800" height="400" fill="url(#skyGrad)" />
+  
+  <!-- Sun -->
+  <circle cx="700" cy="80" r="150" fill="url(#sunGlow)" />
+  <circle cx="700" cy="80" r="40" fill="#fcf3cf" />
+
+  <!-- Distant Mountains -->
+  <path d="M0 400 L150 250 L300 400 L450 200 L600 400 L800 300 L800 400 Z" fill="#aed6f1" />
+
+  <!-- Grass Field -->
+  <rect y="400" width="800" height="200" fill="url(#grassGrad)" />
+  
+  <!-- Flowers (Detailed but repeated) -->
+  <g id="flowers">
+    <!-- Red Flowers -->
+    <circle cx="100" cy="450" r="5" fill="#c0392b" />
+    <circle cx="110" cy="445" r="5" fill="#c0392b" />
+    <circle cx="95" cy="440" r="5" fill="#c0392b" />
+    <!-- Yellow Flowers -->
+    <circle cx="300" cy="480" r="4" fill="#f1c40f" />
+    <circle cx="310" cy="475" r="4" fill="#f1c40f" />
+    <!-- White Flowers -->
+    <circle cx="550" cy="460" r="6" fill="#fff" />
+    <circle cx="565" cy="465" r="6" fill="#fff" />
+  </g>
+  <!-- More random flowers -->
+  <use href="#flowers" x="200" y="50" />
+  <use href="#flowers" x="-50" y="80" />
+  <use href="#flowers" x="400" y="20" />
+
+  <!-- A Small Tree -->
+  <g transform="translate(650, 250)">
+    <rect x="-10" y="0" width="20" height="150" fill="#5d4037" />
+    <circle cx="0" cy="0" r="60" fill="#229954" />
+    <circle cx="-30" cy="-20" r="50" fill="#27ae60" />
+    <circle cx="30" cy="-20" r="50" fill="#27ae60" />
+  </g>
+
+  <!-- Pathway -->
+  <path d="M400 400 Q420 500 300 600 L500 600 Q620 500 400 400" fill="#edbb99" opacity="0.6" />
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+  <defs>
+    <!-- Skin Tone Gradient -->
+    <radialGradient id="skinGrad" cx="50%" cy="30%" r="50%">
+      <stop offset="0%" style="stop-color:#fef5e7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5cba7;stop-opacity:1" />
+    </radialGradient>
+    <!-- Hat Gradient -->
+    <linearGradient id="hatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f7dc6f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4ac0d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Body (Overalls) -->
+  <path d="M100 600 L100 450 Q100 400 200 400 Q300 400 300 450 L300 600 Z" fill="#2e86c1" />
+  <!-- Shirt -->
+  <path d="M130 400 L130 350 Q200 330 270 350 L270 400 Z" fill="#fdfefe" />
+  
+  <!-- Neck -->
+  <rect x="180" y="320" width="40" height="40" fill="#f5cba7" />
+
+  <!-- Head -->
+  <ellipse cx="200" cy="240" rx="70" ry="85" fill="url(#skinGrad)" />
+  
+  <!-- Hair (Peeking from under hat) -->
+  <path d="M135 200 Q140 160 200 160 Q260 160 265 200" fill="#a04000" stroke="#5e2600" stroke-width="2" />
+
+  <!-- Eyes (Kind expression) -->
+  <ellipse cx="175" cy="240" rx="5" ry="3" fill="#2c3e50" />
+  <ellipse cx="225" cy="240" rx="5" ry="3" fill="#2c3e50" />
+  <!-- Eye smiles -->
+  <path d="M165 235 Q175 225 185 235" fill="none" stroke="#2c3e50" stroke-width="1.5" />
+  <path d="M215 235 Q225 225 235 235" fill="none" stroke="#2c3e50" stroke-width="1.5" />
+
+  <!-- Smile -->
+  <path d="M180 280 Q200 300 220 280" fill="none" stroke="#e67e22" stroke-width="2" />
+
+  <!-- Straw Hat -->
+  <!-- Brim -->
+  <ellipse cx="200" cy="180" rx="140" ry="40" fill="url(#hatGrad)" stroke="#9a7d0a" stroke-width="2" />
+  <!-- Top -->
+  <path d="M120 170 Q120 80 200 80 Q280 80 280 170" fill="url(#hatGrad)" stroke="#9a7d0a" stroke-width="2" />
+  <!-- Hat Ribbon -->
+  <path d="M120 160 Q120 150 200 150 Q280 150 280 160 L280 170 Q200 160 120 170 Z" fill="#c0392b" />
+
+  <!-- Blush -->
+  <circle cx="155" cy="265" r="10" fill="#ec7063" opacity="0.3" />
+  <circle cx="245" cy="265" r="10" fill="#ec7063" opacity="0.3" />
+</svg>

@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <!-- Rich Wood Texture -->
+    <linearGradient id="woodGrain" x1="0%" y1="0%" x2="100% " y2="0%">
+      <stop offset="0%" style="stop-color:#3d2b1f" />
+      <stop offset="20%" style="stop-color:#4d3b2f" />
+      <stop offset="40%" style="stop-color:#3d2b1f" />
+      <stop offset="60%" style="stop-color:#5d4b3f" />
+      <stop offset="80%" style="stop-color:#3d2b1f" />
+      <stop offset="100%" style="stop-color:#4d3b2f" />
+    </linearGradient>
+    
+    <!-- Warm Lamp Glow -->
+    <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fff2cc;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#f1c40f;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Shadow Vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#000;stop-opacity:0" />
+      <stop offset="100%" style="stop-color:#000;stop-opacity:0.8" />
+    </radialGradient>
+  </defs>
+
+  <!-- Deep Background -->
+  <rect width="800" height="600" fill="#1a120b" />
+
+  <!-- Back Wall Bookshelves -->
+  <g id="bookshelves">
+    <!-- Shelf 1 (Top) -->
+    <rect x="50" y="50" width="700" height="150" fill="#2d1d13" />
+    <rect x="50" y="190" width="700" height="10" fill="url(#woodGrain)" />
+    <!-- Row of Books -->
+    <g transform="translate(60, 60)">
+      <rect x="0" y="20" width="15" height="110" fill="#7b241c" rx="2" />
+      <rect x="18" y="10" width="12" height="120" fill="#1b4f72" rx="2" />
+      <rect x="33" y="15" width="20" height="115" fill="#186a3b" rx="2" />
+      <rect x="56" y="25" width="10" height="105" fill="#7d6608" rx="2" />
+      <rect x="68" y="10" width="25" height="120" fill="#4a235a" rx="2" />
+      <!-- Repeated pattern for many books -->
+      <rect x="96" y="15" width="15" height="115" fill="#641e16" rx="2" />
+      <rect x="114" y="20" width="18" height="110" fill="#154360" rx="2" />
+      <rect x="135" y="10" width="12" height="120" fill="#0e6251" rx="2" />
+      <rect x="150" y="30" width="20" height="100" fill="#784212" rx="2" />
+      <rect x="175" y="10" width="15" height="120" fill="#512e5f" rx="2" />
+      <rect x="195" y="15" width="10" height="115" fill="#922b21" rx="2" />
+      <rect x="210" y="20" width="22" height="110" fill="#1a5276" rx="2" />
+      <rect x="235" y="5" width="14" height="125" fill="#117864" rx="2" />
+      <!-- ... more books ... -->
+      <rect x="255" y="10" width="20" height="120" fill="#af601a" />
+      <rect x="280" y="15" width="15" height="115" fill="#4d5656" />
+      <rect x="300" y="5" width="12" height="125" fill="#212f3d" />
+      <rect x="315" y="20" width="18" height="110" fill="#78281f" />
+      <rect x="335" y="10" width="10" height="120" fill="#145a32" />
+    </g>
+    
+    <!-- Shelf 2 (Middle) -->
+    <rect x="50" y="200" width="700" height="150" fill="#2d1d13" />
+    <rect x="50" y="340" width="700" height="10" fill="url(#woodGrain)" />
+    <!-- Row of Books 2 (Randomized more) -->
+    <g transform="translate(60, 210)">
+      <rect x="0" y="30" width="25" height="100" fill="#1a5276" rx="1" />
+      <rect x="28" y="10" width="12" height="120" fill="#7b241c" rx="1" />
+      <rect x="42" y="15" width="18" height="115" fill="#1e8449" rx="1" />
+      <rect x="62" y="5" width="22" height="125" fill="#9a7d0a" rx="1" />
+      <rect x="88" y="20" width="14" height="110" fill="#512e5f" rx="1" />
+      <!-- leaning book -->
+      <rect x="105" y="10" width="15" height="120" fill="#148f77" transform="rotate(10, 105, 130)" />
+      <rect x="130" y="10" width="15" height="120" fill="#a04000" />
+    </g>
+  </g>
+
+  <!-- Detailed Table -->
+  <g id="table" transform="translate(200, 450)">
+    <!-- Table Surface -->
+    <rect x="0" y="0" width="400" height="100" fill="url(#woodGrain)" rx="5" />
+    <rect x="0" y="0" width="400" height="10" fill="#5d4037" opacity="0.5" /> <!-- table top shine -->
+    <!-- Table Leg Left -->
+    <path d="M50 100 L40 150 L60 150 Z" fill="#2d1d13" />
+    <!-- Table Leg Right -->
+    <path d="M350 100 L340 150 L360 150 Z" fill="#2d1d13" />
+    
+    <!-- Open Book on Table -->
+    <g transform="translate(120, -15) rotate(-5)">
+      <rect x="0" y="0" width="80" height="60" fill="#fdfefe" stroke="#d5dbdb" />
+      <rect x="80" y="0" width="80" height="60" fill="#f4f6f7" stroke="#d5dbdb" />
+      <line x1="80" y1="0" x2="80" y2="60" stroke="#bdc3c7" stroke-width="2" />
+      <!-- Text lines in book -->
+      <g stroke="#bdc3c7" stroke-width="1">
+        <line x1="10" y1="15" x2="70" y2="15" />
+        <line x1="10" y1="25" x2="60" y2="25" />
+        <line x1="10" y1="35" x2="70" y2="35" />
+        <line x1="90" y1="15" x2="150" y2="15" />
+        <line x1="90" y1="25" x2="140" y2="25" />
+        <line x1="90" y1="45" x2="150" y2="45" />
+      </g>
+    </g>
+
+    <!-- Detailed Oil Lamp -->
+    <g transform="translate(300, -60)">
+      <!-- Base -->
+      <path d="M10 60 Q25 70 40 60 L40 50 Q25 40 10 50 Z" fill="#b7950b" />
+      <!-- Glass -->
+      <path d="M15 50 Q15 10 25 0 Q35 10 35 50 Z" fill="#ffffff" opacity="0.4" />
+      <!-- Flame -->
+      <path d="M22 35 Q25 20 28 35 Q25 45 22 35" fill="#f39c12">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+      </path>
+      <!-- Glow -->
+      <circle cx="25" cy="30" r="100" fill="url(#lampGlow)" />
+    </g>
+  </g>
+
+  <!-- Pillars (Ornate) -->
+  <g fill="#2d1d13" stroke="#1a120b" stroke-width="2">
+    <rect x="0" y="0" width="40" height="600" />
+    <rect x="760" y="0" width="40" height="600" />
+    <!-- Pillar Details -->
+    <rect x="5" y="100" width="30" height="10" fill="#3d2b1f" />
+    <rect x="5" y="300" width="30" height="10" fill="#3d2b1f" />
+    <rect x="765" y="100" width="30" height="10" fill="#3d2b1f" />
+    <rect x="765" y="300" width="30" height="10" fill="#3d2b1f" />
+  </g>
+
+  <!-- Dust Motes (Indefinite movement) -->
+  <g fill="#fff" opacity="0.3">
+    <circle cx="400" cy="300" r="1.5">
+      <animate attributeName="cy" values="300;280;300" dur="4s" repeatCount="indefinite" />
+      <animate attributeName="cx" values="400;420;400" dur="6s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="200" cy="400" r="1">
+      <animate attributeName="cy" values="400;420;400" dur="5s" repeatCount="indefinite" />
+    </circle>
+  </g>
+
+  <!-- Vignette overlay for atmosphere -->
+  <rect width="800" height="600" fill="url(#vignette)" pointer-events="none" />
+</svg>
