@@ -28,8 +28,13 @@ export class Game {
     }
 
     loop(timestamp) {
-        const delta = timestamp - this.lastTime;
+        if (!this.lastTime) this.lastTime = timestamp;
+        let delta = timestamp - this.lastTime;
         this.lastTime = timestamp;
+
+        // Cap delta to 100ms to prevent physics glitches when returning from background tabs
+        if (delta > 100) delta = 100;
+
         this.update(delta);
         this.renderer.render();
         requestAnimationFrame(this.loop.bind(this));
@@ -168,10 +173,26 @@ export class Game {
         const numEnemies = this.level + 2; // レベルが高いほど敵が多い
         const numItems = this.level + 1; // レベルが高いほどアイテムが多い
 
+        // 敵の生成
         for (let i = 0; i < numEnemies; i++) {
-            const x = Math.random() * (this.map.width - 200) + 100; // 100からwidth-100の範囲
-            const y = 400 - Math.floor(Math.random() * 3) * 64; // 地面またはプラットフォーム上
-            const type = Math.random() < 0.5 ? 'normal' : 'jumping'; // ランダムに敵の種類
+            let valid = false;
+            let x, y;
+            let attempts = 0;
+            while (!valid && attempts < 100) {
+                x = Math.random() * (this.map.width - 200) + 100;
+                y = 400 - Math.floor(Math.random() * 3) * 64 - 32; // -32 to adjust for enemy height
+                
+                // 四隅が壁に埋まっていないかチェック
+                if (this.map.getTileAt(x, y) === 0 && 
+                    this.map.getTileAt(x + 32, y) === 0 &&
+                    this.map.getTileAt(x, y + 32) === 0 &&
+                    this.map.getTileAt(x + 32, y + 32) === 0) {
+                    valid = true;
+                }
+                attempts++;
+            }
+            
+            const type = Math.random() < 0.5 ? 'normal' : 'jumping';
             if (type === 'jumping') {
                 this.enemies.push(new JumpingEnemy(x, y));
             } else {
@@ -179,9 +200,23 @@ export class Game {
             }
         }
 
+        // アイテムの生成
         for (let i = 0; i < numItems; i++) {
-            const x = Math.random() * (this.map.width - 200) + 100;
-            const y = 400 - Math.floor(Math.random() * 3) * 64;
+            let valid = false;
+            let x, y;
+            let attempts = 0;
+            while (!valid && attempts < 100) {
+                x = Math.random() * (this.map.width - 200) + 100;
+                y = 400 - Math.floor(Math.random() * 3) * 64 - 32;
+                
+                if (this.map.getTileAt(x, y) === 0 && 
+                    this.map.getTileAt(x + 32, y) === 0 &&
+                    this.map.getTileAt(x, y + 32) === 0 &&
+                    this.map.getTileAt(x + 32, y + 32) === 0) {
+                    valid = true;
+                }
+                attempts++;
+            }
             this.items.push(new Item(x, y));
         }
     }

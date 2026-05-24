@@ -15,6 +15,14 @@ export class Player {
         this.animationFrame = 0;
         this.animationTimer = 0;
         this.facing = 1; // 1 for right, -1 for left
+
+        // Collision Hitbox (offset from x, y and smaller than width/height)
+        this.hitbox = {
+            offsetX: 8,
+            offsetY: 4,
+            width: 16,
+            height: 26
+        };
     }
 
     update(input, map, delta, bullets) {
@@ -88,12 +96,16 @@ export class Player {
     }
 
     _collides(x, y, map) {
-        // check four corners of bounding box
+        // check four corners of the hitbox
+        const h = this.hitbox;
+        const hx = x + h.offsetX;
+        const hy = y + h.offsetY;
+
         const points = [
-            { x: x, y: y },
-            { x: x + this.width, y: y },
-            { x: x, y: y + this.height },
-            { x: x + this.width, y: y + this.height }
+            { x: hx, y: hy },
+            { x: hx + h.width, y: hy },
+            { x: hx, y: hy + h.height },
+            { x: hx + h.width, y: hy + h.height }
         ];
         for (const p of points) {
             const tile = map.getTileAt(p.x, p.y);

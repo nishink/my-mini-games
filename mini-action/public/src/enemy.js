@@ -7,6 +7,14 @@ export class Enemy {
         this.vx = 50; // pixels per second, moving right initially
         this.dir = 1; // 1 for right, -1 for left
         this.type = 'normal'; // 敵のタイプ
+
+        // Collision Hitbox
+        this.hitbox = {
+            offsetX: 4,
+            offsetY: 8,
+            width: 24,
+            height: 16
+        };
     }
 
     update(delta, map) {
@@ -22,11 +30,15 @@ export class Enemy {
     }
 
     _collides(x, y, map) {
+        const h = this.hitbox;
+        const hx = x + h.offsetX;
+        const hy = y + h.offsetY;
+
         const points = [
-            { x: x, y: y },
-            { x: x + this.width, y: y },
-            { x: x, y: y + this.height },
-            { x: x + this.width, y: y + this.height }
+            { x: hx, y: hy },
+            { x: hx + h.width, y: hy },
+            { x: hx, y: hy + h.height },
+            { x: hx + h.width, y: hy + h.height }
         ];
         for (const p of points) {
             if (map.getTileAt(p.x, p.y) !== 0) return true;
@@ -35,10 +47,20 @@ export class Enemy {
     }
 
     collidesWith(player) {
-        return !(this.x + this.width < player.x ||
-                 player.x + player.width < this.x ||
-                 this.y + this.height < player.y ||
-                 player.y + player.height < this.y);
+        // Use hitboxes for intersection check
+        const e = this.hitbox;
+        const ex1 = this.x + e.offsetX;
+        const ey1 = this.y + e.offsetY;
+        const ex2 = ex1 + e.width;
+        const ey2 = ey1 + e.height;
+
+        const p = player.hitbox;
+        const px1 = player.x + p.offsetX;
+        const py1 = player.y + p.offsetY;
+        const px2 = px1 + p.width;
+        const py2 = py1 + p.height;
+
+        return !(ex2 < px1 || px2 < ex1 || ey2 < py1 || py2 < ey1);
     }
 }
 
@@ -75,8 +97,9 @@ export class JumpingEnemy extends Enemy {
                 this.vy = 0;
                 this.onGround = true;
                 // 地面に合わせる
-                const tileY = Math.floor(newY / 32) * 32;
-                newY = tileY - this.height;
+                // Note: using sprite height for ground alignment to keep it visual
+                const tileY = Math.floor((newY + this.hitbox.offsetY + this.hitbox.height) / 32) * 32;
+                newY = tileY - (this.hitbox.offsetY + this.hitbox.height);
             } else { // 上向きの場合、頭をぶつける
                 this.vy = 0;
                 newY = this.y;

@@ -43,6 +43,9 @@ export class Renderer {
     }
 
     render() {
+        // Ensure crisp pixel art every frame
+        this.ctx.imageSmoothingEnabled = false;
+
         // clear with a dark space-like background
         this.ctx.fillStyle = '#050510';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
