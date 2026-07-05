@@ -228,6 +228,14 @@ const games = [
         description: "5x5マスのミニ将棋（5五将棋）。AI対戦、駒の成りと持ち駒を再現。",
         icon: "☖",
         path: "mini-shogi/public/index.html"
+    },
+    {
+        id: "mini-dice",
+        title: "Dice RPG",
+        phase: "phase4",
+        description: "ダイスを振って進むすごろくRPG。戦闘、宿屋、トラップ、装備強化を搭載。",
+        icon: "🎲",
+        path: "mini-dice/public/index.html"
     }
 ];
 

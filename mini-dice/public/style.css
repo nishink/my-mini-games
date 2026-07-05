@@ -1,0 +1,395 @@
+:root {
+    --bg-color: #0f172a;
+    --bg-card: rgba(30, 41, 59, 0.7);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    /* マスカラー */
+    --color-start: #3b82f6;
+    --color-normal: #10b981;
+    --color-trap: #8b5cf6;
+    --color-enemy: #ef4444;
+    --color-chest: #f59e0b;
+    --color-inn: #06b6d4;
+    --color-boss: linear-gradient(135deg, #1e1b4b 0%, #7f1d1d 100%);
+
+    --accent-gold: #f59e0b;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#scene-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.scene {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+/* タイトル */
+.title-scene h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff 30%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* ボタン共通 */
+button {
+    background: #e67e22;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+}
+
+button:hover:not(:disabled) {
+    background: #d35400;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(230, 126, 34, 0.4);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ステータスバー */
+.status-bar {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hp-item {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.hp-gauge {
+    flex: 1;
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    transition: width 0.3s ease;
+}
+
+.hp-fill.enemy {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.equipment-item {
+    grid-column: span 2;
+    color: var(--text-secondary);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 4px;
+    margin-top: 4px;
+}
+
+/* ビューパネル */
+.view-panel {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* マップ */
+.map-grid-container {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    border: 1px solid var(--border-glass);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+    max-height: 250px;
+}
+
+.map-cell {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+}
+
+.map-cell.start { background-color: var(--color-start); }
+.map-cell.normal { background-color: var(--color-normal); }
+.map-cell.trap { background-color: var(--color-trap); }
+.map-cell.enemy { background-color: var(--color-enemy); }
+.map-cell.chest { background-color: var(--color-chest); }
+.map-cell.inn { background-color: var(--color-inn); }
+.map-cell.boss { background: var(--color-boss); border: 2px solid #ef4444; }
+
+.cell-index {
+    font-size: 0.65rem;
+    font-weight: bold;
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.cell-icon {
+    font-size: 1.4rem;
+}
+
+/* プレイヤーの駒 */
+.player-piece {
+    font-size: 1.8rem;
+    position: absolute;
+    z-index: 5;
+    animation: float 0.8s infinite alternate ease-in-out;
+}
+
+/* ダイスセクション */
+.dice-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 10px;
+}
+
+.dice-box {
+    width: 65px;
+    height: 65px;
+    background: white;
+    border-radius: 14px;
+    border: 3px solid var(--accent-gold);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0f172a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: transform 0.1s;
+}
+
+/* イベントメッセージ */
+.event-log-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+#event-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    white-space: pre-line;
+}
+
+.event-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* バトルビュー */
+.battle-arena {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.enemy-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border-glass);
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    width: 100%;
+    max-width: 250px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.enemy-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.enemy-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* バトルログ */
+.battle-log {
+    height: 120px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 0.85rem;
+    overflow-y: auto;
+    border: 1px solid var(--border-glass);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.battle-log p {
+    line-height: 1.4;
+    border-left: 3px solid var(--accent-gold);
+    padding-left: 8px;
+}
+
+.battle-commands {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.battle-commands button {
+    padding: 12px 6px;
+    font-size: 0.9rem;
+}
+
+.win-btn {
+    grid-column: span 3;
+    background: var(--color-normal);
+}
+
+/* 結果シーン */
+.result-scene h2.win {
+    color: var(--accent-gold);
+    font-size: 2.8rem;
+    text-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+}
+
+.result-scene h2.lose {
+    color: var(--color-enemy);
+    font-size: 2.8rem;
+    text-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+.result-message {
+    color: var(--text-secondary);
+    margin: 10px 0 30px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.result-details {
+    font-size: 0.95rem;
+    background: rgba(255,255,255,0.05);
+    padding: 12px 24px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+/* アニメーション */
+@keyframes float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
+}
+
+.hidden {
+    display: none !important;
+}
