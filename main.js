@@ -220,6 +220,14 @@ const games = [
         description: "AI対戦を搭載した定番のボードゲーム（オセロ）。",
         icon: "⚪",
         path: "mini-reversi/public/index.html"
+    },
+    {
+        id: "mini-shogi",
+        title: "Shogi",
+        phase: "phase4",
+        description: "5x5マスのミニ将棋（5五将棋）。AI対戦、駒の成りと持ち駒を再現。",
+        icon: "☖",
+        path: "mini-shogi/public/index.html"
     }
 ];
 
