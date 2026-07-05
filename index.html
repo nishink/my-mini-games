@@ -5,158 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Games Collection</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="main.js" defer></script>
 </head>
 <body>
     <div id="container">
         <header>
-            <h1>MINI GAMES COLLECTION</h1>
-            <p>JavaScriptで作成したミニゲーム集</p>
+            <div class="logo-area">
+                <span class="logo-icon">🕹️</span>
+                <h1>MINI GAMES COLLECTION</h1>
+            </div>
+            <p>JavaScriptで作成した高品質なミニゲームコレクション</p>
         </header>
 
-        <section class="main-project">
-            <a href="mini-rpg-saga/public/index.html" class="game-card featured">
-                <div class="emoji">🌟</div>
-                <h3>Mini RPG Saga</h3>
-                <p><strong>[MAIN PROJECT]</strong> 全てのコンポーネントを統合したRPG</p>
-            </a>
+        <!-- メインプロジェクト（統合RPG） -->
+        <section class="main-project" id="main-project-container">
+            <!-- JavaScriptにより動的に挿入されます -->
         </section>
 
-        <section class="game-grid">
-            <!-- 第1期 -->
-            <a href="mini-action/public/index.html" class="game-card">
-                <div class="emoji">🏃</div>
-                <h3>Action</h3>
-                <p>横スクロールアクション</p>
-            </a>
-            <a href="mini-roguelike/public/index.html" class="game-card">
-                <div class="emoji">🗡️</div>
-                <h3>Roguelike</h3>
-                <p>ターン制ダンジョンRPG</p>
-            </a>
-            <a href="mini-snake/public/index.html" class="game-card">
-                <div class="emoji">🐍</div>
-                <h3>Snake</h3>
-                <p>ヘビの成長アクション</p>
-            </a>
-            <a href="mini-shmup/public/index.html" class="game-card">
-                <div class="emoji">🚀</div>
-                <h3>SHMUP</h3>
-                <p>縦スクロールSTG</p>
-            </a>
-            <a href="mini-sokoban/public/index.html" class="game-card">
-                <div class="emoji">📦</div>
-                <h3>Sokoban</h3>
-                <p>倉庫番パズル</p>
-            </a>
-            <a href="mini-clicker/public/index.html" class="game-card">
-                <div class="emoji">🖱️</div>
-                <h3>Clicker</h3>
-                <p>放置・クリッカー</p>
-            </a>
-            <a href="mini-defense/public/index.html" class="game-card">
-                <div class="emoji">🏰</div>
-                <h3>Defense</h3>
-                <p>タワーディフェンス</p>
-            </a>
+        <!-- カテゴリフィルタータブ -->
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">すべて</button>
+            <button class="filter-btn" data-filter="phase1">第1期: アクション</button>
+            <button class="filter-btn" data-filter="phase2">第2期: パズル/アーケード</button>
+            <button class="filter-btn" data-filter="phase3">第3期: アドバンスド</button>
+            <button class="filter-btn" data-filter="rpg-comp">RPGシステム</button>
+            <button class="filter-btn" data-filter="phase4">第4期: ストラテジー</button>
+        </div>
 
-            <!-- 第2期 -->
-            <a href="mini-tetris/public/index.html" class="game-card">
-                <div class="emoji">🧱</div>
-                <h3>Tetris</h3>
-                <p>落ち物パズル</p>
-            </a>
-            <a href="mini-puyo/public/index.html" class="game-card">
-                <div class="emoji">💧</div>
-                <h3>Puyo</h3>
-                <p>連鎖パズル</p>
-            </a>
-            <a href="mini-jumper/public/index.html" class="game-card">
-                <div class="emoji">🦘</div>
-                <h3>Jumper</h3>
-                <p>無限ジャンプ</p>
-            </a>
-            <a href="mini-racer/public/index.html" class="game-card">
-                <div class="emoji">🏎️</div>
-                <h3>Racer</h3>
-                <p>トップダウンレース</p>
-            </a>
-            <a href="mini-2048/public/index.html" class="game-card">
-                <div class="emoji">🔢</div>
-                <h3>2048</h3>
-                <p>合成パズル</p>
-            </a>
-            <a href="mini-typer/public/index.html" class="game-card">
-                <div class="emoji">⌨️</div>
-                <h3>Typer</h3>
-                <p>タイピングアクション</p>
-            </a>
-            <a href="mini-manager/public/index.html" class="game-card">
-                <div class="emoji">🧪</div>
-                <h3>Manager</h3>
-                <p>ポーション屋経営</p>
-            </a>
-            <a href="mini-stealth/public/index.html" class="game-card">
-                <div class="emoji">🕵️</div>
-                <h3>Stealth</h3>
-                <p>潜入アクション</p>
-            </a>
-            <a href="mini-golf/public/index.html" class="game-card">
-                <div class="emoji">⛳</div>
-                <h3>Golf</h3>
-                <p>物理反射パズル</p>
-            </a>
-            <a href="mini-wordle/public/index.html" class="game-card">
-                <div class="emoji">🔤</div>
-                <h3>Wordle</h3>
-                <p>言葉当てパズル</p>
-            </a>
-            <!-- 第3期 -->
-            <a href="mini-quest/public/index.html" class="game-card">
-                <div class="emoji">🗺️</div>
-                <h3>Quest</h3>
-                <p>RPGプロトタイプ</p>
-            </a>
-            <a href="mini-wizard/public/index.html" class="game-card">
-                <div class="emoji">🏰</div>
-                <h3>Wizard</h3>
-                <p>3DダンジョンRPG</p>
-            </a>
-            <a href="mini-story/public/index.html" class="game-card">
-                <div class="emoji">📖</div>
-                <h3>Story</h3>
-                <p>ノベルゲーム</p>
-            </a>
-            <a href="mini-craft/public/index.html" class="game-card">
-                <div class="emoji">🧱</div>
-                <h3>Craft</h3>
-                <p>サンドボックス</p>
-            </a>
-            <a href="mini-battle/public/index.html" class="game-card">
-                <div class="emoji">⚔️</div>
-                <h3>Battle</h3>
-                <p>コマンドバトル</p>
-            </a>
-            <a href="mini-loot/public/index.html" class="game-card">
-                <div class="emoji">💎</div>
-                <h3>Loot</h3>
-                <p>アイテム収集・管理</p>
-            </a>
-            <a href="mini-hero/public/index.html" class="game-card">
-                <div class="emoji">🦸</div>
-                <h3>Hero</h3>
-                <p>成長・レベリング</p>
-            </a>
-
-            <!-- 第4期 -->
-            <a href="mini-deck/public/index.html" class="game-card">
-                <div class="emoji">🃏</div>
-                <h3>Deck</h3>
-                <p>デッキ構築型バトル</p>
-            </a>
+        <!-- ミニゲーム一覧グリッド -->
+        <section class="game-grid" id="game-grid">
+            <!-- JavaScriptにより動的に挿入されます -->
+            <noscript>
+                <p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">
+                    このサイトを表示するにはJavaScriptを有効にする必要があります。
+                </p>
+            </noscript>
         </section>
 
         <footer>
-            <p>2026 Mini Games Hub. 🛠️ Future: More RPG components...</p>
+            <p>© 2026 Mini Games Hub. 🛠️ 今後も様々なジャンルのゲームを追加予定です。</p>
         </footer>
     </div>
 </body>
