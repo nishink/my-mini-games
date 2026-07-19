@@ -236,6 +236,30 @@ const games = [
         description: "ダイスを振って進むすごろくRPG。戦闘、宿屋、トラップ、装備強化を搭載。",
         icon: "🎲",
         path: "mini-dice/public/index.html"
+    },
+    {
+        id: "mini-hex",
+        title: "Hex",
+        phase: "phase4",
+        description: "六角形グリッドを用いた領土拡大ボードゲーム。複製とジャンプを使いこなして盤面を支配しよう。",
+        icon: "🛑",
+        path: "mini-hex/public/index.html"
+    },
+    {
+        id: "mini-mines",
+        title: "Mines",
+        phase: "phase4",
+        description: "地雷を避けてすべての安全なマスを開ける定番パズル。クリックとフラグを切り替えて慎重に進もう。",
+        icon: "💣",
+        path: "mini-mines/public/index.html"
+    },
+    {
+        id: "mini-solitaire",
+        title: "Solitaire",
+        phase: "phase4",
+        description: "トランプの定番クロンダイク・ソリティア。AからKへ順番にカードを並べ替えよう。",
+        icon: "🃏",
+        path: "mini-solitaire/public/index.html"
     }
 ];
 
