@@ -260,6 +260,15 @@ const games = [
         description: "トランプの定番クロンダイク・ソリティア。AからKへ順番にカードを並べ替えよう。",
         icon: "🃏",
         path: "mini-solitaire/public/index.html"
+    },
+    // 第5期
+    {
+        id: "mini-logic",
+        title: "Logic",
+        phase: "phase5",
+        description: "数字のヒントを解き明かしドット絵を完成させるお絵かきロジック（ピクロス）。",
+        icon: "🧩",
+        path: "mini-logic/public/index.html"
     }
 ];
 
