@@ -269,6 +269,14 @@ const games = [
         description: "数字のヒントを解き明かしドット絵を完成させるお絵かきロジック（ピクロス）。",
         icon: "🧩",
         path: "mini-logic/public/index.html"
+    },
+    {
+        id: "mini-sudoku",
+        title: "Sudoku",
+        phase: "phase5",
+        description: "定番の9x9数独（ナンプレ）。候補数字を書き込めるメモ機能や関連ハイライトを搭載。",
+        icon: "🔢",
+        path: "mini-sudoku/public/index.html"
     }
 ];
 
