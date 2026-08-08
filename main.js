@@ -277,6 +277,15 @@ const games = [
         description: "定番の9x9数独（ナンプレ）。候補数字を書き込めるメモ機能や関連ハイライトを搭載。",
         icon: "🔢",
         path: "mini-sudoku/public/index.html"
+    },
+    // 第5期B
+    {
+        id: "mini-pipe",
+        title: "Pipe",
+        phase: "phase5",
+        description: "パイプを回転させて水源からゴールまで水を届けるパズル。全パイプを繋いでパーフェクトを目指せ！",
+        icon: "🔧",
+        path: "mini-pipe/public/index.html"
     }
 ];
 
