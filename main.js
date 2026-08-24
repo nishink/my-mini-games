@@ -286,6 +286,30 @@ const games = [
         description: "パイプを回転させて水源からゴールまで水を届けるパズル。全パイプを繋いでパーフェクトを目指せ！",
         icon: "🔧",
         path: "mini-pipe/public/index.html"
+    },
+    {
+        id: "mini-lights",
+        title: "Lights",
+        phase: "phase5",
+        description: "クリックするとそのマスと上下左右のライトが反転。全てのライトを消灯させれば脱出！少ない手数でSランクを狙え。",
+        icon: "💡",
+        path: "mini-lights/public/index.html"
+    },
+    {
+        id: "mini-slide",
+        title: "Slide",
+        phase: "phase5",
+        description: "空きマスに隣接するタイルをスライドして数字を順番に並べる定番パズル。3×3〜5×5の3サイズ、矢印キーにも対応！",
+        icon: "🔲",
+        path: "mini-slide/public/index.html"
+    },
+    {
+        id: "mini-match3",
+        title: "Match 3",
+        phase: "phase5",
+        description: "同じ色のジェムを3つ以上並べて消すパズル。4つで矢印ジェム、5つで爆弾ジェムが生成！連鎖コンボで高スコアを狙え。",
+        icon: "💎",
+        path: "mini-match3/public/index.html"
     }
 ];
 
